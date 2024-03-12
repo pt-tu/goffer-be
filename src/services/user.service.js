@@ -3,6 +3,18 @@ const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
 
 /**
+ *
+ * @param {string} email
+ * @returns {Promise<boolean>}
+ */
+const emailExists = async (email) => {
+  if (await User.isEmailTaken(email)) {
+    return true;
+  }
+  return false;
+};
+
+/**
  * Create a user
  * @param {Object} userBody
  * @returns {Promise<User>}
@@ -86,4 +98,5 @@ module.exports = {
   getUserByEmail,
   updateUserById,
   deleteUserById,
+  emailExists,
 };

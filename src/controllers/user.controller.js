@@ -4,6 +4,11 @@ const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const { userService } = require('../services');
 
+const checkEmailExists = catchAsync(async (req, res) => {
+  const emailExists = await userService.emailExists(req.query.email);
+  res.send({ exists: emailExists });
+});
+
 const createUser = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
   res.status(httpStatus.CREATED).send(user);
@@ -35,6 +40,7 @@ const deleteUser = catchAsync(async (req, res) => {
 });
 
 module.exports = {
+  checkEmailExists,
   createUser,
   getUsers,
   getUser,

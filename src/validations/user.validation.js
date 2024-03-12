@@ -1,6 +1,12 @@
 const Joi = require('joi');
 const { password, objectId } = require('./custom.validation');
 
+const checkEmailExists = {
+  query: Joi.object().keys({
+    email: Joi.string().required().email(),
+  }),
+};
+
 const createUser = {
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -46,6 +52,7 @@ const deleteUser = {
 };
 
 module.exports = {
+  checkEmailExists,
   createUser,
   getUsers,
   getUser,
