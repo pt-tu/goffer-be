@@ -8,7 +8,6 @@ const userSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
       trim: true,
     },
     email: {
@@ -41,6 +40,14 @@ const userSchema = mongoose.Schema(
       default: 'user',
     },
     isEmailVerified: {
+      type: Boolean,
+      default: false,
+    },
+    avatar: {
+      type: String,
+      trim: true,
+    },
+    isBanned: {
       type: Boolean,
       default: false,
     },
