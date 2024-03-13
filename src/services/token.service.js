@@ -121,7 +121,7 @@ const generateVerifyEmailToken = async (user) => {
  */
 const generateOtpToken = async (user) => {
   const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
-  const otp = `${Math.floor(1000 + Math.random() * 900000)}`;
+  const otp = `${Math.floor(100000 + Math.random() * 900000)}`;
   const hashedOTP = await bcrypt.hash(otp, 8);
 
   await Token.deleteMany({
