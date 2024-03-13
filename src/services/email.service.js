@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 const config = require('../config/config');
 const logger = require('../config/logger');
+const { otpEmailVerificationTemplate } = require('../utils/emailTemplate');
 
 const transport = nodemailer.createTransport(config.email.smtp);
 /* istanbul ignore next */
@@ -19,7 +20,7 @@ if (config.env !== 'test') {
  * @returns {Promise}
  */
 const sendEmail = async (to, subject, text) => {
-  const msg = { from: config.email.from, to, subject, text };
+  const msg = { from: config.email.from, to, subject, html: text };
   await transport.sendMail(msg);
 };
 
@@ -55,9 +56,16 @@ If you did not create an account, then ignore this email.`;
   await sendEmail(to, subject, text);
 };
 
+const sendOtpVerificationEmail = async (to, token) => {
+  const subject = `Goffer verification code: ${token}`;
+  const text = otpEmailVerificationTemplate(token);
+  await sendEmail(to, subject, text);
+};
+
 module.exports = {
   transport,
   sendEmail,
   sendResetPasswordEmail,
   sendVerificationEmail,
+  sendOtpVerificationEmail,
 };

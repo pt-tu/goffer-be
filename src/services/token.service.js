@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const httpStatus = require('http-status');
@@ -113,6 +114,57 @@ const generateVerifyEmailToken = async (user) => {
   return verifyEmailToken;
 };
 
+/**
+ *
+ * @param {User} user
+ * @returns {Promise<string>}
+ */
+const generateOtpToken = async (user) => {
+  const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
+  const otp = `${Math.floor(1000 + Math.random() * 900000)}`;
+  const hashedOTP = await bcrypt.hash(otp, 8);
+
+  await Token.deleteMany({
+    user: user.id,
+    type: tokenTypes.OTP,
+  });
+  await saveToken(hashedOTP, user.id, expires, tokenTypes.OTP);
+
+  return otp;
+};
+
+/**
+ *
+ * @param {string} otp
+ * @param {User} user
+ * @returns {Promise<Token>}
+ */
+const verifyOtpToken = async (otp, user) => {
+  const tokenDoc = await Token.findOne({
+    user: user.id,
+    type: tokenTypes.OTP,
+  });
+  if (!tokenDoc) {
+    throw new Error('Token not found');
+  }
+
+  const { token, expires } = tokenDoc;
+
+  if (expires < moment()) {
+    await Token.deleteMany({
+      user: user.id,
+      type: tokenTypes.OTP,
+    });
+    throw new ApiError(httpStatus.BAD_REQUEST, 'OTP expired');
+  } else {
+    const isValid = await bcrypt.compare(otp, token);
+    if (!isValid) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid OTP');
+    }
+  }
+  return tokenDoc;
+};
+
 module.exports = {
   generateToken,
   saveToken,
@@ -120,4 +172,6 @@ module.exports = {
   generateAuthTokens,
   generateResetPasswordToken,
   generateVerifyEmailToken,
+  generateOtpToken,
+  verifyOtpToken,
 };

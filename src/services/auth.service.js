@@ -90,10 +90,30 @@ const verifyEmail = async (verifyEmailToken) => {
   }
 };
 
+/**
+ *
+ * @param {string} verifyEmailOtpToken
+ * @param {User} user
+ * @returns {Promise}
+ */
+const verifyEmailOtp = async (verifyEmailOtpToken, user) => {
+  try {
+    await tokenService.verifyOtpToken(verifyEmailOtpToken, user);
+    await Token.deleteMany({ user: user.id, type: tokenTypes.OTP });
+    await userService.updateUserById(user.id, { isEmailVerified: true });
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Email verification failed');
+  }
+};
+
 module.exports = {
   loginUserWithEmailAndPassword,
   logout,
   refreshAuth,
   resetPassword,
   verifyEmail,
+  verifyEmailOtp,
 };
