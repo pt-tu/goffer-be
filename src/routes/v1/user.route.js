@@ -13,6 +13,8 @@ router
 
 router.route('/check-email').get(validate(userValidation.checkEmailExists), userController.checkEmailExists);
 
+router.route('/self').get(auth(), userController.getSelf);
+
 router
   .route('/:userId')
   .get(auth('getUsers'), validate(userValidation.getUser), userController.getUser)
