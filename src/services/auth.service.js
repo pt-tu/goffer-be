@@ -4,6 +4,8 @@ const userService = require('./user.service');
 const Token = require('../models/token.model');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
+const { getCurrentDomain } = require('../utils/url');
+const config = require('../config/config');
 
 /**
  * Login with username and password
@@ -115,6 +117,16 @@ const verifyEmailOtp = async (verifyEmailOtpToken, user) => {
   }
 };
 
+/**
+ *
+ * @param {'login' | 'register'} type
+ * @returns {string}
+ */
+const googleAuthUrl = async (type) => {
+  const REDIRECT_URL = `${getCurrentDomain()}/auth/${type}/google/callback`;
+  return `${config.google.authUrl}?client_id=${config.google.clientId}&redirect_uri=${REDIRECT_URL}&response_type=code&scope=email%20profile`;
+};
+
 module.exports = {
   loginUserWithEmailAndPassword,
   logout,
@@ -122,4 +134,5 @@ module.exports = {
   resetPassword,
   verifyEmail,
   verifyEmailOtp,
+  googleAuthUrl,
 };

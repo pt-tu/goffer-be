@@ -58,6 +58,11 @@ const userSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
+    provider: {
+      type: String,
+      required: true,
+      default: 'email',
+    },
   },
   {
     timestamps: true,

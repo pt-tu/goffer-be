@@ -6,12 +6,21 @@ const register = {
     email: Joi.string().required().email(),
     password: Joi.string().required().custom(password),
   }),
+  query: Joi.object().keys({
+    type: Joi.string(),
+  }),
 };
 
 const login = {
   body: Joi.object().keys({
     email: Joi.string().required(),
     password: Joi.string().required(),
+  }),
+};
+
+const authGoogle = {
+  query: Joi.object().keys({
+    authType: Joi.string().required(),
   }),
 };
 
@@ -49,4 +58,5 @@ module.exports = {
   resetPassword,
   verifyEmail,
   verifyEmailOtp,
+  authGoogle,
 };

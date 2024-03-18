@@ -6,6 +6,10 @@ const config = require('../config/config');
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body, req.query);
   const tokens = await tokenService.generateAuthTokens(user);
+  res.cookie('token', tokens.refresh.token, {
+    expires: tokens.refresh.expires,
+    ...config.jwt.cookieRefreshOptions,
+  });
   delete tokens.refresh;
   res.status(httpStatus.CREATED).send({ user, tokens });
 });
@@ -20,6 +24,11 @@ const login = catchAsync(async (req, res) => {
   });
   delete tokens.refresh;
   res.send({ user, tokens });
+});
+
+const authGoogle = catchAsync(async (req, res) => {
+  const url = await authService.googleAuthUrl(req.query.authType);
+  res.redirect(url);
 });
 
 const logout = catchAsync(async (req, res) => {
@@ -75,6 +84,7 @@ module.exports = {
   register,
   login,
   logout,
+  authGoogle,
   refreshTokens,
   forgotPassword,
   resetPassword,

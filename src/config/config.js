@@ -23,6 +23,10 @@ const envVarsSchema = Joi.object()
     SMTP_USERNAME: Joi.string().description('username for email server'),
     SMTP_PASSWORD: Joi.string().description('password for email server'),
     EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
+    // Google related
+    GOOGLE_CLIENT_ID: Joi.string().required().description('Google client id'),
+    GOOGLE_CLIENT_SECRET: Joi.string().required().description('Google client secret'),
+    GOOGLE_AUTH_URL: Joi.string().required().description('Google auth url'),
   })
   .unknown();
 
@@ -65,5 +69,10 @@ module.exports = {
       },
     },
     from: envVars.EMAIL_FROM,
+  },
+  google: {
+    clientId: envVars.GOOGLE_CLIENT_ID,
+    clientSecret: envVars.GOOGLE_CLIENT_SECRET,
+    authUrl: envVars.GOOGLE_AUTH_URL,
   },
 };
