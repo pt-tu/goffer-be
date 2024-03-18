@@ -27,7 +27,7 @@ const login = catchAsync(async (req, res) => {
 });
 
 const authGoogle = catchAsync(async (req, res) => {
-  const url = await authService.googleAuthUrl(req.query.authType);
+  const url = await authService.googleAuthUrl(req, req.query.authType);
   res.redirect(url);
 });
 

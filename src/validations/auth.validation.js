@@ -20,7 +20,7 @@ const login = {
 
 const authGoogle = {
   query: Joi.object().keys({
-    authType: Joi.string().required(),
+    authType: Joi.string().required().valid('login', 'register'),
   }),
 };
 

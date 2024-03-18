@@ -122,8 +122,8 @@ const verifyEmailOtp = async (verifyEmailOtpToken, user) => {
  * @param {'login' | 'register'} type
  * @returns {string}
  */
-const googleAuthUrl = async (type) => {
-  const REDIRECT_URL = `${getCurrentDomain()}/auth/${type}/google/callback`;
+const googleAuthUrl = async (req, type) => {
+  const REDIRECT_URL = `${getCurrentDomain(req)}/auth/${type}/google/callback`;
   return `${config.google.authUrl}?client_id=${config.google.clientId}&redirect_uri=${REDIRECT_URL}&response_type=code&scope=email%20profile`;
 };
 
