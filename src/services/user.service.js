@@ -17,13 +17,15 @@ const emailExists = async (email) => {
 /**
  * Create a user
  * @param {Object} userBody
+ * @param {Object} userQuery
  * @returns {Promise<User>}
  */
-const createUser = async (userBody) => {
+const createUser = async (userBody, userQuery) => {
+  const type = userQuery.type || 'individual';
   if (await User.isEmailTaken(userBody.email)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
-  return User.create(userBody);
+  return User.create({ ...userBody, initialType: type });
 };
 
 /**

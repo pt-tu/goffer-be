@@ -51,6 +51,13 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    initialType: {
+      type: String,
+      enum: ['individual', 'organization'],
+      default: 'individual',
+      required: true,
+      trim: true,
+    },
   },
   {
     timestamps: true,
