@@ -1,3 +1,4 @@
+const axios = require('axios');
 const httpStatus = require('http-status');
 const tokenService = require('./token.service');
 const userService = require('./user.service');
@@ -127,6 +128,35 @@ const googleAuthUrl = async (req, type) => {
   return `${config.google.authUrl}?client_id=${config.google.clientId}&redirect_uri=${REDIRECT_URL}&response_type=code&scope=email%20profile`;
 };
 
+/**
+ *
+ * @param {string} accessToken
+ * @returns {Promise<User>}
+ */
+const loginWithGoogle = async (accessToken) => {
+  try {
+    const { data } = await axios.get(`${config.google.accountApiBaseUrl}?access_token=${accessToken}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const user = await userService.getUserByEmail(data.email);
+    if (!user) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'No user found with this email');
+    }
+    if (user.provider !== 'google') {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Account created using other login method');
+    }
+    return user;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    } else {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Google authentication failed');
+    }
+  }
+};
+
 module.exports = {
   loginUserWithEmailAndPassword,
   logout,
@@ -135,4 +165,5 @@ module.exports = {
   verifyEmail,
   verifyEmailOtp,
   googleAuthUrl,
+  loginWithGoogle,
 };

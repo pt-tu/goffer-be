@@ -11,10 +11,29 @@ const register = {
   }),
 };
 
+const googleRegister = {
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    isEmailVerified: Joi.boolean().required(),
+    name: Joi.string().required(),
+    avatar: Joi.string().allow(''),
+    provider: Joi.string().required(),
+  }),
+  query: Joi.object().keys({
+    type: Joi.string(),
+  }),
+};
+
 const login = {
   body: Joi.object().keys({
     email: Joi.string().required(),
     password: Joi.string().required(),
+  }),
+};
+
+const googleLogin = {
+  body: Joi.object().keys({
+    accessToken: Joi.string().required(),
   }),
 };
 
@@ -59,4 +78,6 @@ module.exports = {
   verifyEmail,
   verifyEmailOtp,
   authGoogle,
+  googleRegister,
+  googleLogin,
 };

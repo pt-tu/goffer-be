@@ -26,6 +26,17 @@ const login = catchAsync(async (req, res) => {
   res.send({ user, tokens });
 });
 
+const googleLogin = catchAsync(async (req, res) => {
+  const user = await authService.loginWithGoogle(req.body.accessToken);
+  const tokens = await tokenService.generateAuthTokens(user);
+  res.cookie('token', tokens.refresh.token, {
+    expires: tokens.refresh.expires,
+    ...config.jwt.cookieRefreshOptions,
+  });
+  delete tokens.refresh;
+  res.send({ user, tokens });
+});
+
 const authGoogle = catchAsync(async (req, res) => {
   const url = await authService.googleAuthUrl(req, req.query.authType);
   res.redirect(url);
@@ -92,4 +103,5 @@ module.exports = {
   verifyEmail,
   sendVerificationTokenEmail,
   verifyEmailOtp,
+  googleLogin,
 };

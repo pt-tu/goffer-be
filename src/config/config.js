@@ -27,6 +27,9 @@ const envVarsSchema = Joi.object()
     GOOGLE_CLIENT_ID: Joi.string().required().description('Google client id'),
     GOOGLE_CLIENT_SECRET: Joi.string().required().description('Google client secret'),
     GOOGLE_AUTH_URL: Joi.string().required().description('Google auth url'),
+    GOOGLE_ACCOUNT_BASE_API_URL: Joi.string()
+      .default('https://www.googleapis.com/oauth2/v2/userinfo')
+      .description('Google account base api url'),
   })
   .unknown();
 
@@ -74,5 +77,6 @@ module.exports = {
     clientId: envVars.GOOGLE_CLIENT_ID,
     clientSecret: envVars.GOOGLE_CLIENT_SECRET,
     authUrl: envVars.GOOGLE_AUTH_URL,
+    accountApiBaseUrl: envVars.GOOGLE_ACCOUNT_BASE_API_URL,
   },
 };

@@ -8,7 +8,9 @@ const router = express.Router();
 
 router.get('/google', validate(authValidation.authGoogle), authController.authGoogle);
 router.post('/register', validate(authValidation.register), authController.register);
+router.post('/register/google', validate(authValidation.googleRegister), authController.register);
 router.post('/login', validate(authValidation.login), authController.login);
+router.post('/login/google', validate(authValidation.googleLogin), authController.googleLogin);
 router.post('/logout', authController.logout);
 router.post('/refresh-tokens', authController.refreshTokens);
 router.post('/forgot-password', validate(authValidation.forgotPassword), authController.forgotPassword);
