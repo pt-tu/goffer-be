@@ -8,7 +8,7 @@
   "author": "Hoang Dinh Anh Tuan <anhtuan.hoangdinh@gmail.com> | Phan Thanh Tu <pttu2902@gmail.com>",
   "license": "MIT",
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=14.0.0"
   },
   "scripts": {
     "start": "pm2 start ecosystem.config.json --no-daemon",
@@ -78,7 +78,7 @@
   },
   "devDependencies": {
     "coveralls": "^3.0.7",
-    "eslint": "^7.0.0",
+    "eslint": "^7.5",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.18.2",

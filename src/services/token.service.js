@@ -53,7 +53,15 @@ const saveToken = async (token, userId, expires, type, blacklisted = false) => {
  * @returns {Promise<Token>}
  */
 const verifyToken = async (token, type) => {
-  const payload = jwt.verify(token, config.jwt.secret);
+  let payload = null;
+  try {
+    payload = jwt.verify(token, config.jwt.secret);
+  } catch (error) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Token might be expired or invalid');
+  }
+  if (!payload) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Token is invalid');
+  }
   const tokenDoc = await Token.findOne({ token, type, user: payload.sub, blacklisted: false });
   if (!tokenDoc) {
     throw new Error('Token not found');
