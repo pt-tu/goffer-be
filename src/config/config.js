@@ -30,6 +30,10 @@ const envVarsSchema = Joi.object()
     GOOGLE_ACCOUNT_BASE_API_URL: Joi.string()
       .default('https://www.googleapis.com/oauth2/v2/userinfo')
       .description('Google account base api url'),
+    // Cloudinary related
+    CLOUDINARY_CLOUD_NAME: Joi.string().required().description('Cloudinary cloud name'),
+    CLOUDINARY_API_KEY: Joi.string().required().description('Cloudinary api key'),
+    CLOUDINARY_API_SECRET: Joi.string().required().description('Cloudinary api secret'),
   })
   .unknown();
 
@@ -78,5 +82,10 @@ module.exports = {
     clientSecret: envVars.GOOGLE_CLIENT_SECRET,
     authUrl: envVars.GOOGLE_AUTH_URL,
     accountApiBaseUrl: envVars.GOOGLE_ACCOUNT_BASE_API_URL,
+  },
+  cloudinary: {
+    cloudName: envVars.CLOUDINARY_CLOUD_NAME,
+    apiKey: envVars.CLOUDINARY_API_KEY,
+    apiSecret: envVars.CLOUDINARY_API_SECRET,
   },
 };

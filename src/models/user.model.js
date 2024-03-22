@@ -90,6 +90,10 @@ userSchema.statics.isEmailTaken = async function (email, excludeUserId) {
  */
 userSchema.methods.isPasswordMatch = async function (password) {
   const user = this;
+  if (user.password === undefined) {
+    return false;
+  }
+
   return bcrypt.compare(password, user.password);
 };
 
