@@ -44,7 +44,6 @@ const userSchema = mongoose.Schema(
     },
     avatar: {
       type: String,
-      trim: true,
     },
     isBanned: {
       type: Boolean,
@@ -61,6 +60,12 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
       default: 'email',
+    },
+    skills: {
+      type: [String],
+    },
+    refDoc: {
+      type: String,
     },
   },
   {

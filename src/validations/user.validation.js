@@ -32,15 +32,29 @@ const getUser = {
   }),
 };
 
+const updateUserSelf = {
+  body: Joi.object()
+    .keys({
+      password: Joi.string().custom(password),
+      name: Joi.string(),
+      avatar: Joi.string(),
+      skills: Joi.array().items(Joi.string()),
+      refDoc: Joi.string(),
+    })
+    .min(1),
+};
+
 const updateUser = {
   params: Joi.object().keys({
     userId: Joi.required().custom(objectId),
   }),
   body: Joi.object()
     .keys({
-      email: Joi.string().email(),
       password: Joi.string().custom(password),
       name: Joi.string(),
+      avatar: Joi.string(),
+      skills: Joi.array().items(Joi.string()),
+      refDoc: Joi.string(),
     })
     .min(1),
 };
@@ -52,6 +66,7 @@ const deleteUser = {
 };
 
 module.exports = {
+  updateUserSelf,
   checkEmailExists,
   createUser,
   getUsers,
