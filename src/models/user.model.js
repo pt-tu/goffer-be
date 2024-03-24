@@ -61,10 +61,16 @@ const userSchema = mongoose.Schema(
       required: true,
       default: 'email',
     },
+    dob: {
+      type: Date,
+    },
     skills: {
       type: [String],
     },
     refDoc: {
+      type: String,
+    },
+    gender: {
       type: String,
     },
   },

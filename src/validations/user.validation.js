@@ -40,6 +40,8 @@ const updateUserSelf = {
       avatar: Joi.string(),
       skills: Joi.array().items(Joi.string()),
       refDoc: Joi.string(),
+      dob: Joi.date(),
+      gender: Joi.string(),
     })
     .min(1),
 };
