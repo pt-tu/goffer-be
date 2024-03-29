@@ -68,17 +68,6 @@ organizationSchema.plugin(toJSON);
 organizationSchema.plugin(paginate);
 
 /**
- * Check if corporate email is taken
- * @param {string} email
- * @param {ObjectId} excludeOrganizationId
- * @returns {Promise<boolean>}
- */
-organizationSchema.statics.isEmailTaken = async function (email, excludeOrganizationId) {
-  const organization = await this.findOne({ email, _id: { $ne: excludeOrganizationId } });
-  return !!organization;
-};
-
-/**
  * Check if domain is taken
  * @param {string} email
  * @param {ObjectId} excludeOrganizationId
