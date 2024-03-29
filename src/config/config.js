@@ -34,6 +34,9 @@ const envVarsSchema = Joi.object()
     CLOUDINARY_CLOUD_NAME: Joi.string().required().description('Cloudinary cloud name'),
     CLOUDINARY_API_KEY: Joi.string().required().description('Cloudinary api key'),
     CLOUDINARY_API_SECRET: Joi.string().required().description('Cloudinary api secret'),
+    // Stripe
+    STRIPE_PUBLISHABLE_KEY: Joi.string().required().description('Stripe public key'),
+    STRIPE_SECRET_KEY: Joi.string().required().description('Stripe secret key'),
   })
   .unknown();
 
@@ -87,5 +90,9 @@ module.exports = {
     cloudName: envVars.CLOUDINARY_CLOUD_NAME,
     apiKey: envVars.CLOUDINARY_API_KEY,
     apiSecret: envVars.CLOUDINARY_API_SECRET,
+  },
+  stripe: {
+    publishableKey: envVars.STRIPE_PUBLISHABLE_KEY,
+    secretKey: envVars.STRIPE_SECRET_KEY,
   },
 };

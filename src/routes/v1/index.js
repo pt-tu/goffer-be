@@ -4,6 +4,7 @@ const userRoute = require('./user.route');
 const docsRoute = require('./docs.route');
 const fileRoute = require('./file.route');
 const organizationRoute = require('./organization.route');
+const paymentRoute = require('./payment.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -24,6 +25,10 @@ const defaultRoutes = [
   {
     path: '/organizations',
     route: organizationRoute,
+  },
+  {
+    path: '/payments',
+    route: paymentRoute,
   },
 ];
 
