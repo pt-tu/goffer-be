@@ -3,8 +3,13 @@ const config = require('../config/config');
 
 const stripe = _stripe(config.stripe.secretKey);
 
-const createCheckoutSession = async (paymentBody) => {
-  const { mode, successUrl, cancelUrl } = paymentBody;
+/**
+ *
+ * @param {{mode: string; successUrl: string; cancelUrl: string;}} requestData
+ * @returns {Promise<_stripe.Stripe.Checkout.Session>}
+ */
+const createCheckoutSession = async (requestData) => {
+  const { mode, successUrl, cancelUrl } = requestData;
   let data = {};
   if (mode === 'subscription') {
     data = {

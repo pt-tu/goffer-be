@@ -7,6 +7,7 @@ dotenv.config({ path: path.join(__dirname, '../../.env') });
 const envVarsSchema = Joi.object()
   .keys({
     NODE_ENV: Joi.string().valid('production', 'development', 'test').required(),
+    SERVER_HOSTNAME: Joi.string().required().description('Server hostname'),
     PORT: Joi.number().default(3000),
     MONGODB_URL: Joi.string().required().description('Mongo DB url'),
     JWT_SECRET: Joi.string().required().description('JWT secret key'),
@@ -37,6 +38,8 @@ const envVarsSchema = Joi.object()
     // Stripe
     STRIPE_PUBLISHABLE_KEY: Joi.string().required().description('Stripe public key'),
     STRIPE_SECRET_KEY: Joi.string().required().description('Stripe secret key'),
+    // Client
+    CLIENT_DOMAIN: Joi.string().description('Client domain'),
   })
   .unknown();
 
@@ -48,7 +51,9 @@ if (error) {
 
 module.exports = {
   env: envVars.NODE_ENV,
+  serverHostname: envVars.SERVER_HOSTNAME,
   port: envVars.PORT,
+  domain: `${envVars.SERVER_HOSTNAME}:${envVars.PORT}`,
   mongoose: {
     url: envVars.MONGODB_URL + (envVars.NODE_ENV === 'test' ? '-test' : ''),
     options: {
@@ -94,5 +99,8 @@ module.exports = {
   stripe: {
     publishableKey: envVars.STRIPE_PUBLISHABLE_KEY,
     secretKey: envVars.STRIPE_SECRET_KEY,
+  },
+  client: {
+    domain: envVars.CLIENT_DOMAIN || 'http://localhost:5173',
   },
 };

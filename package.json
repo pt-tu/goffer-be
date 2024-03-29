@@ -62,6 +62,7 @@
     "express-rate-limit": "^5.0.0",
     "helmet": "^4.1.0",
     "http-status": "^1.4.0",
+    "ioredis": "^5.3.2",
     "joi": "^17.3.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
@@ -75,6 +76,7 @@
     "stripe": "^14.23.0",
     "swagger-jsdoc": "^6.0.8",
     "swagger-ui-express": "^4.1.6",
+    "uuid": "^9.0.1",
     "validator": "^13.0.0",
     "winston": "^3.2.1",
     "xss-clean": "^0.1.1"

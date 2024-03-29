@@ -11,4 +11,6 @@ router
   .post(auth(), validate(organizationValidation.createOrganization), organizationController.createOrganization)
   .get();
 
+router.route('/verify-creation').get(organizationController.verifyCreation);
+
 module.exports = router;
