@@ -31,6 +31,17 @@ const createCheckoutSession = async (requestData) => {
   return session;
 };
 
+/**
+ *
+ * @param {string} sessionId
+ * @returns {Promise<_stripe.Stripe.Checkout.Session>}
+ */
+const getCheckoutSession = async (sessionId) => {
+  const session = await stripe.checkout.sessions.retrieve(sessionId);
+  return session;
+};
+
 module.exports = {
   createCheckoutSession,
+  getCheckoutSession,
 };

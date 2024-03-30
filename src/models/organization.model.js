@@ -46,6 +46,11 @@ const organizationSchema = mongoose.Schema(
       type: String,
       minLength: 1,
     },
+    owner: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'User',
+      required: true,
+    },
   },
   {
     timestamps: true,

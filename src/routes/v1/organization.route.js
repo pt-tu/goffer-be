@@ -9,7 +9,7 @@ const router = express.Router();
 router
   .route('/')
   .post(auth(), validate(organizationValidation.createOrganization), organizationController.createOrganization)
-  .get();
+  .get(auth(), validate(organizationValidation.getOrganizations), organizationController.getOrganizations);
 
 router.route('/verify-creation').get(organizationController.verifyCreation);
 
