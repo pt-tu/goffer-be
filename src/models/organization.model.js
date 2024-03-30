@@ -44,6 +44,8 @@ const organizationSchema = mongoose.Schema(
     },
     domain: {
       type: String,
+      trim: true,
+      lowercase: true,
       minLength: 1,
     },
     owner: {

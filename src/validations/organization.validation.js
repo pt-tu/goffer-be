@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { objectId } = require('./custom.validation');
 
 const getOrganizations = {
   query: Joi.object().keys({
@@ -25,7 +26,38 @@ const createOrganization = {
   }),
 };
 
+const getOrganization = {
+  params: Joi.object().keys({
+    organizationId: Joi.string().custom(objectId),
+  }),
+};
+
+const updateOrganization = {
+  params: Joi.object().keys({
+    organizationId: Joi.string().custom(objectId),
+  }),
+  body: Joi.object().keys({
+    name: Joi.string(),
+    description: Joi.string(),
+    logo: Joi.string(),
+    field: Joi.string(),
+    email: Joi.string().email(),
+    visibility: Joi.string().valid('public', 'private'),
+    website: Joi.string(),
+    domain: Joi.string(),
+  }),
+};
+
+const deleteOrganization = {
+  params: Joi.object().keys({
+    organizationId: Joi.string().custom(objectId),
+  }),
+};
+
 module.exports = {
   getOrganizations,
   createOrganization,
+  updateOrganization,
+  deleteOrganization,
+  getOrganization,
 };

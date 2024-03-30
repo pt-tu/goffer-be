@@ -13,4 +13,10 @@ router
 
 router.route('/verify-creation').get(organizationController.verifyCreation);
 
+router
+  .route('/:organizationId')
+  .get(auth(), organizationController.getOrganization)
+  .patch(auth(), validate(organizationValidation.updateOrganization), organizationController.updateOrganization)
+  .delete(auth(), validate(organizationValidation.getOrganization), organizationController.deleteOrganization);
+
 module.exports = router;
