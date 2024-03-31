@@ -14,6 +14,10 @@ router
 router.route('/verify-creation').get(organizationController.verifyCreation);
 
 router
+  .route('/get-by-domain/:domain')
+  .get(auth(), validate(organizationValidation.getByDomain), organizationController.getOrganizationByDomain);
+
+router
   .route('/:organizationId')
   .get(auth(), organizationController.getOrganization)
   .patch(auth(), validate(organizationValidation.updateOrganization), organizationController.updateOrganization)

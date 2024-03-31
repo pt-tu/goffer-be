@@ -37,6 +37,14 @@ const getOrganization = catchAsync(async (req, res) => {
   res.send(organization);
 });
 
+const getOrganizationByDomain = catchAsync(async (req, res) => {
+  const organization = await organizationService.getOrganizationByDomain(req.params.domain);
+  if (!organization) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Organization not found');
+  }
+  res.send(organization);
+});
+
 const updateOrganization = catchAsync(async (req, res) => {
   const organization = await organizationService.updateOrganizationById(req.params.organizationId, req.body, req.user.id);
   res.send(organization);
@@ -59,7 +67,9 @@ const verifyCreation = catchAsync(async (req, res) => {
     res.redirect(`${config.client.domain}/organization/new?result=error`);
   }
   const organization = await organizationService.createOrganization(data);
-  res.redirect(`${config.client.domain}/organization/new?result=success&name=${organization.name}`);
+  res.redirect(
+    `${config.client.domain}/organization/new?result=success&name=${organization.name}&domain=${organization.domain}`
+  );
 });
 
 module.exports = {
@@ -69,4 +79,5 @@ module.exports = {
   getOrganization,
   updateOrganization,
   deleteOrganization,
+  getOrganizationByDomain,
 };

@@ -39,6 +39,15 @@ const getOrganizationById = async (id) => {
 
 /**
  *
+ * @param {string} domain
+ * @returns {Promise<Organization>}
+ */
+const getOrganizationByDomain = async (domain) => {
+  return Organization.findOne({ domain });
+};
+
+/**
+ *
  * @param {string} id
  * @param {Object} updateBody
  * @param {string} userId
@@ -84,4 +93,5 @@ module.exports = {
   getOrganizationById,
   updateOrganizationById,
   deleteOrganizationById,
+  getOrganizationByDomain,
 };

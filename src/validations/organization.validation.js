@@ -14,6 +14,12 @@ const getOrganizations = {
   }),
 };
 
+const getByDomain = {
+  params: Joi.object().keys({
+    domain: Joi.string().required(),
+  }),
+};
+
 const createOrganization = {
   body: Joi.object().keys({
     name: Joi.string().required(),
@@ -60,4 +66,5 @@ module.exports = {
   updateOrganization,
   deleteOrganization,
   getOrganization,
+  getByDomain,
 };
