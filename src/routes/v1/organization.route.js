@@ -21,6 +21,6 @@ router
   .route('/:organizationId')
   .get(auth(), organizationController.getOrganization)
   .patch(auth(), validate(organizationValidation.updateOrganization), organizationController.updateOrganization)
-  .delete(auth(), validate(organizationValidation.getOrganization), organizationController.deleteOrganization);
+  .delete(auth(), validate(organizationValidation.deleteOrganization), organizationController.deleteOrganization);
 
 module.exports = router;
