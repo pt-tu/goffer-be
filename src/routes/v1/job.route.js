@@ -6,8 +6,10 @@ const jobController = require('../../controllers/job.controller');
 
 const router = express.Router();
 
-router.route('/').post(auth(), validate(jobValidation.createJob), jobController.createJob);
-// .get(auth(), validate(jobValidation.getjobs), jobController.getjobs);
+router
+  .route('/')
+  .post(auth(), validate(jobValidation.createJob), jobController.createJob)
+  .get(auth(), validate(jobValidation.getJobs), jobController.getJobs);
 
 // router
 //   .route('/:id')

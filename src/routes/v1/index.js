@@ -3,6 +3,7 @@ const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const docsRoute = require('./docs.route');
 const fileRoute = require('./file.route');
+const jobRoute = require('./job.route');
 const organizationRoute = require('./organization.route');
 const paymentRoute = require('./payment.route');
 const config = require('../../config/config');
@@ -29,6 +30,10 @@ const defaultRoutes = [
   {
     path: '/payments',
     route: paymentRoute,
+  },
+  {
+    path: '/jobs',
+    route: jobRoute,
   },
 ];
 
