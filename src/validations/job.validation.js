@@ -15,6 +15,8 @@ const createJob = {
     time: Joi.string().required(),
     workingHours: Joi.number().required(),
     orgId: Joi.string().required().custom(objectId),
+    benefits: Joi.array().items(Joi.string()).max(7),
+    pipeline: Joi.array().items(Joi.string()).max(7).required(),
   }),
 };
 
@@ -39,7 +41,30 @@ const getJobs = {
   }),
 };
 
+const updateJob = {
+  params: Joi.object().keys({
+    id: Joi.string().required().custom(objectId),
+  }),
+  body: Joi.object().keys({
+    title: Joi.string().optional(),
+    description: Joi.string().optional(),
+    location: Joi.string().optional(),
+    salaryFrom: Joi.string().optional(),
+    salaryTo: Joi.string().allow(null).optional(),
+    experience: Joi.string().optional(),
+    skills: Joi.array().items(Joi.string()).max(3).optional(),
+    tools: Joi.array().items(Joi.string()).max(7).optional(),
+    slots: Joi.number().optional(),
+    time: Joi.string().optional(),
+    workingHours: Joi.number().optional(),
+    orgId: Joi.string().custom(objectId).optional(),
+    benefits: Joi.array().items(Joi.string()).max(7).optional(),
+    pipeline: Joi.array().items(Joi.string()).max(7).optional(),
+  }),
+};
+
 module.exports = {
   createJob,
   getJobs,
+  updateJob,
 };

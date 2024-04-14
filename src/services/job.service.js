@@ -24,7 +24,22 @@ const queryJobs = async (filter, options) => {
   return jobs;
 };
 
+/**
+ *
+ * @param {string} id
+ * @param {Object} updateBody
+ * @returns {Promise<Job>}
+ */
+const updateJob = async (id, updateBody) => {
+  const job = await Job.findByIdAndUpdate(id, updateBody, {
+    new: true,
+    runValidators: true,
+  });
+  return job;
+};
+
 module.exports = {
   createJob,
   queryJobs,
+  updateJob,
 };

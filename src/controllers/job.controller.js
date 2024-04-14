@@ -4,7 +4,9 @@ const { jobService } = require('../services');
 const pick = require('../utils/pick');
 
 const createJob = catchAsync(async (req, res) => {
-  const job = await jobService.createJob(req.body);
+  const jobBody = req.body;
+  jobBody.authorId = req.user._id;
+  const job = await jobService.createJob(jobBody);
   res.status(httpStatus.CREATED).send(job);
 });
 
@@ -28,7 +30,16 @@ const getJobs = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const updateJob = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const updateBody = req.body;
+
+  const job = await jobService.updateJob(id, updateBody);
+  res.status(httpStatus.OK).send(job);
+});
+
 module.exports = {
   createJob,
   getJobs,
+  updateJob,
 };

@@ -54,6 +54,20 @@ const jobSchema = mongoose.Schema(
       required: true,
       ref: 'Organization',
     },
+    authorId: {
+      type: mongoose.SchemaTypes.ObjectId,
+      required: true,
+      ref: 'User',
+    },
+    benefits: {
+      type: [String],
+      max: 7,
+    },
+    pipeline: {
+      type: [String],
+      required: true,
+      max: 7,
+    },
   },
   {
     timestamps: true,

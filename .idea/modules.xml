@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/goffer-be.iml" filepath="$PROJECT_DIR$/.idea/goffer-be.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../goffer-fe/.idea/goffer-fe.iml" filepath="$PROJECT_DIR$/../goffer-fe/.idea/goffer-fe.iml" />
+    </modules>
+  </component>
+</project>
