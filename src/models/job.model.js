@@ -49,12 +49,12 @@ const jobSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
-    orgId: {
+    org: {
       type: mongoose.SchemaTypes.ObjectId,
       required: true,
       ref: 'Organization',
     },
-    authorId: {
+    author: {
       type: mongoose.SchemaTypes.ObjectId,
       required: true,
       ref: 'User',

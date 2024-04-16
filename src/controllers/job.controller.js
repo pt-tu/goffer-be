@@ -5,7 +5,7 @@ const pick = require('../utils/pick');
 
 const createJob = catchAsync(async (req, res) => {
   const jobBody = req.body;
-  jobBody.authorId = req.user._id;
+  jobBody.author = req.user._id;
   const job = await jobService.createJob(jobBody);
   res.status(httpStatus.CREATED).send(job);
 });
@@ -23,7 +23,7 @@ const getJobs = catchAsync(async (req, res) => {
     'slots',
     'time',
     'workingHours',
-    'orgId',
+    'org',
   ]);
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
   const result = await jobService.queryJobs(filter, options);
