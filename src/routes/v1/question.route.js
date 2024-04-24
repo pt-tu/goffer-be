@@ -8,7 +8,7 @@ const router = express.Router();
 
 router
   .route('/')
-  .post(auth(), validate(questionValidation.createQuestion), questionController.createQuestion)
+  .post(auth(), validate(questionValidation.createQuestions), questionController.createQuestions)
   .get(auth(), validate(questionValidation.getQuestions), questionController.getQuestions);
 
 // router.route('/individual').get(validate(jobValidation.getJobs), questionController.getJobs);

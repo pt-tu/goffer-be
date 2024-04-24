@@ -3,11 +3,16 @@ const catchAsync = require('../utils/catchAsync');
 const { questionService } = require('../services');
 const pick = require('../utils/pick');
 
-const createQuestion = catchAsync(async (req, res) => {
-  const questionBody = req.body;
-  questionBody.author = req.user._id;
-  const question = await questionService.createJob(questionBody);
-  res.status(httpStatus.CREATED).send(question);
+const createQuestions = catchAsync(async (req, res) => {
+  const questionsBody = req.body;
+  const questionsReq = questionsBody.map((question) => {
+    return {
+      ...question,
+      author: req.user._id,
+    };
+  });
+  const questions = await questionService.createQuestions(questionsReq);
+  res.status(httpStatus.CREATED).send(questions);
 });
 
 const getQuestions = catchAsync(async (req, res) => {
@@ -18,6 +23,6 @@ const getQuestions = catchAsync(async (req, res) => {
 });
 
 module.exports = {
-  createQuestion,
+  createQuestions,
   getQuestions,
 };

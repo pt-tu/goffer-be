@@ -1,15 +1,18 @@
 const Joi = require('joi');
 const { objectId } = require('./custom.validation');
 
-const createQuestion = {
-  body: Joi.object().keys({
-    content: Joi.string().required(),
-    description: Joi.string().required(),
-    constraint: Joi.number().required(),
-    type: Joi.string().required(),
-    job: Joi.string().required().custom(objectId),
-    author: Joi.string().required().custom(objectId),
-  }),
+const createQuestions = {
+  body: Joi.array()
+    .items(
+      Joi.object().keys({
+        content: Joi.string().required(),
+        description: Joi.string().required(),
+        constraint: Joi.number(),
+        type: Joi.string().required(),
+        job: Joi.string().required().custom(objectId),
+      })
+    )
+    .min(1),
 };
 
 const getQuestions = {
@@ -22,6 +25,6 @@ const getQuestions = {
 };
 
 module.exports = {
-  createQuestion,
+  createQuestions,
   getQuestions,
 };

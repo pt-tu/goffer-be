@@ -2,11 +2,11 @@ const Question = require('../models/question.model');
 
 /**
  *
- * @param {Question} questionBody
- * @returns {Promise<Question>}
+ * @param {Array<Question>} questionsBody
+ * @returns {Promise<Array<Question>>}
  */
-const createQuestion = async (questionBody) => {
-  const question = await Question.create(questionBody);
+const createQuestions = async (questionsBody) => {
+  const question = await Question.insertMany(questionsBody);
   return question;
 };
 
@@ -25,6 +25,6 @@ const queryQuestions = async (filter, options) => {
 };
 
 module.exports = {
-  createQuestion,
+  createQuestions,
   queryQuestions,
 };

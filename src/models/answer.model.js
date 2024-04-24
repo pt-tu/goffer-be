@@ -9,7 +9,6 @@ const answerSchema = mongoose.Schema(
     },
     summary: {
       type: String,
-      required: true,
       trim: true,
     },
     assessment: {

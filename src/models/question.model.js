@@ -13,9 +13,10 @@ const questionSchema = mongoose.Schema(
       required: true,
     },
     constraint: {
-      //   limit audio time, min length of answer will update after
+      //   limit audio time
       type: Number,
-      required: true,
+      min: 180000,
+      default: 180000,
     },
     type: {
       type: String,
