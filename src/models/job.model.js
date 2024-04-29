@@ -49,10 +49,20 @@ const jobSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
-    orgId: {
+    org: {
       type: mongoose.SchemaTypes.ObjectId,
       required: true,
       ref: 'Organization',
+    },
+    status: {
+      type: String,
+      default: 'unpublished',
+      enum: ['unpublished', 'published', 'closed', 'expired'],
+    },
+    owner: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'User',
+      required: true,
     },
   },
   {

@@ -24,7 +24,20 @@ const queryJobs = async (filter, options) => {
   return jobs;
 };
 
+/**
+ *
+ * @param {string} id
+ * @returns {Promise<Job>}
+ */
+const getJob = async (id) => {
+  let job = await Job.findById(id).populate('owner');
+  job = job.toJSON();
+  job.publicLink = `http://localhost:5173/vacancy/${job.id}-${encodeURI(job.title.toLowerCase().replace(/\s/g, '-'))}`;
+  return job;
+};
+
 module.exports = {
   createJob,
   queryJobs,
+  getJob,
 };
