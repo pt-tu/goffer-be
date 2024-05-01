@@ -42,6 +42,36 @@ const updateUserSelf = {
       refDoc: Joi.string(),
       dob: Joi.date(),
       gender: Joi.string(),
+      bio: Joi.string(),
+      resume: Joi.string(),
+      tools: Joi.array().items(Joi.string()),
+      location: Joi.string(),
+      links: Joi.array().items(
+        Joi.object().keys({
+          label: Joi.string(),
+          url: Joi.string(),
+        })
+      ),
+      education: Joi.array().items(
+        Joi.object().keys({
+          school: Joi.string(),
+          degree: Joi.string(),
+          startDate: Joi.number(),
+          endDate: Joi.number(),
+          description: Joi.string(),
+        })
+      ),
+      experiences: Joi.array().items(
+        Joi.object().keys({
+          title: Joi.string(),
+          company: Joi.string(),
+          startDate: Joi.number(),
+          endDate: Joi.number(),
+          description: Joi.string(),
+        })
+      ),
+      oneLiner: Joi.string(),
+      status: Joi.string().valid('unavailable', 'open-to-job'),
     })
     .min(1),
 };
