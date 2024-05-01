@@ -19,8 +19,8 @@ const upload = async (file, type) => {
       folder: 'goffer',
       ...(type === 'avatar' && {
         transformation: {
-          width: 200,
-          height: 200,
+          width: 500,
+          height: 500,
           crop: 'fill',
         },
       }),

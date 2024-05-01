@@ -67,11 +67,88 @@ const userSchema = mongoose.Schema(
     skills: {
       type: [String],
     },
+    tools: {
+      type: [String],
+    },
+    bio: {
+      type: String,
+    },
+    resume: {
+      type: String,
+    },
     refDoc: {
       type: String,
     },
+    status: {
+      type: String,
+      default: 'unavailable',
+      enum: ['unavailable', 'open-to-job'],
+    },
+    oneLiner: {
+      type: String,
+    },
+    education: {
+      type: [
+        {
+          school: {
+            type: String,
+          },
+          degree: {
+            type: String,
+          },
+          startDate: {
+            type: Date,
+          },
+          endDate: {
+            type: Date,
+          },
+          description: {
+            type: String,
+          },
+        },
+      ],
+    },
+    experiences: {
+      type: [
+        {
+          title: {
+            type: String,
+          },
+          company: {
+            type: String,
+          },
+          startDate: {
+            type: Date,
+          },
+          endDate: {
+            type: Date,
+          },
+          description: {
+            type: String,
+          },
+        },
+      ],
+    },
     gender: {
       type: String,
+    },
+    location: {
+      type: String,
+    },
+    badges: {
+      type: [String],
+    },
+    links: {
+      type: [
+        {
+          label: {
+            type: String,
+          },
+          url: {
+            type: String,
+          },
+        },
+      ],
     },
   },
   {
