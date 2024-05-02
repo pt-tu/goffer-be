@@ -15,6 +15,8 @@ const createJob = {
     time: Joi.string().required(),
     workingHours: Joi.number().required(),
     org: Joi.string().required().custom(objectId),
+    benefits: Joi.array().items(Joi.string()).max(7),
+    pipeline: Joi.array().items(Joi.string()).max(7).required(),
   }),
 };
 
