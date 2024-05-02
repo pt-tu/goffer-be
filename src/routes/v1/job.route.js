@@ -13,10 +13,6 @@ router
 
 router.route('/:id').get(auth(), validate(jobValidation.getJob), jobController.getJob);
 
-// router
-//   .route('/:id')
-//   .get(auth(), validate(jobValidation.getJob), jobController.getJob)
-//   .patch(auth(), validate(jobValidation.updateJob), jobController.updateJob)
-//   .delete(auth(), validate(jobValidation.deleteJob), jobController.deleteJob);
+router.route('/individual').get(validate(jobValidation.getJobs), jobController.getJobs);
 
 module.exports = router;

@@ -61,8 +61,17 @@ const jobSchema = mongoose.Schema(
     },
     owner: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: 'User',
       required: true,
+      ref: 'User',
+    },
+    benefits: {
+      type: [String],
+      max: 7,
+    },
+    pipeline: {
+      type: [String],
+      required: true,
+      max: 7,
     },
   },
   {

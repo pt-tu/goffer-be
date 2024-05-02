@@ -3,7 +3,7 @@ const Job = require('../models/job.model');
 /**
  *
  * @param {Job} jobBody
- * @returns {Promise<Job}
+ * @returns {Promise<Job>}
  */
 const createJob = async (jobBody) => {
   const job = await Job.create(jobBody);
