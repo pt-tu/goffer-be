@@ -7,3 +7,4 @@ module.exports.organizationService = require('./organization.service');
 module.exports.paymentService = require('./payment.service');
 module.exports.cacheService = require('./cache.service');
 module.exports.jobService = require('./job.service');
+module.exports.questionService = require('./question.service');
