@@ -1,7 +1,10 @@
+const DatauriParser = require('datauri/parser');
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const cloudinary = require('../config/cloudinary');
 const logger = require('../config/logger');
+
+const parser = new DatauriParser();
 
 /**
  *
@@ -11,12 +14,15 @@ const logger = require('../config/logger');
  */
 const upload = async (file, type) => {
   try {
-    const b64 = Buffer.from(file.buffer).toString('base64');
-    const dataURI = `data:${file.mimetype};base64,${b64}`;
+    const file64 = parser.format(file.originalname, file.buffer);
 
-    const response = await cloudinary.uploader.upload(dataURI, {
+    const response = await cloudinary.uploader.upload(file64.content, {
       resource_type: 'auto',
       folder: 'goffer',
+      public_id: file.originalname
+        .replace(/[^a-z0-9]/gi, '_')
+        .toLowerCase()
+        .concat(`_${Date.now().toString()}`),
       ...(type === 'avatar' && {
         transformation: {
           width: 500,
