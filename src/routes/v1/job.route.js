@@ -11,8 +11,8 @@ router
   .post(auth(), validate(jobValidation.createJob), jobController.createJob)
   .get(auth(), validate(jobValidation.getJobs), jobController.getJobs);
 
-router.route('/:id').get(auth(), validate(jobValidation.getJob), jobController.getJob);
-
 router.route('/individual').get(validate(jobValidation.getJobs), jobController.getJobs);
+
+router.route('/:id').get(auth(), validate(jobValidation.getJob), jobController.getJob);
 
 module.exports = router;
