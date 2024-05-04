@@ -43,7 +43,7 @@ const updateUserSelf = {
       dob: Joi.date(),
       gender: Joi.string(),
       bio: Joi.string(),
-      resume: Joi.string(),
+      resume: Joi.string().allow(''),
       tools: Joi.array().items(Joi.string()),
       location: Joi.string(),
       links: Joi.array().items(

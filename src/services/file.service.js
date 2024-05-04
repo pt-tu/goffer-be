@@ -16,6 +16,7 @@ const upload = async (file, type) => {
 
     const response = await cloudinary.uploader.upload(dataURI, {
       resource_type: 'auto',
+      use_filename: true,
       folder: 'goffer',
       ...(type === 'avatar' && {
         transformation: {
