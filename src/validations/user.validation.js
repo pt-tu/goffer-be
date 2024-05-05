@@ -54,19 +54,20 @@ const updateUserSelf = {
       ),
       education: Joi.array().items(
         Joi.object().keys({
-          school: Joi.string(),
+          school: Joi.string().required(),
           degree: Joi.string(),
-          startDate: Joi.number(),
-          endDate: Joi.number(),
+          startDate: Joi.date(),
+          endDate: Joi.date(),
           description: Joi.string(),
+          major: Joi.string(),
         })
       ),
       experiences: Joi.array().items(
         Joi.object().keys({
-          title: Joi.string(),
-          company: Joi.string(),
-          startDate: Joi.number(),
-          endDate: Joi.number(),
+          title: Joi.string().required(),
+          company: Joi.string().required(),
+          startDate: Joi.date().required(),
+          endDate: Joi.date(),
           description: Joi.string(),
         })
       ),

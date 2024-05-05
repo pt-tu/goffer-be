@@ -105,6 +105,9 @@ const userSchema = mongoose.Schema(
           description: {
             type: String,
           },
+          major: {
+            type: String,
+          },
         },
       ],
     },
