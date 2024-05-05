@@ -1,4 +1,7 @@
+const httpStatus = require('http-status');
+const { Organization } = require('../models');
 const Job = require('../models/job.model');
+const ApiError = require('../utils/ApiError');
 
 /**
  *
@@ -6,6 +9,13 @@ const Job = require('../models/job.model');
  * @returns {Promise<Job>}
  */
 const createJob = async (jobBody) => {
+  const organization = await Organization.findById(jobBody.org);
+  const { owner } = jobBody;
+
+  if (organization.owner.toString() !== owner.toString()) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
+  }
+
   const job = await Job.create(jobBody);
   return job;
 };
@@ -30,7 +40,7 @@ const queryJobs = async (filter, options) => {
  * @returns {Promise<Job>}
  */
 const getJob = async (id) => {
-  let job = await Job.findById(id).populate('owner');
+  let job = await Job.findById(id).populate('owner').populate('org');
   job = job.toJSON();
   job.publicLink = `http://localhost:5173/vacancy/${job.id}-${encodeURI(job.title.toLowerCase().replace(/\s/g, '-'))}`;
   return job;
