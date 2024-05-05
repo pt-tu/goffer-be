@@ -23,4 +23,6 @@ router
   .patch(auth(), validate(organizationValidation.updateOrganization), organizationController.updateOrganization)
   .delete(auth(), validate(organizationValidation.deleteOrganization), organizationController.deleteOrganization);
 
+router.route('/:organizationId/sourcing').get(auth(), organizationController.getSourcing);
+
 module.exports = router;

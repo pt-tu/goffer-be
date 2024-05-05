@@ -72,6 +72,11 @@ const verifyCreation = catchAsync(async (req, res) => {
   );
 });
 
+const getSourcing = catchAsync(async (req, res) => {
+  const sourcing = await organizationService.getSourcing(req.params.organizationId);
+  res.send(sourcing);
+});
+
 module.exports = {
   createOrganization,
   getOrganizations,
@@ -80,4 +85,5 @@ module.exports = {
   updateOrganization,
   deleteOrganization,
   getOrganizationByDomain,
+  getSourcing,
 };
