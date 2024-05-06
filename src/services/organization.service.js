@@ -2,7 +2,6 @@ const { v4: uuid } = require('uuid');
 const httpStatus = require('http-status');
 const { Organization } = require('../models');
 const ApiError = require('../utils/ApiError');
-const { userService } = require('.');
 
 /**
  *
@@ -88,21 +87,6 @@ const deleteOrganizationById = async (id, userId) => {
   return organization;
 };
 
-/**
- *
- * @param {string} organizationId
- * @returns {Promise<import('../models/user.model').User[]>}
- */
-const getSourcing = async (organizationId) => {
-  const organization = await getOrganizationById(organizationId);
-  if (!organization) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Organization not found');
-  }
-
-  const users = await userService.queryUsers();
-  return users;
-};
-
 module.exports = {
   queryOrganizations,
   createOrganization,
@@ -110,5 +94,4 @@ module.exports = {
   updateOrganizationById,
   deleteOrganizationById,
   getOrganizationByDomain,
-  getSourcing,
 };

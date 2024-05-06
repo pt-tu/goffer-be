@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const { Organization } = require('../models');
 const Job = require('../models/job.model');
 const ApiError = require('../utils/ApiError');
+const { userService } = require('.');
 
 /**
  *
@@ -46,8 +47,24 @@ const getJob = async (id) => {
   return job;
 };
 
+/**
+ *
+ * @param {string} id
+ * @returns {Promise<import('../models/user.model').User[]>}
+ */
+const getSourcing = async (id) => {
+  const job = await getJob(id);
+  if (!job) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Job not found');
+  }
+
+  const users = await userService.queryUsers({}, {});
+  return users;
+};
+
 module.exports = {
   createJob,
   queryJobs,
   getJob,
+  getSourcing,
 };
