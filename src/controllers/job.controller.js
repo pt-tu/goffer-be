@@ -40,8 +40,14 @@ const getJob = catchAsync(async (req, res) => {
   res.send(job);
 });
 
+const getSourcing = catchAsync(async (req, res) => {
+  const sourcing = await jobService.getSourcing(req.params.id);
+  res.send(sourcing);
+});
+
 module.exports = {
   createJob,
   getJobs,
   getJob,
+  getSourcing,
 };
