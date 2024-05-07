@@ -3,7 +3,7 @@ const { toJSON, paginate } = require('./plugins');
 
 const answerSchema = mongoose.Schema(
   {
-    answer: {
+    url: {
       type: String,
       required: true,
     },
@@ -19,10 +19,14 @@ const answerSchema = mongoose.Schema(
       required: true,
       ref: 'Question',
     },
-    author: {
+    owner: {
       type: mongoose.SchemaTypes.ObjectId,
       required: true,
       ref: 'User',
+    },
+    duration: {
+      type: Number,
+      required: true,
     },
   },
   {

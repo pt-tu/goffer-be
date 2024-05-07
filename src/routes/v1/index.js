@@ -7,6 +7,8 @@ const jobRoute = require('./job.route');
 const organizationRoute = require('./organization.route');
 const paymentRoute = require('./payment.route');
 const questionRoute = require('./question.route');
+const applyRoute = require('./apply.route');
+const answerRoute = require('./answer.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -39,6 +41,14 @@ const defaultRoutes = [
   {
     path: '/questions',
     route: questionRoute,
+  },
+  {
+    path: '/apply',
+    route: applyRoute,
+  },
+  {
+    path: '/answers',
+    route: answerRoute,
   },
 ];
 

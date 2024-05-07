@@ -8,3 +8,5 @@ module.exports.paymentService = require('./payment.service');
 module.exports.cacheService = require('./cache.service');
 module.exports.jobService = require('./job.service');
 module.exports.questionService = require('./question.service');
+module.exports.applyService = require('./apply.service');
+module.exports.answerService = require('./answer.service');
