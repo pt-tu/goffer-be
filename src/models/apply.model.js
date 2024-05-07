@@ -9,13 +9,13 @@ const applySchema = mongoose.Schema(
       required: true,
       ref: 'Job',
     },
-    applicant: {
+    owner: {
       type: mongoose.SchemaTypes.ObjectId,
       required: true,
       ref: 'User',
     },
     status: {
-      type: String,
+      type: String, // the first step in pipeline
     },
     resume: {
       type: String,
@@ -35,6 +35,7 @@ const applySchema = mongoose.Schema(
     },
     name: {
       type: String,
+      require: true,
       trim: true,
     },
     lastCompany: {
@@ -46,31 +47,25 @@ const applySchema = mongoose.Schema(
     location: {
       type: String,
     },
-    website: {
+    personalWebsite: {
       type: String,
     },
-    phone: {
+    phoneNumber: {
       type: String,
+      require: true,
     },
     profilePicture: {
       type: String,
+      require: true,
     },
     role: {
       type: String,
       require: true,
     },
     answers: {
-      type: [
-        {
-          question: {
-            type: mongoose.SchemaTypes.ObjectId,
-            required: true,
-            ref: 'Question',
-          },
-          duration: Number,
-          answerUrl: String,
-        },
-      ],
+      type: [mongoose.SchemaTypes.ObjectId],
+      ref: 'Answer',
+      default: [],
     },
   },
   {

@@ -4,19 +4,19 @@ const { objectId } = require('./custom.validation');
 const createApply = {
   body: Joi.object().keys({
     job: Joi.string().required().custom(objectId),
-    applicant: Joi.string().required().custom(objectId),
+    owner: Joi.string().custom(objectId),
     status: Joi.string(),
     resume: Joi.string().required(),
     email: Joi.string().email().required(),
-    name: Joi.string().trim(),
+    name: Joi.string().required().trim(),
     lastCompany: Joi.string(),
     linkedIn: Joi.string().uri(),
     location: Joi.string(),
-    website: Joi.string().uri(),
-    phone: Joi.string(),
-    profilePicture: Joi.string().uri(),
+    personalWebsite: Joi.string().uri(),
+    phoneNumber: Joi.string().required(),
+    profilePicture: Joi.string().uri().required(),
     role: Joi.string().required(),
-    answers: Joi.array().items(Joi.string()),
+    answers: Joi.array().items(Joi.string().custom(objectId)),
   }),
 };
 
