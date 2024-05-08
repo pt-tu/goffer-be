@@ -32,6 +32,12 @@ const questionSchema = mongoose.Schema(
       required: true,
       ref: 'User',
     },
+    sample: {
+      type: String,
+    },
+    answer: {
+      type: String,
+    },
   },
   {
     timestamps: true,
