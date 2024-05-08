@@ -8,7 +8,7 @@
     <schema id="3" parent="1" name="config"/>
     <schema id="4" parent="1" name="goffer">
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2024-05-07.18:24:50</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-05-08.05:01:32</LastIntrospectionLocalTimestamp>
     </schema>
     <schema id="5" parent="1" name="local"/>
     <table id="6" parent="4" name="answers"/>
