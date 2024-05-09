@@ -18,7 +18,7 @@ const assessmentSchema = mongoose.Schema(
       min: 1,
     },
     duration: {
-      type: Number,
+      type: Number, // seconds
       require: true,
     },
     owner: {

@@ -14,7 +14,9 @@ const takeAssessmentSchema = mongoose.Schema(
       ref: 'Assessment',
     },
     answers: {
-      type: [],
+      type: [mongoose.SchemaTypes.ObjectId],
+      ref: 'Answer',
+      default: [],
     },
     endingAt: {
       type: Date,
@@ -24,6 +26,8 @@ const takeAssessmentSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
+takeAssessmentSchema.index({ user: 1, assessment: 1 }, { unique: true });
 
 // add plugin that converts mongoose to json
 takeAssessmentSchema.plugin(toJSON);

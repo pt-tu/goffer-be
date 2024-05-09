@@ -34,7 +34,7 @@ const getApplications = catchAsync(async (req, res) => {
 const getApplication = catchAsync(async (req, res) => {
   const application = await applyService.getApplication(req.params.id);
   if (!application) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Job not found');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Application not found');
   }
   res.send(application);
 });

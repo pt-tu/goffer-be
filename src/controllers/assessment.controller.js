@@ -21,7 +21,7 @@ const getAssessments = catchAsync(async (req, res) => {
 const getAssessment = catchAsync(async (req, res) => {
   const assessment = await assessmentService.getAssessment(req.params.id);
   if (!assessment) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Job not found');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Assessment not found');
   }
   res.send(assessment);
 });
