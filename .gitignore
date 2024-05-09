@@ -1,6 +1,8 @@
 # Dependencies
 node_modules
 
+.idea
+
 # yarn error logs
 yarn-error.log
 

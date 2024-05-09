@@ -1,9 +1,9 @@
 const Joi = require('joi');
 const { objectId } = require('./custom.validation');
 
-const createAnswer = {
+const submitAudioAnswer = {
   body: Joi.object().keys({
-    url: Joi.string().required(),
+    url: Joi.string().required().uri(),
     summary: Joi.string().trim(),
     assessment: Joi.string(),
     question: Joi.string().required().custom(objectId),
@@ -24,8 +24,17 @@ const getAnswer = {
   }),
 };
 
+const submitAssessmentAnswer = {
+  body: Joi.object().keys({
+    question: Joi.string().required().custom(objectId),
+    content: Joi.string().required(),
+    point: Joi.number(),
+  }),
+};
+
 module.exports = {
-  createAnswer,
+  submitAudioAnswer,
   getAnswers,
   getAnswer,
+  submitAssessmentAnswer,
 };
