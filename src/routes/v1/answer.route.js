@@ -6,10 +6,12 @@ const answerController = require('../../controllers/answer.controller');
 
 const router = express.Router();
 
+router.route('/').get(auth(), validate(answerValidation.getAnswers), answerController.getAnswers);
+
+router.route('/audio').post(auth(), validate(answerValidation.submitAudioAnswer), answerController.submitAudioAnswer);
 router
-  .route('/')
-  .post(auth(), validate(answerValidation.createAnswer), answerController.createAnswer)
-  .get(auth(), validate(answerValidation.getAnswers), answerController.getAnswers);
+  .route('/assessment')
+  .post(auth(), validate(answerValidation.submitAssessmentAnswer), answerController.submitAssessmentAnswer);
 
 router.route('/:id').get(auth(), validate(answerValidation.getAnswer), answerController.getAnswer);
 

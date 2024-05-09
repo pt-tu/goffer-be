@@ -4,7 +4,7 @@ const { answerService } = require('../services');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 
-const createAnswer = catchAsync(async (req, res) => {
+const submitAudioAnswer = catchAsync(async (req, res) => {
   const { user, body } = req;
   req.body.owner = user.id;
   const answer = await answerService.createAnswer(body);
@@ -26,8 +26,16 @@ const getAnswer = catchAsync(async (req, res) => {
   res.send(answer);
 });
 
+const submitAssessmentAnswer = catchAsync(async (req, res) => {
+  const { user, body } = req;
+  req.body.owner = user.id;
+  const answer = await answerService.createAnswer(body);
+  res.status(httpStatus.CREATED).send(answer);
+});
+
 module.exports = {
-  createAnswer,
+  submitAudioAnswer,
   getAnswers,
   getAnswer,
+  submitAssessmentAnswer,
 };

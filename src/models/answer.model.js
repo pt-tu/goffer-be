@@ -5,14 +5,13 @@ const answerSchema = mongoose.Schema(
   {
     url: {
       type: String,
-      required: true,
     },
     summary: {
       type: String,
       trim: true,
     },
     assessment: {
-      type: String,
+      type: String, // assessment for answer
     },
     question: {
       type: mongoose.SchemaTypes.ObjectId,
@@ -25,8 +24,13 @@ const answerSchema = mongoose.Schema(
       ref: 'User',
     },
     duration: {
+      type: Number, // duration of audio question (seconds)
+    },
+    point: {
       type: Number,
-      required: true,
+    },
+    content: {
+      type: String,
     },
   },
   {

@@ -35,8 +35,19 @@ const getAnswer = async (id) => {
   return answer;
 };
 
+/**
+ *
+ * @param {Answer} body
+ * @returns {Promise<Answer>}
+ */
+const submitAnswer = async (body) => {
+  const answer = await Answer.create(body);
+  return answer;
+};
+
 module.exports = {
   createAnswer,
   queryAnswers,
   getAnswer,
+  submitAnswer,
 };
