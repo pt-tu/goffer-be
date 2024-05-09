@@ -8,6 +8,7 @@ const createAssessment = {
     questions: Joi.array().items(Joi.string().custom(objectId)).min(1).required(),
     duration: Joi.number().required(),
     job: Joi.string().custom(objectId),
+    order: Joi.number().required(),
   }),
 };
 
@@ -18,6 +19,7 @@ const getAssessments = {
     questions: Joi.array().items(Joi.string().custom(objectId)).min(1),
     duration: Joi.number(),
     job: Joi.string().custom(objectId),
+    order: Joi.number(),
   }),
 };
 

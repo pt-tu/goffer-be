@@ -12,7 +12,7 @@ const createAssessment = catchAsync(async (req, res) => {
 });
 
 const getAssessments = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['title', 'description', 'duration', 'owner', 'job']);
+  const filter = pick(req.query, ['title', 'description', 'duration', 'owner', 'job', 'order']);
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
   const result = await assessmentService.getAssessments(filter, options);
   res.send(result);

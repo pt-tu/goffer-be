@@ -38,6 +38,10 @@ const questionSchema = mongoose.Schema(
     answer: {
       type: String,
     },
+    order: {
+      type: Number,
+      require: true,
+    },
   },
   {
     timestamps: true,

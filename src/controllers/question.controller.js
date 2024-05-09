@@ -16,7 +16,7 @@ const createQuestions = catchAsync(async (req, res) => {
 });
 
 const getQuestions = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['type', 'constraint', 'author', 'job']);
+  const filter = pick(req.query, ['type', 'constraint', 'author', 'job', 'order']);
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
   const result = await questionService.queryQuestions(filter, options);
   res.send(result);

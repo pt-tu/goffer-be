@@ -31,6 +31,10 @@ const assessmentSchema = mongoose.Schema(
       require: true,
       ref: 'Job',
     },
+    order: {
+      type: Number,
+      require: true,
+    },
   },
   {
     timestamps: true,
