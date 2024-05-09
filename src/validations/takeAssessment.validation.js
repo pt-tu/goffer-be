@@ -7,6 +7,27 @@ const startAssessment = {
   }),
 };
 
+const getAssessment = {
+  params: Joi.object().keys({
+    id: Joi.string().custom(objectId),
+  }),
+};
+
+const submitAnswer = {
+  body: Joi.object().keys({
+    takeAssessmentId: Joi.string().required().custom(objectId),
+    answer: Joi.object()
+      .keys({
+        question: Joi.string().required().custom(objectId),
+        content: Joi.string().required(),
+        point: Joi.number(),
+      })
+      .required(),
+  }),
+};
+
 module.exports = {
   startAssessment,
+  getAssessment,
+  submitAnswer,
 };

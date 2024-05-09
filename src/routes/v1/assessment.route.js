@@ -17,6 +17,14 @@ router
   .route('/starting')
   .post(auth(), validate(takeAssessmentValidation.startAssessment), takeAssessmentController.startAssessment);
 
+router
+  .route('/taking/submit')
+  .post(auth(), validate(takeAssessmentValidation.submitAnswer), takeAssessmentController.submitAnswer);
+
+router
+  .route('/taking/:id')
+  .get(auth(), validate(takeAssessmentValidation.getAssessment), takeAssessmentController.getAssessment);
+
 router.route('/:id').get(auth(), validate(assessmentValidation.getAssessment), assessmentController.getAssessment);
 
 module.exports = router;
