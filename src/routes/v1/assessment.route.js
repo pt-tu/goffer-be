@@ -22,6 +22,10 @@ router
   .post(auth(), validate(takeAssessmentValidation.submitAnswer), takeAssessmentController.submitAnswer);
 
 router
+  .route('/taking/finish')
+  .post(auth(), validate(takeAssessmentValidation.submitAll), takeAssessmentController.submitAll);
+
+router
   .route('/taking/:id')
   .get(auth(), validate(takeAssessmentValidation.getAssessment), takeAssessmentController.getAssessment);
 

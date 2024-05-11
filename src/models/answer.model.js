@@ -38,6 +38,8 @@ const answerSchema = mongoose.Schema(
   }
 );
 
+answerSchema.index({ owner: 1, question: 1 }, { unique: true });
+
 // add plugin that converts mongoose to json
 answerSchema.plugin(toJSON);
 answerSchema.plugin(paginate);

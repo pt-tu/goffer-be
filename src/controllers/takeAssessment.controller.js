@@ -36,8 +36,21 @@ const submitAnswer = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(taking);
 });
 
+const submitAll = catchAsync(async (req, res) => {
+  const { user, body } = req;
+
+  const updatedAnswers = body.answers.map((answer) => ({
+    ...answer,
+    owner: user.id,
+  }));
+
+  const taking = await takeAssessmentService.submitAll(body.takeAssessmentId, updatedAnswers, user.id);
+  res.status(httpStatus.OK).send(taking);
+});
+
 module.exports = {
   startAssessment,
   getAssessment,
   submitAnswer,
+  submitAll,
 };

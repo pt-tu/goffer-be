@@ -29,7 +29,7 @@ const submitAnswer = {
 const submitAll = {
   body: Joi.object().keys({
     takeAssessmentId: Joi.string().required().custom(objectId),
-    answer: Joi.array()
+    answers: Joi.array()
       .items(
         Joi.object().keys({
           question: Joi.string().required().custom(objectId),

@@ -44,6 +44,46 @@ const getAssessment = async (id) => {
   return takeAssessment;
 };
 
+const validateAssessment = async (takeAssessmentId, userId) => {
+  const takeAssessment = await TakeAssessment.findById(takeAssessmentId).populate('assessment').populate('answers');
+
+  if (!takeAssessment) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Assessment not found');
+  }
+
+  if (takeAssessment.user.toString() !== userId) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
+  }
+
+  if (Date.now() > takeAssessment.endingAt || takeAssessment.status === 'closed') {
+    takeAssessment.status = 'closed';
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Assessment is expired');
+  } else {
+    takeAssessment.status = 'pending';
+  }
+  await takeAssessment.save();
+
+  return takeAssessment;
+};
+
+const handleAnswer = async (takeAssessment, answerBody) => {
+  if (!takeAssessment.assessment.questions.some((question) => question.toString() === answerBody.question)) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Question not found in the assessment');
+  }
+
+  let existingAnswer = takeAssessment.answers.find((a) => a.question.toString() === answerBody.question);
+
+  if (existingAnswer) {
+    existingAnswer = Object.assign(existingAnswer, answerBody);
+    existingAnswer = await existingAnswer.save();
+  } else {
+    const newAnswer = await Answer.create(answerBody);
+    takeAssessment.answers.push(newAnswer);
+  }
+
+  return takeAssessment.save();
+};
+
 /**
  *
  * @param {string} takeAssessmentId
@@ -52,25 +92,9 @@ const getAssessment = async (id) => {
  * @returns {Promise<TakeAssessment>}
  */
 const submitAnswer = async (takeAssessmentId, answerBody, userId) => {
-  let takeAssessment = await TakeAssessment.findById(takeAssessmentId).populate('assessment');
+  let takeAssessment = await validateAssessment(takeAssessmentId, userId);
 
-  if (!takeAssessment) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Assessment not found');
-  }
-  if (takeAssessment.user.toString() !== userId) {
-    throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
-  }
-  if (Date.now() > takeAssessment.endingAt) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Assessment is expired');
-  }
-
-  if (!takeAssessment.assessment.questions.some((question) => question.toString() === answerBody.question)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Question not found in the assessment');
-  }
-
-  const newAnswer = await Answer.create(answerBody);
-  takeAssessment.answers.push(newAnswer);
-  takeAssessment = await takeAssessment.save();
+  takeAssessment = await handleAnswer(takeAssessment, answerBody);
 
   takeAssessment = await takeAssessment
     .populate('user')
@@ -94,28 +118,33 @@ const submitAnswer = async (takeAssessmentId, answerBody, userId) => {
  * @returns {Promise<TakeAssessment>}
  */
 const submitAll = async (takeAssessmentId, answers, userId) => {
-  let takeAssessment = await TakeAssessment.findById(takeAssessmentId).populate('assessment');
+  const valid = await validateAssessment(takeAssessmentId, userId);
 
-  if (!takeAssessment) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Assessment not found');
-  }
-  if (takeAssessment.user.toString() !== userId) {
-    throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
-  }
-  if (Date.now() > takeAssessment.endingAt) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Assessment is expired');
-  }
+  const questions = valid.assessment.questions.map((question) => question.toString());
+  answers.forEach((answer) => {
+    if (!questions.includes(answer.question)) {
+      throw new ApiError(httpStatus.BAD_REQUEST, `Question ${answer.question} not found in the assessment`);
+    }
+  });
 
-  const questions = takeAssessment.assessment.questions.map((question) => question.toString());
-  const isAllValid = answers.every((answer) => questions.includes(answer.question));
+  const answerPromises = answers.map(async (answerBody) => {
+    const answer = await Answer.findOneAndUpdate({ owner: answerBody.owner, question: answerBody.question }, answerBody, {
+      new: true,
+      upsert: true,
+      setDefaultsOnInsert: true,
+    });
+    return answer._id;
+  });
 
-  if (!isAllValid) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'One or more questions not found in the assessment');
-  }
-
-  // tại đấy tôi muốn tạo các answer sau đó cập nhật vào takeAssessment.answers (nếu answer đó đã có thì update, nếu chưa có thì thêm mới)
-
-  takeAssessment = await takeAssessment
+  const answerIds = await Promise.all(answerPromises);
+  const takeAssessment = await TakeAssessment.findByIdAndUpdate(
+    takeAssessmentId,
+    {
+      $addToSet: { answers: { $each: answerIds } },
+      $set: { status: 'closed' },
+    },
+    { new: true }
+  )
     .populate('user')
     .populate({
       path: 'assessment',
@@ -123,8 +152,7 @@ const submitAll = async (takeAssessmentId, answers, userId) => {
         path: 'questions',
       },
     })
-    .populate('answers')
-    .execPopulate();
+    .populate('answers');
 
   return takeAssessment;
 };
