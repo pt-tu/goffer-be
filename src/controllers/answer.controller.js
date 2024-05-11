@@ -33,9 +33,18 @@ const submitAssessmentAnswer = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(answer);
 });
 
+const summarizeAudio = catchAsync(async (req, res) => {
+  const { audioUrl } = req.body;
+  const summary = await answerService.summarizeAudio(audioUrl);
+  res.send({
+    result: summary,
+  });
+});
+
 module.exports = {
   submitAudioAnswer,
   getAnswers,
   getAnswer,
   submitAssessmentAnswer,
+  summarizeAudio,
 };

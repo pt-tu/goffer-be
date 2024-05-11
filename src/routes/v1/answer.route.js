@@ -13,6 +13,7 @@ router
   .route('/assessment')
   .post(auth(), validate(answerValidation.submitAssessmentAnswer), answerController.submitAssessmentAnswer);
 
+router.route('/summarize/audio').post(auth(), validate(answerValidation.summarizeAudio), answerController.summarizeAudio);
 router.route('/:id').get(auth(), validate(answerValidation.getAnswer), answerController.getAnswer);
 
 module.exports = router;

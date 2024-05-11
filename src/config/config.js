@@ -31,6 +31,7 @@ const envVarsSchema = Joi.object()
     GOOGLE_ACCOUNT_BASE_API_URL: Joi.string()
       .default('https://www.googleapis.com/oauth2/v2/userinfo')
       .description('Google account base api url'),
+    GOOGLE_GENAI_API_KEY: Joi.string().required().description('Google GenAI api key'),
     // Cloudinary related
     CLOUDINARY_CLOUD_NAME: Joi.string().required().description('Cloudinary cloud name'),
     CLOUDINARY_API_KEY: Joi.string().required().description('Cloudinary api key'),
@@ -40,6 +41,10 @@ const envVarsSchema = Joi.object()
     STRIPE_SECRET_KEY: Joi.string().required().description('Stripe secret key'),
     // Client
     CLIENT_DOMAIN: Joi.string().description('Client domain'),
+    // OpenAI,
+    OPENAI_SECRET_KEY: Joi.string().required().description('OpenAI api key'),
+    // AssemblyAI,
+    ASSEMBLYAI_API_KEY: Joi.string().required().description('AssemblyAI api key'),
   })
   .unknown();
 
@@ -60,7 +65,7 @@ module.exports = {
       useCreateIndex: true,
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useFindAndModify: false
+      useFindAndModify: false,
     },
   },
   jwt: {
@@ -91,6 +96,9 @@ module.exports = {
     clientSecret: envVars.GOOGLE_CLIENT_SECRET,
     authUrl: envVars.GOOGLE_AUTH_URL,
     accountApiBaseUrl: envVars.GOOGLE_ACCOUNT_BASE_API_URL,
+    genAI: {
+      apiKey: envVars.GOOGLE_GENAI_API_KEY,
+    },
   },
   cloudinary: {
     cloudName: envVars.CLOUDINARY_CLOUD_NAME,
@@ -103,5 +111,11 @@ module.exports = {
   },
   client: {
     domain: envVars.CLIENT_DOMAIN || 'http://localhost:5173',
+  },
+  openai: {
+    secretKey: envVars.OPENAI_SECRET_KEY,
+  },
+  assemblyai: {
+    apiKey: envVars.ASSEMBLYAI_API_KEY,
   },
 };
