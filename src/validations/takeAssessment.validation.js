@@ -26,8 +26,24 @@ const submitAnswer = {
   }),
 };
 
+const submitAll = {
+  body: Joi.object().keys({
+    takeAssessmentId: Joi.string().required().custom(objectId),
+    answer: Joi.array()
+      .items(
+        Joi.object().keys({
+          question: Joi.string().required().custom(objectId),
+          content: Joi.string().required(),
+          point: Joi.number(),
+        })
+      )
+      .required(),
+  }),
+};
+
 module.exports = {
   startAssessment,
   getAssessment,
   submitAnswer,
+  submitAll,
 };

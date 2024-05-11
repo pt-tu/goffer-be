@@ -46,7 +46,9 @@ const getAssessment = async (id) => {
 
 /**
  *
- * @param {Answer} body
+ * @param {string} takeAssessmentId
+ * @param {Answer} answerBody
+ * @param {string} userId
  * @returns {Promise<TakeAssessment>}
  */
 const submitAnswer = async (takeAssessmentId, answerBody, userId) => {
@@ -84,8 +86,52 @@ const submitAnswer = async (takeAssessmentId, answerBody, userId) => {
   return takeAssessment;
 };
 
+/**
+ *
+ * @param {string} takeAssessmentId
+ * @param {List<Answer>} answers
+ * @param {string} userId
+ * @returns {Promise<TakeAssessment>}
+ */
+const submitAll = async (takeAssessmentId, answers, userId) => {
+  let takeAssessment = await TakeAssessment.findById(takeAssessmentId).populate('assessment');
+
+  if (!takeAssessment) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Assessment not found');
+  }
+  if (takeAssessment.user.toString() !== userId) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
+  }
+  if (Date.now() > takeAssessment.endingAt) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Assessment is expired');
+  }
+
+  const questions = takeAssessment.assessment.questions.map((question) => question.toString());
+  const isAllValid = answers.every((answer) => questions.includes(answer.question));
+
+  if (!isAllValid) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'One or more questions not found in the assessment');
+  }
+
+  // tại đấy tôi muốn tạo các answer sau đó cập nhật vào takeAssessment.answers (nếu answer đó đã có thì update, nếu chưa có thì thêm mới)
+
+  takeAssessment = await takeAssessment
+    .populate('user')
+    .populate({
+      path: 'assessment',
+      populate: {
+        path: 'questions',
+      },
+    })
+    .populate('answers')
+    .execPopulate();
+
+  return takeAssessment;
+};
+
 module.exports = {
   startAssessment,
   getAssessment,
   submitAnswer,
+  submitAll,
 };
