@@ -32,9 +32,16 @@ const submitAssessmentAnswer = {
   }),
 };
 
+const summarizeAudio = {
+  body: Joi.object().keys({
+    audioUrl: Joi.string().required().uri(),
+  }),
+};
+
 module.exports = {
   submitAudioAnswer,
   getAnswers,
   getAnswer,
   submitAssessmentAnswer,
+  summarizeAudio,
 };

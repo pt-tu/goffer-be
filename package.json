@@ -49,6 +49,8 @@
     "prettier"
   ],
   "dependencies": {
+    "@google/generative-ai": "^0.11.1",
+    "assemblyai": "^4.4.2",
     "axios": "^1.6.8",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.0.3",
@@ -71,6 +73,7 @@
     "morgan": "^1.9.1",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.3.1",
+    "openai": "^4.44.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "pm2": "^5.1.0",

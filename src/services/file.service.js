@@ -1,5 +1,7 @@
 const DatauriParser = require('datauri/parser');
 const httpStatus = require('http-status');
+const fs = require('fs');
+const axios = require('axios');
 const ApiError = require('../utils/ApiError');
 const cloudinary = require('../config/cloudinary');
 const logger = require('../config/logger');
@@ -38,6 +40,31 @@ const upload = async (file, type) => {
   }
 };
 
+/**
+ *
+ * @param {string} url
+ * @param {string} downloadPath
+ * @returns
+ */
+const download = async (url, downloadPath) => {
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  const writer = fs.createWriteStream(downloadPath);
+
+  const response = await axios({
+    url,
+    method: 'GET',
+    responseType: 'stream',
+  });
+
+  response.data.pipe(writer);
+
+  return new Promise((resolve, reject) => {
+    writer.on('finish', resolve);
+    writer.on('error', reject);
+  });
+};
+
 module.exports = {
   upload,
+  download,
 };

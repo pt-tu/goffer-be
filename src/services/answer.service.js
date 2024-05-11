@@ -1,4 +1,6 @@
 const { Answer } = require('../models');
+const speechService = require('./speech.service');
+const chataiService = require('./chatai.service');
 
 /**
  *
@@ -45,9 +47,22 @@ const submitAnswer = async (body) => {
   return answer;
 };
 
+/**
+ *
+ * @param {string} audioUrl
+ * @returns {Promise<string>}
+ */
+const summarizeAudio = async (audioUrl) => {
+  const transcript = await speechService.speechToText(audioUrl);
+  const prompt = `You are receiving an answer from a candidate. Your mission is to summarize the answer within 50 words. The candidate says: "${transcript.text}". Summarize it.`;
+  const summary = await chataiService.complete(prompt);
+  return summary;
+};
+
 module.exports = {
   createAnswer,
   queryAnswers,
   getAnswer,
   submitAnswer,
+  summarizeAudio,
 };
