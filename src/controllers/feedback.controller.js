@@ -12,11 +12,35 @@ const createFeedback = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(feedback);
 });
 
+const calculateAggregateInfo = (feedbacks, key) => {
+  const categories = feedbacks.reduce((acc, feedback) => {
+    if (feedback[key]) {
+      if (!acc[feedback[key]]) {
+        acc[feedback[key]] = { type: feedback[key], quantity: 0 };
+      }
+      acc[feedback[key]].quantity += 1;
+    }
+    return acc;
+  }, {});
+
+  const total = feedbacks.filter((feedback) => feedback[key]).length;
+  Object.keys(categories).forEach((type) => {
+    categories[type].rate = parseFloat(((categories[type].quantity / total) * 100).toFixed(0)); // 0 decimal places
+  });
+
+  return Object.values(categories);
+};
+
 const getFeedbacks = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['job', 'owner', 'sentiment', 'NPS', 'resolved']);
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
   const result = await feedbackService.getFeedbacks(filter, options);
-  res.send(result);
+
+  const all = await Feedback.find(filter);
+  const sentimentInfo = calculateAggregateInfo(all, 'sentiment');
+  const NPSInfo = calculateAggregateInfo(all, 'NPS');
+
+  res.send({ ...result, sentiment: sentimentInfo, NPS: NPSInfo });
 });
 
 const getFeedback = catchAsync(async (req, res) => {

@@ -43,7 +43,7 @@ const feedbackSchema = mongoose.Schema(
   }
 );
 
-feedbackSchema.index({ owner: 1, job: 1 }, { unique: true });
+// feedbackSchema.index({ owner: 1, job: 1 }, { unique: true });
 
 // add plugin that converts mongoose to json
 feedbackSchema.plugin(toJSON);
