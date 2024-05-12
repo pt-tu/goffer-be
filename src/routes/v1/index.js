@@ -10,6 +10,7 @@ const questionRoute = require('./question.route');
 const applyRoute = require('./apply.route');
 const answerRoute = require('./answer.route');
 const assessmentRoute = require('./assessment.route');
+const feedbackRoute = require('./feedback.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -54,6 +55,10 @@ const defaultRoutes = [
   {
     path: '/assessments',
     route: assessmentRoute,
+  },
+  {
+    path: '/feedbacks',
+    route: feedbackRoute,
   },
 ];
 

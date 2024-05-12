@@ -129,9 +129,9 @@ const submitAll = async (takeAssessmentId, answers, userId) => {
 
   const answerPromises = answers.map(async (answerBody) => {
     const answer = await Answer.findOneAndUpdate({ owner: answerBody.owner, question: answerBody.question }, answerBody, {
-      new: true,
-      upsert: true,
-      setDefaultsOnInsert: true,
+      new: true, // return data after update
+      upsert: true, // if not found, create a new
+      setDefaultsOnInsert: true, // apply default value on schema
     });
     return answer._id;
   });
