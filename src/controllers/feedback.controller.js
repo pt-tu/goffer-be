@@ -59,7 +59,7 @@ const getAggregateInfo = (feedbacks, key) => {
       res.average = parseFloat(totalScore / total).toFixed(1);
       break;
     case 'NPS':
-      res.NPS = (summary.promoters.rate ?? 0) - (summary.detractors.rate ?? 0);
+      res.NPS = (summary.promoters?.rate ?? 0) - (summary.detractors?.rate ?? 0);
       break;
     default:
       break;
