@@ -15,6 +15,10 @@ const getAnswers = {
   query: Joi.object().keys({
     question: Joi.string().custom(objectId),
     owner: Joi.string().custom(objectId),
+    sortBy: Joi.string(),
+    limit: Joi.number().integer(),
+    page: Joi.number().integer(),
+    populate: Joi.string(),
   }),
 };
 

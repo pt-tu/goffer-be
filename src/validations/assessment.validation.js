@@ -20,6 +20,10 @@ const getAssessments = {
     duration: Joi.number(),
     job: Joi.string().custom(objectId),
     order: Joi.number(),
+    sortBy: Joi.string(),
+    limit: Joi.number().integer(),
+    page: Joi.number().integer(),
+    populate: Joi.string(),
   }),
 };
 
