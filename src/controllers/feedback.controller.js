@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const feedbackService = require('../services/feedback.service');
 const Feedback = require('../models/feedback.model');
+const Apply = require('../models/apply.model');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 
@@ -12,23 +13,66 @@ const createFeedback = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(feedback);
 });
 
-const calculateAggregateInfo = (feedbacks, key) => {
-  const categories = feedbacks.reduce((acc, feedback) => {
+const getAggregateInfo = (feedbacks, key) => {
+  const summary = feedbacks.reduce((acc, feedback) => {
     if (feedback[key]) {
-      if (!acc[feedback[key]]) {
-        acc[feedback[key]] = { type: feedback[key], quantity: 0 };
+      const value = feedback[key].toLowerCase();
+      if (!acc[value]) {
+        acc[value] = { quantity: 0, rate: 0 };
       }
-      acc[feedback[key]].quantity += 1;
+      acc[value].quantity += 1;
     }
     return acc;
   }, {});
 
-  const total = feedbacks.filter((feedback) => feedback[key]).length;
-  Object.keys(categories).forEach((type) => {
-    categories[type].rate = parseFloat(((categories[type].quantity / total) * 100).toFixed(0)); // 0 decimal places
+  const total = Object.values(summary).reduce((acc, { quantity }) => acc + quantity, 0);
+  const keys = Object.keys(summary);
+
+  const getScore = (type) => {
+    switch (type) {
+      case 'negative':
+        return 1;
+      case 'neutral':
+        return 2;
+      case 'positive':
+        return 3;
+      case 'satisfied':
+        return 4;
+      case 'very satisfied':
+        return 5;
+      default:
+        return 0;
+    }
+  };
+  let totalScore = 0;
+  keys.forEach((type) => {
+    summary[type].rate = parseFloat(((summary[type].quantity / total) * 100).toFixed(0)); // 0 decimal places
+    totalScore += getScore(type) * summary[type].quantity;
   });
 
-  return Object.values(categories);
+  const res = {
+    total,
+  };
+
+  switch (key) {
+    case 'sentiment':
+      res.average = parseFloat(totalScore / total).toFixed(1);
+      break;
+    case 'NPS':
+      res.NPS = (summary.promoters.rate ?? 0) - (summary.detractors.rate ?? 0);
+      break;
+    default:
+      break;
+  }
+
+  keys.forEach((type) => {
+    res[type] = {
+      quantity: summary[type].quantity,
+      rate: summary[type].rate,
+    };
+  });
+
+  return res;
 };
 
 const getFeedbacks = catchAsync(async (req, res) => {
@@ -37,10 +81,11 @@ const getFeedbacks = catchAsync(async (req, res) => {
   const result = await feedbackService.getFeedbacks(filter, options);
 
   const all = await Feedback.find(filter);
-  const sentimentInfo = calculateAggregateInfo(all, 'sentiment');
-  const NPSInfo = calculateAggregateInfo(all, 'NPS');
+  const sentiment = getAggregateInfo(all, 'sentiment');
+  const NPS = getAggregateInfo(all, 'NPS');
+  const candidates = (await Apply.find({ job: req.query.job })).length ?? 0;
 
-  res.send({ ...result, sentiment: sentimentInfo, NPS: NPSInfo });
+  res.send({ ...result, sentiment, NPS, candidates });
 });
 
 const getFeedback = catchAsync(async (req, res) => {

@@ -25,7 +25,6 @@ const feedbackSchema = mongoose.Schema(
     sentiment: {
       type: String,
       enum: ['negative', 'neutral', 'positive', 'satisfied', 'very satisfied'],
-      require: true,
       trim: true,
     },
     NPS: {
