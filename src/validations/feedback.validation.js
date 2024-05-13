@@ -6,15 +6,15 @@ const createFeedback = {
     job: Joi.string().required().custom(objectId),
     title: Joi.string().required().trim(),
     content: Joi.string().trim(),
-    sentiment: Joi.string().required().valid('negative', 'neutral', 'positive', 'satisfied', 'very satisfied'),
-    NPS: Joi.string().valid('promoters', 'passives', 'detractors'),
+    sentiment: Joi.string().valid('negative', 'neutral', 'positive', 'satisfied', 'very satisfied').lowercase(),
+    NPS: Joi.string().valid('promoters', 'passives', 'detractors').lowercase(),
     resolved: Joi.boolean(),
   }),
 };
 
 const getFeedbacks = {
   query: Joi.object().keys({
-    job: Joi.string().custom(objectId),
+    job: Joi.string().custom(objectId).required(),
     owner: Joi.string().custom(objectId),
     sentiment: Joi.string().valid('negative', 'neutral', 'positive', 'satisfied', 'very satisfied'),
     NPS: Joi.string().valid('promoters', 'passives', 'detractors'),
