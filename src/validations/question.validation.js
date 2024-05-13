@@ -33,6 +33,10 @@ const getQuestions = {
     job: Joi.string().custom(objectId),
     author: Joi.string().custom(objectId),
     order: Joi.number(),
+    sortBy: Joi.string(),
+    limit: Joi.number().integer(),
+    page: Joi.number().integer(),
+    populate: Joi.string(),
   }),
 };
 
