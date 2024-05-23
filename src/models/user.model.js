@@ -4,6 +4,54 @@ const bcrypt = require('bcryptjs');
 const { toJSON, paginate } = require('./plugins');
 const { roles } = require('../config/roles');
 
+const educationSchema = mongoose.Schema(
+  {
+    school: {
+      type: String,
+    },
+    degree: {
+      type: String,
+    },
+    startDate: {
+      type: Date,
+    },
+    endDate: {
+      type: Date,
+    },
+    description: {
+      type: String,
+    },
+    major: {
+      type: String,
+    },
+  },
+  { _id: false }
+);
+
+const experienceSchema = mongoose.Schema(
+  {
+    title: {
+      type: String,
+    },
+    company: {
+      type: String,
+    },
+    startDate: {
+      type: Date,
+    },
+    endDate: {
+      type: Date,
+    },
+    description: {
+      type: String,
+    },
+    logo: {
+      type: String,
+    },
+  },
+  { _id: false }
+);
+
 const userSchema = mongoose.Schema(
   {
     name: {
@@ -88,49 +136,10 @@ const userSchema = mongoose.Schema(
       type: String,
     },
     education: {
-      type: [
-        {
-          school: {
-            type: String,
-          },
-          degree: {
-            type: String,
-          },
-          startDate: {
-            type: Date,
-          },
-          endDate: {
-            type: Date,
-          },
-          description: {
-            type: String,
-          },
-          major: {
-            type: String,
-          },
-        },
-      ],
+      type: [educationSchema],
     },
     experiences: {
-      type: [
-        {
-          title: {
-            type: String,
-          },
-          company: {
-            type: String,
-          },
-          startDate: {
-            type: Date,
-          },
-          endDate: {
-            type: Date,
-          },
-          description: {
-            type: String,
-          },
-        },
-      ],
+      type: [experienceSchema],
     },
     gender: {
       type: String,

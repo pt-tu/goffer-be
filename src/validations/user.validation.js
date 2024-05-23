@@ -69,6 +69,7 @@ const updateUserSelf = {
           startDate: Joi.date().required(),
           endDate: Joi.date(),
           description: Joi.string(),
+          logo: Joi.string(),
         })
       ),
       oneLiner: Joi.string(),
