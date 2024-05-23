@@ -34,6 +34,10 @@ const getApplications = {
     personalWebsite: Joi.string().uri(),
     phoneNumber: Joi.string(),
     role: Joi.string(),
+    sortBy: Joi.string(),
+    limit: Joi.number().integer(),
+    page: Joi.number().integer(),
+    populate: Joi.string(),
   }),
 };
 

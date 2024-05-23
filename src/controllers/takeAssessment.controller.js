@@ -20,6 +20,37 @@ const startAssessment = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(taking);
 });
 
+const getAssessment = catchAsync(async (req, res) => {
+  const takeAssessment = await takeAssessmentService.getAssessment(req.params.id);
+  if (!takeAssessment) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Taking assessment not found');
+  }
+  res.send(takeAssessment);
+});
+
+const submitAnswer = catchAsync(async (req, res) => {
+  const { user, body } = req;
+  req.body.answer.owner = user.id;
+
+  const taking = await takeAssessmentService.submitAnswer(body.takeAssessmentId, body.answer, user.id);
+  res.status(httpStatus.OK).send(taking);
+});
+
+const submitAll = catchAsync(async (req, res) => {
+  const { user, body } = req;
+
+  const updatedAnswers = body.answers.map((answer) => ({
+    ...answer,
+    owner: user.id,
+  }));
+
+  const taking = await takeAssessmentService.submitAll(body.takeAssessmentId, updatedAnswers, user.id);
+  res.status(httpStatus.OK).send(taking);
+});
+
 module.exports = {
   startAssessment,
+  getAssessment,
+  submitAnswer,
+  submitAll,
 };

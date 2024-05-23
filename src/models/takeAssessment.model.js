@@ -18,6 +18,10 @@ const takeAssessmentSchema = mongoose.Schema(
       ref: 'Answer',
       default: [],
     },
+    status: {
+      type: String,
+      default: 'pending',
+    },
     endingAt: {
       type: Date,
     },
