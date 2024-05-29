@@ -31,10 +31,73 @@ services:
     networks:
       - node-network
 
+  rocketchat:
+    container_name: rocketchat
+    image: hibobmaster/rocketchat-arm:6.8.0
+    restart: unless-stopped
+    volumes:
+      - rocketchat:/app/uploads
+      - rocketchat:/home/chat
+    environment:
+      MONGO_URL: "mongodb://rocketchat-mongodb:27017/rocketchat?replicaSet=rs0&directConnection=true"
+      MONGO_OPLOG_URL: "mongodb://rocketchat-mongodb:27017/local?replicaSet=rs0&directConnection=true"
+      # change chat.example.com to your server's name
+      ROOT_URL: http://localhost:3002
+      PORT: 3002
+      DEPLOY_METHOD: docker
+      INITIAL_USER: yes
+      ADMIN_USERNAME: goffer
+      ADMIN_NAME: Goffer
+      ADMIN_EMAIL: pttu2902@gmail.com
+      ADMIN_PASS: goffer
+      OVERWRITE_SETTING_Show_Setup_Wizard: completed
+      # REG_TOKEN: ${REG_TOKEN}
+      # MAIL_URL: smtp://smtp.email
+    depends_on:
+      - rocketchat-mongodb
+      - mongo-init-replica
+    ports:
+      - 3002:3002
+    networks:
+      - rocketchat-network
+
+  rocketchat-mongodb:
+    image: mongo:5
+    ports:
+      - 27018:27017
+    restart: unless-stopped
+    volumes:
+      - rocketchat_db:/data/db
+      - rocketchat_db:/dump
+    entrypoint: ["/usr/bin/mongod", "--replSet", "rs0", "--bind_ip_all"]
+    networks:
+      - rocketchat-network
+
+  mongo-init-replica:
+    image: mongo:5
+    command: >
+      bash -c
+        "for i in `seq 1 30`; do
+          mongosh rocketchat-mongodb:27017/rocketchat --eval \"
+            rs.initiate({
+              _id: 'rs0',
+              members: [ { _id: 0, host: 'rocketchat-mongodb:27017' } ]})\" &&
+          s=$$? && break || s=$$?;
+          echo \"Tried $$i times. Waiting 5 secs...\";
+          sleep 5;
+        done; (exit $$s)"
+    depends_on:
+      - rocketchat-mongodb
+    networks:
+      - rocketchat-network
 
 volumes:
   dbdata:
+  rocketchat:
+  rocketchat_db:
 
 networks:
   node-network:
+    driver: bridge
+  rocketchat-network:
     driver: bridge
