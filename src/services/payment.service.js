@@ -24,6 +24,9 @@ const createCheckoutSession = async (requestData) => {
       cancel_url: cancelUrl,
       billing_address_collection: 'auto',
       payment_method_types: ['card'],
+      subscription_data: {
+        trial_period_days: 7,
+      },
     };
   }
 
