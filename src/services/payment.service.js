@@ -15,7 +15,7 @@ const createCheckoutSession = async (requestData) => {
     data = {
       line_items: [
         {
-          price: 'price_1Ozel7EJWFOdn6ijtgB8hPWT',
+          price: 'price_1PNFbOEJWFOdn6ijClFMYygE',
           quantity: 1,
         },
       ],
