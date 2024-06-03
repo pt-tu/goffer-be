@@ -42,6 +42,11 @@ const questionSchema = mongoose.Schema(
       type: Number,
       require: true,
     },
+    difficulty: {
+      type: Number,
+      default: 1,
+      enums: [1, 2, 3],
+    },
   },
   {
     timestamps: true,
