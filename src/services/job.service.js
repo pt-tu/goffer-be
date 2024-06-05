@@ -43,7 +43,7 @@ const queryJobs = async (filter, options) => {
 const getJob = async (id) => {
   let job = await Job.findById(id).populate('owner').populate('org');
   job = job.toJSON();
-  job.publicLink = `http://localhost:5173/vacancy/${job.id}-${encodeURI(job.title.toLowerCase().replace(/\s/g, '-'))}`;
+  job.publicLink = `http://localhost:5173/job/${job.id}-${encodeURI(job.title.toLowerCase().replace(/\s/g, '-'))}`;
   return job;
 };
 
