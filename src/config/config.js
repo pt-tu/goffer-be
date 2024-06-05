@@ -45,6 +45,10 @@ const envVarsSchema = Joi.object()
     OPENAI_SECRET_KEY: Joi.string().required().description('OpenAI api key'),
     // AssemblyAI,
     ASSEMBLYAI_API_KEY: Joi.string().required().description('AssemblyAI api key'),
+    // GetStream.IO
+    STREAM_KEY: Joi.string().required().description('GetStream api key'),
+    STREAM_SECRET: Joi.string().required().description('GetStream api secret'),
+    STREAM_APP_ID: Joi.number().required().description('GetStream app id'),
   })
   .unknown();
 
@@ -117,5 +121,10 @@ module.exports = {
   },
   assemblyai: {
     apiKey: envVars.ASSEMBLYAI_API_KEY,
+  },
+  stream: {
+    apiKey: envVars.STREAM_KEY,
+    apiSecret: envVars.STREAM_SECRET,
+    appId: envVars.STREAM_APP_ID,
   },
 };

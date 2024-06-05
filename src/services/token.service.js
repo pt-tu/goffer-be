@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const httpStatus = require('http-status');
+const { StreamChat } = require('stream-chat');
 const config = require('../config/config');
 const userService = require('./user.service');
 const { Token } = require('../models');
@@ -173,6 +174,19 @@ const verifyOtpToken = async (otp, user) => {
   return tokenDoc;
 };
 
+/**
+ * Generate GetStream token
+ * @param {ObjectId} userId
+ * @returns {Promise<string>}
+ */
+const generateStreamUserToken = async (userId) => {
+  const serverClient = StreamChat.getInstance(config.stream.apiKey, config.stream.apiSecret);
+
+  const getStreamToken = serverClient.createUserToken(userId.toString());
+
+  return getStreamToken;
+};
+
 module.exports = {
   generateToken,
   saveToken,
@@ -182,4 +196,5 @@ module.exports = {
   generateVerifyEmailToken,
   generateOtpToken,
   verifyOtpToken,
+  generateGetStreamToken: generateStreamUserToken,
 };
