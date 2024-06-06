@@ -47,6 +47,16 @@ const questionSchema = mongoose.Schema(
       default: 1,
       enums: [1, 2, 3],
     },
+    kind: {
+      type: String,
+      default: 'audio',
+      enums: ['audio', 'video'],
+    },
+    org: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'Organization',
+      required: true,
+    },
   },
   {
     timestamps: true,

@@ -8,9 +8,13 @@ const router = express.Router();
 
 router
   .route('/')
-  .post(auth(), validate(questionValidation.createQuestions), questionController.createQuestions)
+  .post(auth(), validate(questionValidation.createQuestion), questionController.createQuestion)
   .get(validate(questionValidation.getQuestions), questionController.getQuestions);
 
-// router.route('/individual').get(validate(jobValidation.getJobs), questionController.getJobs);
+router
+  .route('/:questionId')
+  .get(validate(questionValidation.getQuestion), questionController.getQuestion)
+  .patch(auth(), validate(questionValidation.updateQuestion), questionController.updateQuestion)
+  .delete(auth(), validate(questionValidation.deleteQuestion), questionController.deleteQuestion);
 
 module.exports = router;

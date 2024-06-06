@@ -1,11 +1,26 @@
 const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
 
+/**
+ * @typedef Assessment
+ * @property {string} title - The title of the assessment
+ * @property {string} [description] - The description of the assessment
+ * @property {ObjectId[]} questions - Array of Question IDs included in the assessment
+ * @property {number} duration - The duration of the assessment in seconds
+ * @property {ObjectId} owner - The ID of the User who owns the assessment
+ * @property {ObjectId} org - The ID of the Organization associated with the assessment
+ * @property {ObjectId} job - The ID of the Job associated with the assessment
+ * @property {number} order - The order of the assessment
+ * @property {string} status - The status of the assessment (draft, published, archived)
+ * @property {Date} createdAt - Timestamp of when the assessment was created
+ * @property {Date} updatedAt - Timestamp of when the assessment was last updated
+ */
+
 const assessmentSchema = mongoose.Schema(
   {
     title: {
       type: String,
-      require: true,
+      required: true,
       trim: true,
     },
     description: {
@@ -14,26 +29,35 @@ const assessmentSchema = mongoose.Schema(
     questions: {
       type: [mongoose.SchemaTypes.ObjectId],
       ref: 'Question',
-      require: true,
-      min: 1,
+      required: true,
     },
     duration: {
       type: Number, // seconds
-      require: true,
+      required: true,
     },
     owner: {
       type: mongoose.SchemaTypes.ObjectId,
-      require: true,
+      required: true,
       ref: 'User',
+    },
+    org: {
+      type: mongoose.SchemaTypes.ObjectId,
+      required: true,
+      ref: 'Organization',
     },
     job: {
       type: mongoose.SchemaTypes.ObjectId,
-      require: true,
+      required: true,
       ref: 'Job',
     },
     order: {
       type: Number,
-      require: true,
+      required: true,
+    },
+    status: {
+      type: String,
+      default: 'draft',
+      enum: ['draft', 'published', 'archived'],
     },
   },
   {
