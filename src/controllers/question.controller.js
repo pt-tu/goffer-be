@@ -5,7 +5,10 @@ const catchAsync = require('../utils/catchAsync');
 const { questionService } = require('../services');
 
 const createQuestion = catchAsync(async (req, res) => {
-  const question = await questionService.createQuestion(req.body);
+  const question = await questionService.createQuestion({
+    ...req.body,
+    author: req.user.id,
+  });
   res.status(httpStatus.CREATED).send(question);
 });
 

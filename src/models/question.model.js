@@ -1,6 +1,23 @@
 const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
 
+const choice = mongoose.Schema(
+  {
+    content: {
+      type: String,
+      required: true,
+    },
+    image: {
+      type: String,
+    },
+    isCorrect: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { _id: false }
+);
+
 const questionSchema = mongoose.Schema(
   {
     content: {
@@ -13,7 +30,6 @@ const questionSchema = mongoose.Schema(
       required: true,
     },
     constraint: {
-      //   limit audio time
       type: Number,
       min: 180,
       default: 180,
@@ -21,11 +37,6 @@ const questionSchema = mongoose.Schema(
     type: {
       type: String,
       required: true,
-    },
-    job: {
-      type: mongoose.SchemaTypes.ObjectId,
-      required: true,
-      ref: 'Job',
     },
     author: {
       type: mongoose.SchemaTypes.ObjectId,
@@ -38,9 +49,8 @@ const questionSchema = mongoose.Schema(
     answer: {
       type: String,
     },
-    order: {
-      type: Number,
-      require: true,
+    choices: {
+      type: [choice],
     },
     difficulty: {
       type: Number,
@@ -56,6 +66,12 @@ const questionSchema = mongoose.Schema(
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'Organization',
       required: true,
+    },
+    image: {
+      type: String,
+    },
+    category: {
+      type: String,
     },
   },
   {
