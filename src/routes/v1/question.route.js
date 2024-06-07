@@ -11,6 +11,8 @@ router
   .post(auth(), validate(questionValidation.createQuestion), questionController.createQuestion)
   .get(validate(questionValidation.getQuestions), questionController.getQuestions);
 
+router.route('/difficulty-count').get(questionController.getQuestionDifficultyCount);
+
 router
   .route('/:questionId')
   .get(validate(questionValidation.getQuestion), questionController.getQuestion)

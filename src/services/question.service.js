@@ -25,6 +25,16 @@ const queryQuestions = async (filter, options) => {
   return questions;
 };
 
+const getQuestionDifficultyCount = async () => {
+  const questions = await Question.find().select('difficulty');
+  const difficultyCount = questions.reduce((acc, q) => {
+    const question = q.toJSON();
+    acc[question.difficulty] = (acc[question.difficulty] || 0) + 1;
+    return acc;
+  }, {});
+  return difficultyCount;
+};
+
 /**
  * Get question by id
  * @param {ObjectId} id
@@ -70,4 +80,5 @@ module.exports = {
   getQuestionById,
   updateQuestionById,
   deleteQuestionById,
+  getQuestionDifficultyCount,
 };

@@ -30,9 +30,11 @@ const getQuestions = {
     type: Joi.string(),
     job: Joi.string().custom(objectId),
     author: Joi.string().custom(objectId),
+    difficulty: Joi.number().valid(1, 2, 3),
     sortBy: Joi.string(),
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
+    populate: Joi.string(),
   }),
 };
 

@@ -13,9 +13,14 @@ const createQuestion = catchAsync(async (req, res) => {
 });
 
 const getQuestions = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['content', 'type', 'job', 'author']);
-  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const filter = pick(req.query, ['content', 'type', 'job', 'author', 'difficulty']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
   const result = await questionService.queryQuestions(filter, options);
+  res.send(result);
+});
+
+const getQuestionDifficultyCount = catchAsync(async (req, res) => {
+  const result = await questionService.getQuestionDifficultyCount();
   res.send(result);
 });
 
@@ -43,4 +48,5 @@ module.exports = {
   getQuestion,
   updateQuestion,
   deleteQuestion,
+  getQuestionDifficultyCount,
 };
