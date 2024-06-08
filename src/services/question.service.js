@@ -21,7 +21,9 @@ const createQuestion = async (questionBody) => {
  * @returns {Promise<QueryResult>}
  */
 const queryQuestions = async (filter, options) => {
-  const questions = await Question.paginate(filter, options);
+  const finalFilter = { ...filter, ...(filter.search && { content: { $regex: filter.search, $options: 'i' } }) };
+  delete finalFilter.search;
+  const questions = await Question.paginate(finalFilter, options);
   return questions;
 };
 

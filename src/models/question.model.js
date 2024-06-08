@@ -56,7 +56,6 @@ const questionSchema = mongoose.Schema(
     },
     difficulty: {
       type: Number,
-      default: 1,
       enums: [1, 2, 3],
     },
     kind: {

@@ -16,7 +16,7 @@ const createQuestion = {
         isCorrect: Joi.boolean().default(false),
       })
     ),
-    difficulty: Joi.number().valid(1, 2, 3).default(1),
+    difficulty: Joi.number().valid(1, 2, 3),
     kind: Joi.string().valid('audio', 'video').default('audio'),
     org: Joi.string().required().custom(objectId),
     image: Joi.string(),
@@ -46,7 +46,6 @@ const createQuestion = {
 
 const getQuestions = {
   query: Joi.object().keys({
-    content: Joi.string(),
     type: Joi.string(),
     job: Joi.string().custom(objectId),
     author: Joi.string().custom(objectId),
@@ -55,6 +54,7 @@ const getQuestions = {
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
     populate: Joi.string(),
+    search: Joi.string(),
   }),
 };
 
