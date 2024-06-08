@@ -29,6 +29,7 @@ const questionSchema = mongoose.Schema(
     description: {
       type: String,
       required: true,
+      maxLength: 10000,
     },
     constraint: {
       type: Number,
@@ -73,6 +74,37 @@ const questionSchema = mongoose.Schema(
     },
     category: {
       type: String,
+    },
+    gradingInput: {
+      type: String,
+      required() {
+        return this.type === 'coding';
+      },
+    },
+    gradingOutput: {
+      type: String,
+      required() {
+        return this.type === 'coding';
+      },
+    },
+    exampleInput: {
+      type: String,
+      required() {
+        return this.type === 'coding';
+      },
+    },
+    exampleOutput: {
+      type: String,
+      required() {
+        return this.type === 'coding';
+      },
+    },
+    numberOfTestCaseLines: {
+      type: Number,
+      min: 1,
+      required() {
+        return this.type === 'coding';
+      },
     },
   },
   {
