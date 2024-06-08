@@ -5001,6 +5001,11 @@ mongodb@3.7.4:
   optionalDependencies:
     saslprep "^1.0.0"
 
+mongoose-delete@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/mongoose-delete/-/mongoose-delete-1.0.2.tgz#9bc38773ee0c811864dc3d3dfff1fe8745a306c7"
+  integrity sha512-W+p9ULLiYHcEz77wQECp6gNnh2NcXf30KRIE3nAyjjsStqmBKJDL5eXTnX0xerGG2gCGx6mI7bO3+ch88tQ+tg==
+
 mongoose-legacy-pluralize@1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz"

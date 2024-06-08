@@ -70,7 +70,7 @@ const deleteQuestionById = async (questionId) => {
   if (!question) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Question not found');
   }
-  await question.remove();
+  await question.delete();
   return question;
 };
 

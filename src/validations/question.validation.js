@@ -60,6 +60,16 @@ const updateQuestion = {
       answer: Joi.string(),
       order: Joi.number(),
       difficulty: Joi.number().valid(1, 2, 3),
+      choices: Joi.array().items(
+        Joi.object().keys({
+          content: Joi.string().required(),
+          image: Joi.string(),
+          isCorrect: Joi.boolean().default(false),
+        })
+      ),
+      kind: Joi.string().valid('audio', 'video').default('audio'),
+      image: Joi.string(),
+      category: Joi.string().required(),
     })
     .min(1),
 };

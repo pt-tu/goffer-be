@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongooseDelete = require('mongoose-delete');
 const { toJSON, paginate } = require('./plugins');
 
 const choice = mongoose.Schema(
@@ -82,6 +83,9 @@ const questionSchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 questionSchema.plugin(toJSON);
 questionSchema.plugin(paginate);
+questionSchema.plugin(mongooseDelete, {
+  overrideMethods: 'all',
+});
 
 /**
  * @typedef Question
