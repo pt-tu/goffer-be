@@ -10,3 +10,4 @@ module.exports.jobService = require('./job.service');
 module.exports.questionService = require('./question.service');
 module.exports.applyService = require('./apply.service');
 module.exports.answerService = require('./answer.service');
+module.exports.assessmentService = require('./assessment.service');

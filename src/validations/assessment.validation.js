@@ -4,14 +4,16 @@ const { objectId } = require('./custom.validation');
 const createAssessment = {
   body: Joi.object().keys({
     title: Joi.string().required(),
-    description: Joi.string(),
+    description: Joi.string().max(5000),
     questions: Joi.array().items(Joi.string().custom(objectId)).required(),
     duration: Joi.number().required(),
-    owner: Joi.string().required().custom(objectId),
     org: Joi.string().required().custom(objectId),
-    job: Joi.string().required().custom(objectId),
+    job: Joi.string().custom(objectId),
     order: Joi.number().required(),
     status: Joi.string().valid('draft', 'published', 'archived').default('draft'),
+    type: Joi.string().valid('mcq', 'coding', 'behavioral').default('mcq'),
+    image: Joi.string().allow(''),
+    due: Joi.date(),
   }),
 };
 
@@ -25,6 +27,9 @@ const getAssessments = {
     sortBy: Joi.string(),
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
+    populate: Joi.string(),
+    search: Joi.string(),
+    type: Joi.string(),
   }),
 };
 
@@ -49,7 +54,11 @@ const updateAssessment = {
       job: Joi.string().custom(objectId),
       order: Joi.number(),
       status: Joi.string().valid('draft', 'published', 'archived'),
+      type: Joi.string().valid('mcq', 'coding', 'behavioral').default('mcq'),
+      image: Joi.string().allow(''),
+      due: Joi.date(),
     })
+
     .min(1),
 };
 

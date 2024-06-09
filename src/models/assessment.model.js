@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongooseDelete = require('mongoose-delete');
 const { toJSON, paginate } = require('./plugins');
 
 /**
@@ -22,6 +23,10 @@ const assessmentSchema = mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+    },
+    type: {
+      type: String,
+      required: true,
     },
     description: {
       type: String,
@@ -47,7 +52,6 @@ const assessmentSchema = mongoose.Schema(
     },
     job: {
       type: mongoose.SchemaTypes.ObjectId,
-      required: true,
       ref: 'Job',
     },
     order: {
@@ -59,6 +63,12 @@ const assessmentSchema = mongoose.Schema(
       default: 'draft',
       enum: ['draft', 'published', 'archived'],
     },
+    image: {
+      type: String,
+    },
+    due: {
+      type: Date,
+    },
   },
   {
     timestamps: true,
@@ -68,6 +78,9 @@ const assessmentSchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 assessmentSchema.plugin(toJSON);
 assessmentSchema.plugin(paginate);
+assessmentSchema.plugin(mongooseDelete, {
+  overrideMethods: 'all',
+});
 
 /**
  * @typedef Assessment
