@@ -20,11 +20,21 @@ const verifyCallback = (req, resolve, reject, requiredRights) => async (err, use
   resolve();
 };
 
+const simpleVerify = (req, resolve) => async (err, user, info) => {
+  if (err || info || !user) req.user = undefined;
+  else req.user = user;
+  resolve();
+};
+
 const auth =
-  (...requiredRights) =>
+  (option = false, ...requiredRights) =>
   async (req, res, next) => {
     return new Promise((resolve, reject) => {
-      passport.authenticate('jwt', { session: false }, verifyCallback(req, resolve, reject, requiredRights))(req, res, next);
+      passport.authenticate(
+        'jwt',
+        { session: false },
+        option ? simpleVerify(req, resolve) : verifyCallback(req, resolve, reject, requiredRights)
+      )(req, res, next);
     })
       .then(() => next())
       .catch((err) => next(err));
