@@ -3,6 +3,9 @@ const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
 const organizationValidation = require('../../validations/organization.validation');
 const organizationController = require('../../controllers/organization.controller');
+const interactionType = require('../../middlewares/interactionType');
+const interactionValidation = require('../../validations/interaction.validation');
+const interactionController = require('../../controllers/interaction.controller');
 
 const router = express.Router();
 
@@ -23,4 +26,12 @@ router
   .patch(auth(), validate(organizationValidation.updateOrganization), organizationController.updateOrganization)
   .delete(auth(), validate(organizationValidation.deleteOrganization), organizationController.deleteOrganization);
 
+router
+  .route('/:id/toggle')
+  .post(
+    auth(),
+    validate(interactionValidation.toggleInteraction),
+    interactionType('Organization'),
+    interactionController.toggleInteraction
+  );
 module.exports = router;
