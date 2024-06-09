@@ -2,7 +2,7 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { userService } = require('../services');
+const { userService, interactionService } = require('../services');
 
 const checkEmailExists = catchAsync(async (req, res) => {
   const emailExists = await userService.emailExists(req.query.email);
@@ -17,15 +17,21 @@ const createUser = catchAsync(async (req, res) => {
 const getUsers = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  options.user = req.user?._id;
   const result = await userService.queryUsers(filter, options);
   res.send(result);
 });
 
 const getUser = catchAsync(async (req, res) => {
-  const user = await userService.getUserById(req.params.userId);
+  const [user, saved] = await Promise.all([
+    userService.getUserById(req.params.userId),
+    interactionService.checkInteraction('User', req.params.userId, req.user?._id),
+  ]);
+
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
+  user.saved = saved;
   res.send(user);
 });
 

@@ -34,7 +34,9 @@ const queryOrganizations = async (filter, options) => {
  * @returns {Promise<Organization> }
  */
 const getOrganizationById = async (id) => {
-  return Organization.findById(id);
+  let organization = await Organization.findById(id);
+  organization = organization.toJSON();
+  return organization;
 };
 
 /**
@@ -43,7 +45,9 @@ const getOrganizationById = async (id) => {
  * @returns {Promise<Organization>}
  */
 const getOrganizationByDomain = async (domain) => {
-  return Organization.findOne({ domain });
+  let organization = await Organization.findOne({ domain });
+  organization = organization.toJSON();
+  return organization;
 };
 
 /**

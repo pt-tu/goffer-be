@@ -47,9 +47,8 @@ const getOrganizationByDomain = catchAsync(async (req, res) => {
   if (!organization) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Organization not found');
   }
-  const result = organization.toJSON();
-  result.saved = await interactionService.checkInteraction('Organization', organization.id, req.user?._id);
-  res.send(result);
+  organization.saved = await interactionService.checkInteraction('Organization', organization.id, req.user?._id);
+  res.send(organization);
 });
 
 const updateOrganization = catchAsync(async (req, res) => {
