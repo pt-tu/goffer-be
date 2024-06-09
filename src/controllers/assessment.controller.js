@@ -5,13 +5,16 @@ const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 
 const createAssessment = catchAsync(async (req, res) => {
-  const assessment = await assessmentService.createAssessment(req.body);
+  const assessment = await assessmentService.createAssessment({
+    ...req.body,
+    owner: req.user.id,
+  });
   res.status(httpStatus.CREATED).send(assessment);
 });
 
 const getAssessments = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['title', 'owner', 'org', 'job', 'status']);
-  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const filter = pick(req.query, ['title', 'owner', 'org', 'job', 'status', 'search', 'type']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
   const result = await assessmentService.queryAssessments(filter, options);
   res.send(result);
 });

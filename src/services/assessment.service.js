@@ -21,7 +21,9 @@ const createAssessment = async (assessmentBody) => {
  * @returns {Promise<QueryResult>}
  */
 const queryAssessments = async (filter, options) => {
-  const assessments = await Assessment.paginate(filter, options);
+  const finalFilter = { ...filter, ...(filter.search && { title: { $regex: filter.search, $options: 'i' } }) };
+  delete finalFilter.search;
+  const assessments = await Assessment.paginate(finalFilter, options);
   return assessments;
 };
 
@@ -31,7 +33,7 @@ const queryAssessments = async (filter, options) => {
  * @returns {Promise<Assessment>}
  */
 const getAssessmentById = async (id) => {
-  return Assessment.findById(id);
+  return Assessment.findById(id).populate('questions');
 };
 
 /**

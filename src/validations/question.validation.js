@@ -12,14 +12,14 @@ const createQuestion = {
     choices: Joi.array().items(
       Joi.object().keys({
         content: Joi.string().required(),
-        image: Joi.string(),
+        image: Joi.string().allow(''),
         isCorrect: Joi.boolean().default(false),
       })
     ),
     difficulty: Joi.number().valid(1, 2, 3),
     kind: Joi.string().valid('audio', 'video').default('audio'),
     org: Joi.string().required().custom(objectId),
-    image: Joi.string(),
+    image: Joi.string().allow(''),
     category: Joi.string().required(),
     gradingInput: Joi.string().when('type', {
       is: 'coding',
@@ -50,6 +50,7 @@ const getQuestions = {
     job: Joi.string().custom(objectId),
     author: Joi.string().custom(objectId),
     difficulty: Joi.number().valid(1, 2, 3),
+    org: Joi.string().custom(objectId),
     sortBy: Joi.string(),
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
@@ -83,12 +84,12 @@ const updateQuestion = {
       choices: Joi.array().items(
         Joi.object().keys({
           content: Joi.string().required(),
-          image: Joi.string(),
+          image: Joi.string().allow(''),
           isCorrect: Joi.boolean().default(false),
         })
       ),
       kind: Joi.string().valid('audio', 'video').default('audio'),
-      image: Joi.string(),
+      image: Joi.string().allow(''),
       category: Joi.string().required(),
       gradingInput: Joi.string(),
       gradingOutput: Joi.string(),
