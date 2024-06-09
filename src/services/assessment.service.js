@@ -33,7 +33,7 @@ const queryAssessments = async (filter, options) => {
  * @returns {Promise<Assessment>}
  */
 const getAssessmentById = async (id) => {
-  return Assessment.findById(id);
+  return Assessment.findById(id).populate('questions');
 };
 
 /**
