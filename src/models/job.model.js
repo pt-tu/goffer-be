@@ -82,6 +82,11 @@ const jobSchema = mongoose.Schema(
     hasFeedback: {
       type: Boolean,
     },
+    assessments: {
+      type: [mongoose.SchemaTypes.ObjectId],
+      ref: 'Assessment',
+      max: 5,
+    },
   },
   {
     timestamps: true,

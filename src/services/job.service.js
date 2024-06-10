@@ -41,7 +41,16 @@ const queryJobs = async (filter, options) => {
  * @returns {Promise<Job>}
  */
 const getJob = async (id) => {
-  return Job.findById(id).populate('owner').populate('org').populate('questions');
+  return Job.findById(id)
+    .populate('owner')
+    .populate('org')
+    .populate('questions')
+    .populate({
+      path: 'assessments',
+      populate: {
+        path: 'owner',
+      },
+    });
 };
 
 /**

@@ -18,6 +18,7 @@ const createJob = {
     benefits: Joi.array().items(Joi.string()).max(7),
     pipeline: Joi.array().items(Joi.string()).max(7).required(),
     questions: Joi.array().items(Joi.string()).max(10).required(),
+    assessments: Joi.array().items(Joi.string()).max(5),
   }),
 };
 
@@ -69,6 +70,7 @@ const updateJob = {
       questions: Joi.array().items(Joi.string()).max(10),
       hasFeedback: Joi.boolean(),
       status: Joi.string().valid('unpublished', 'published', 'closed', 'expired'),
+      assessments: Joi.array().items(Joi.string()).max(5),
     })
     .min(1), // Ensure at least one field is provided for update
 };
