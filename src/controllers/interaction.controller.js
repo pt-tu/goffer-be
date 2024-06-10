@@ -33,8 +33,9 @@ const toggleInteraction = catchAsync(async (req, res) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Id not found');
   }
 
-  entity.saved = saved;
-  res.send(entity);
+  const result = entity.toJSON();
+  result.saved = saved;
+  res.send(result);
 });
 
 module.exports = {
