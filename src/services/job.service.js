@@ -41,7 +41,7 @@ const queryJobs = async (filter, options) => {
  * @returns {Promise<Job>}
  */
 const getJob = async (id) => {
-  let job = await Job.findById(id).populate('owner').populate('org');
+  let job = await Job.findById(id).populate('owner').populate('org').populate('questions');
   job = job.toJSON();
   job.publicLink = `http://localhost:5173/job/${job.id}-${encodeURI(job.title.toLowerCase().replace(/\s/g, '-'))}`;
   return job;
@@ -69,7 +69,7 @@ const getSourcing = async (id) => {
  * @returns {Promise<Job>}
  */
 const updateJob = async (jobId, updateBody) => {
-  const job = await getJob(jobId);
+  const job = await Job.findById(jobId);
   if (!job) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Job not found');
   }

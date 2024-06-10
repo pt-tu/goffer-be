@@ -79,6 +79,9 @@ const jobSchema = mongoose.Schema(
       required: true,
       default: [],
     },
+    hasFeedback: {
+      type: Boolean,
+    },
   },
   {
     timestamps: true,
