@@ -31,8 +31,9 @@ const getUser = catchAsync(async (req, res) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  user.saved = saved;
-  res.send(user);
+  const result = user.toJSON();
+  result.saved = saved;
+  res.send(result);
 });
 
 const getSelf = catchAsync(async (req, res) => {

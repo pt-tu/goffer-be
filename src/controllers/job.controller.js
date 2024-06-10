@@ -43,8 +43,11 @@ const getJob = catchAsync(async (req, res) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Job not found');
   }
 
-  job.saved = saved;
-  res.send(job);
+  const result = job.toJSON();
+  result.publicLink = `http://localhost:5173/job/${job.id}-${encodeURI(job.title.toLowerCase().replace(/\s/g, '-'))}`;
+  result.saved = saved;
+
+  res.send(result);
 });
 
 const getSourcing = catchAsync(async (req, res) => {
