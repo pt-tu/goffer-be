@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { jobService } = require('../services');
+const { jobService, interactionService } = require('../services');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 
@@ -28,15 +28,22 @@ const getJobs = catchAsync(async (req, res) => {
     'status',
   ]);
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
+  options.user = req.user?._id;
   const result = await jobService.queryJobs(filter, options);
   res.send(result);
 });
 
 const getJob = catchAsync(async (req, res) => {
-  const job = await jobService.getJob(req.params.id);
+  const [job, saved] = await Promise.all([
+    jobService.getJob(req.params.id),
+    interactionService.checkInteraction('Job', req.params.id, req.user?._id),
+  ]);
+
   if (!job) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Job not found');
   }
+
+  job.saved = saved;
   res.send(job);
 });
 

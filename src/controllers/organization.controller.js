@@ -1,7 +1,7 @@
 const { v4: uuid } = require('uuid');
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { organizationService, paymentService, cacheService } = require('../services');
+const { organizationService, paymentService, cacheService, interactionService } = require('../services');
 const config = require('../config/config');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
@@ -22,18 +22,23 @@ const createOrganization = catchAsync(async (req, res) => {
 
 const getOrganizations = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'field', 'email', 'visibility', 'domain', 'owner']);
-  filter.owner = req.user.id;
+  // filter.owner = req.user.id;
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  options.user = req.user?._id;
   const result = await organizationService.queryOrganizations(filter, options);
   logger.debug(`Organizations: ${result.results.length}`);
   res.send(result);
 });
 
 const getOrganization = catchAsync(async (req, res) => {
-  const organization = await organizationService.getOrganizationById(req.params.organizationId);
+  const [organization, saved] = await Promise.all([
+    organizationService.getOrganizationById(req.params.organizationId),
+    interactionService.checkInteraction('Organization', req.params.organizationId, req.user?._id),
+  ]);
   if (!organization) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Organization not found');
   }
+  organization.saved = saved;
   res.send(organization);
 });
 
@@ -42,6 +47,7 @@ const getOrganizationByDomain = catchAsync(async (req, res) => {
   if (!organization) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Organization not found');
   }
+  organization.saved = await interactionService.checkInteraction('Organization', organization.id, req.user?._id);
   res.send(organization);
 });
 
