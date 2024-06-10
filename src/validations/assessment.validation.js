@@ -5,7 +5,7 @@ const createAssessment = {
   body: Joi.object().keys({
     title: Joi.string().required(),
     description: Joi.string().max(5000),
-    questions: Joi.array().items(Joi.string().custom(objectId)).required(),
+    questions: Joi.array().items(Joi.string().custom(objectId)).required().min(1),
     duration: Joi.number().required(),
     org: Joi.string().required().custom(objectId),
     job: Joi.string().custom(objectId),
@@ -47,7 +47,7 @@ const updateAssessment = {
     .keys({
       title: Joi.string(),
       description: Joi.string(),
-      questions: Joi.array().items(Joi.string().custom(objectId)),
+      questions: Joi.array().items(Joi.string().custom(objectId)).min(1),
       duration: Joi.number(),
       owner: Joi.string().custom(objectId),
       org: Joi.string().custom(objectId),
