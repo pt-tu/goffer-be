@@ -17,6 +17,7 @@ const createJob = {
     org: Joi.string().required().custom(objectId),
     benefits: Joi.array().items(Joi.string()).max(7),
     pipeline: Joi.array().items(Joi.string()).max(7).required(),
+    questions: Joi.array().items(Joi.string()).max(10).required(),
   }),
 };
 
@@ -48,8 +49,38 @@ const getJob = {
   }),
 };
 
+const updateJob = {
+  body: Joi.object()
+    .keys({
+      title: Joi.string(),
+      description: Joi.string().min(200),
+      location: Joi.string(),
+      salaryFrom: Joi.string(),
+      salaryTo: Joi.string(),
+      experience: Joi.string(),
+      skills: Joi.array().items(Joi.string()).max(3).min(1),
+      tools: Joi.array().items(Joi.string()).max(7).min(1),
+      slots: Joi.number(),
+      time: Joi.string(),
+      workingHours: Joi.number(),
+      org: Joi.string().custom(objectId),
+      benefits: Joi.array().items(Joi.string()).max(7),
+      pipeline: Joi.array().items(Joi.string()).max(7),
+      questions: Joi.array().items(Joi.string()).max(10),
+    })
+    .min(1), // Ensure at least one field is provided for update
+};
+
+const deleteJob = {
+  params: Joi.object().keys({
+    id: Joi.string().custom(objectId).required(),
+  }),
+};
+
 module.exports = {
   createJob,
   getJobs,
   getJob,
+  updateJob,
+  deleteJob,
 };

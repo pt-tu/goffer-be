@@ -45,9 +45,21 @@ const getSourcing = catchAsync(async (req, res) => {
   res.send(sourcing);
 });
 
+const updateJob = catchAsync(async (req, res) => {
+  const job = await jobService.updateJob(req.params.id, req.body);
+  res.send(job);
+});
+
+const deleteJob = catchAsync(async (req, res) => {
+  await jobService.deleteJob(req.params.id);
+  res.status(httpStatus.NO_CONTENT).send();
+});
+
 module.exports = {
   createJob,
   getJobs,
   getJob,
+  updateJob,
+  deleteJob,
   getSourcing,
 };

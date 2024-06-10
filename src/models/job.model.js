@@ -73,6 +73,12 @@ const jobSchema = mongoose.Schema(
       required: true,
       max: 7,
     },
+    questions: {
+      type: [mongoose.SchemaTypes.ObjectId],
+      ref: 'Question',
+      required: true,
+      default: [],
+    },
   },
   {
     timestamps: true,

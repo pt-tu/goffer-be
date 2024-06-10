@@ -62,9 +62,41 @@ const getSourcing = async (id) => {
   return users;
 };
 
+/**
+ * Update job by id
+ * @param {ObjectId} jobId
+ * @param {Object} updateBody
+ * @returns {Promise<Job>}
+ */
+const updateJob = async (jobId, updateBody) => {
+  const job = await getJob(jobId);
+  if (!job) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Job not found');
+  }
+  Object.assign(job, updateBody);
+  await job.save();
+  return job;
+};
+
+/**
+ * Delete job by id
+ * @param {ObjectId} jobId
+ * @returns {Promise<Job>}
+ */
+const deleteJob = async (jobId) => {
+  const job = await getJob(jobId);
+  if (!job) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Job not found');
+  }
+  await job.remove();
+  return job;
+};
+
 module.exports = {
   createJob,
   queryJobs,
   getJob,
+  updateJob,
+  deleteJob,
   getSourcing,
 };

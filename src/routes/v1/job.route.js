@@ -16,4 +16,9 @@ router.route('/individual').get(validate(jobValidation.getJobs), jobController.g
 router.route('/:id').get(validate(jobValidation.getJob), jobController.getJob);
 router.route('/:id/sourcing').get(auth(), jobController.getSourcing);
 
+router
+  .route('/:id')
+  .patch(auth(), validate(jobValidation.updateJob), jobController.updateJob)
+  .delete(auth(), validate(jobValidation.deleteJob), jobController.deleteJob);
+
 module.exports = router;
