@@ -62,6 +62,13 @@ const deleteOrganization = {
   }),
 };
 
+const addMemberToOrganization = {
+  body: Joi.object().keys({
+    org: Joi.string().custom(objectId).required(),
+    member: Joi.string().custom(objectId).required(),
+  }),
+};
+
 module.exports = {
   getOrganizations,
   createOrganization,
@@ -69,4 +76,5 @@ module.exports = {
   deleteOrganization,
   getOrganization,
   getByDomain,
+  addMemberToOrganization,
 };

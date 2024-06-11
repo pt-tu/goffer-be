@@ -12,7 +12,7 @@ const router = express.Router();
 router
   .route('/')
   .post(auth(), validate(jobValidation.createJob), jobController.createJob)
-  .get(auth(), validate(jobValidation.getJobs), jobController.getJobs);
+  .get(auth(true), validate(jobValidation.getJobs), jobController.getJobs);
 
 router.route('/:id').get(auth(true), validate(jobValidation.getJob), jobController.getJob);
 router.route('/:id/sourcing').get(auth(), jobController.getSourcing);

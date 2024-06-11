@@ -9,6 +9,19 @@ async function getInteractions(type, user) {
   return interactions;
 }
 
+async function countInteractions(type, entityDocs) {
+  if (!entityDocs || entityDocs.length === 0) return {};
+
+  const InteractionModel = await getInteractionModel(type);
+  const resultPromises = entityDocs.map(async (doc) => {
+    const users = await InteractionModel.find({ entity: doc._id }).distinct('user');
+    return { [doc._id]: users.length };
+  });
+
+  const results = await Promise.all(resultPromises);
+  return Object.assign({}, ...results);
+}
+
 const paginate = (schema) => {
   /**
    * @typedef {Object} QueryResult
@@ -59,17 +72,19 @@ const paginate = (schema) => {
       });
     }
 
-    docsPromise = docsPromise.exec();
+    docsPromise = await docsPromise.exec();
 
-    const interactionPromise = await getInteractions(this.modelName, options.user);
+    const interactionPromise = getInteractions(this.modelName, options.user);
+    const countFollowPromise = countInteractions(this.modelName, docsPromise);
 
-    return Promise.all([countPromise, docsPromise, interactionPromise]).then((values) => {
-      const [totalResults, docs, interactions] = values;
+    return Promise.all([countPromise, docsPromise, interactionPromise, countFollowPromise]).then((values) => {
+      const [totalResults, docs, interactions, follows] = values;
       const totalPages = Math.ceil(totalResults / limit);
 
       const results = docs.map((doc) => ({
         ...doc.toJSON(),
         saved: interactions.some((interactionId) => interactionId.equals(doc._id)),
+        follow: follows[doc._id],
       }));
 
       const result = {

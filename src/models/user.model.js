@@ -162,6 +162,10 @@ const userSchema = mongoose.Schema(
         },
       ],
     },
+    org: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'Organization',
+    },
   },
   {
     timestamps: true,
