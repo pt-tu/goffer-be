@@ -5,6 +5,7 @@ const getOrganizations = {
   query: Joi.object().keys({
     name: Joi.string(),
     field: Joi.string(),
+    location: Joi.string(),
     email: Joi.string().email(),
     visibility: Joi.string().valid('public', 'private'),
     domain: Joi.string(),
@@ -47,6 +48,7 @@ const updateOrganization = {
     description: Joi.string(),
     logo: Joi.string(),
     field: Joi.string(),
+    location: Joi.string(),
     email: Joi.string().email(),
     visibility: Joi.string().valid('public', 'private'),
     website: Joi.string(),

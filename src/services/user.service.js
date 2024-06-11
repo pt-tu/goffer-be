@@ -48,9 +48,7 @@ const queryUsers = async (filter, options) => {
  * @returns {Promise<User>}
  */
 const getUserById = async (id) => {
-  let user = await User.findById(id);
-  user = user.toJSON();
-  return user;
+  return User.findById(id);
 };
 
 /**
