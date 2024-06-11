@@ -105,6 +105,13 @@ const questionSchema = mongoose.Schema(
         return this.type === 'coding';
       },
     },
+    numberOfOutputLines: {
+      type: Number,
+      min: 1,
+      required() {
+        return this.type === 'coding';
+      },
+    },
   },
   {
     timestamps: true,

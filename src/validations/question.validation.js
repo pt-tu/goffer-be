@@ -41,6 +41,10 @@ const createQuestion = {
       is: 'coding',
       then: Joi.required(),
     }),
+    numberOfOutputLines: Joi.number().min(1).when('type', {
+      is: 'coding',
+      then: Joi.required(),
+    }),
   }),
 };
 
@@ -96,6 +100,7 @@ const updateQuestion = {
       exampleInput: Joi.string(),
       exampleOutput: Joi.string(),
       numberOfTestCaseLines: Joi.number().min(1),
+      numberOfOutputLines: Joi.number().min(1),
     })
     .min(1),
 };
