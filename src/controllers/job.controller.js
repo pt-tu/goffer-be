@@ -51,7 +51,9 @@ const getJob = catchAsync(async (req, res) => {
 });
 
 const getSourcing = catchAsync(async (req, res) => {
-  const sourcing = await jobService.getSourcing(req.params.id);
+  const filter = pick(req.query, ['status']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
+  const sourcing = await jobService.getSourcing(req.params.id, filter, options);
   res.send(sourcing);
 });
 

@@ -58,13 +58,13 @@ const getJob = async (id) => {
  * @param {string} id
  * @returns {Promise<import('../models/user.model').User[]>}
  */
-const getSourcing = async (id) => {
+const getSourcing = async (id, filter, options) => {
   const job = await getJob(id);
   if (!job) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Job not found');
   }
 
-  const users = await userService.queryUsers({}, {});
+  const users = await userService.queryUsers(filter, options);
   return users;
 };
 
