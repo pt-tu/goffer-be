@@ -14,6 +14,7 @@ const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
+const getStreamClient = require('./config/stream');
 
 const app = express();
 
@@ -21,6 +22,9 @@ if (config.env !== 'test') {
   app.use(morgan.successHandler);
   app.use(morgan.errorHandler);
 }
+
+// Services
+getStreamClient();
 
 app.use(cookies());
 
