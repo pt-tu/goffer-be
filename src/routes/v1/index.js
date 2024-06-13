@@ -11,6 +11,8 @@ const applyRoute = require('./apply.route');
 const answerRoute = require('./answer.route');
 const assessmentRoute = require('./assessment.route');
 const feedbackRoute = require('./feedback.route');
+const genaiRoute = require('./genai.route');
+
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -59,6 +61,10 @@ const defaultRoutes = [
   {
     path: '/feedbacks',
     route: feedbackRoute,
+  },
+  {
+    path: '/genai',
+    route: genaiRoute,
   },
 ];
 
