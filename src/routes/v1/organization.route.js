@@ -12,7 +12,7 @@ const router = express.Router();
 router
   .route('/')
   .post(auth(), validate(organizationValidation.createOrganization), organizationController.createOrganization)
-  .get(auth(), validate(organizationValidation.getOrganizations), organizationController.getOrganizations);
+  .get(auth(true), validate(organizationValidation.getOrganizations), organizationController.getOrganizations);
 
 router.route('/verify-creation').get(organizationController.verifyCreation);
 
@@ -34,4 +34,9 @@ router
     interactionType('Organization'),
     interactionController.toggleInteraction
   );
+
+router
+  .route('/add-member')
+  .post(auth(), validate(organizationValidation.addMemberToOrganization), organizationController.addMemberToOrganization);
+
 module.exports = router;
