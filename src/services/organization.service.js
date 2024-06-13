@@ -1,7 +1,8 @@
 const { v4: uuid } = require('uuid');
 const httpStatus = require('http-status');
-const { Organization } = require('../models');
+const { Organization, User } = require('../models');
 const ApiError = require('../utils/ApiError');
+const { userService } = require('.');
 
 /**
  *
@@ -87,6 +88,36 @@ const deleteOrganizationById = async (id, userId) => {
   return organization;
 };
 
+/**
+ *
+ * @param {string} user
+ * @param {string} org
+ * @param {string} member
+ * @returns {Promise<Organization>}
+ */
+const addMember = async (user, org, member) => {
+  const organization = await getOrganizationById(org);
+  if (!organization) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Organization not found');
+  }
+  if (organization.owner.toString() !== user) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
+  }
+
+  return userService.updateUserById(member, {
+    org,
+  });
+};
+
+/**
+ *
+ * @param {string} id
+ * @returns {Promise<User[]>}
+ */
+const getOrganizationMembers = async (id) => {
+  return User.find({ org: id });
+};
+
 module.exports = {
   queryOrganizations,
   createOrganization,
@@ -94,4 +125,6 @@ module.exports = {
   updateOrganizationById,
   deleteOrganizationById,
   getOrganizationByDomain,
+  addMember,
+  getOrganizationMembers,
 };

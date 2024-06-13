@@ -31,15 +31,19 @@ const getOrganizations = catchAsync(async (req, res) => {
 });
 
 const getOrganization = catchAsync(async (req, res) => {
-  const [organization, saved] = await Promise.all([
+  const [organization, saved, members] = await Promise.all([
     organizationService.getOrganizationById(req.params.organizationId),
     interactionService.checkInteraction('Organization', req.params.organizationId, req.user?._id),
+    organizationService.getOrganizationMembers(req.params.organizationId),
   ]);
   if (!organization) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Organization not found');
   }
   const result = organization.toJSON();
+
   result.saved = saved;
+  result.members = members;
+
   res.send(result);
 });
 
@@ -50,6 +54,8 @@ const getOrganizationByDomain = catchAsync(async (req, res) => {
   }
   const result = organization.toJSON();
   result.saved = await interactionService.checkInteraction('Organization', organization.id, req.user?._id);
+  result.members = await organizationService.getOrganizationMembers(result.id);
+
   res.send(result);
 });
 
@@ -80,6 +86,12 @@ const verifyCreation = catchAsync(async (req, res) => {
   );
 });
 
+const addMemberToOrganization = catchAsync(async (req, res) => {
+  const { user, body } = req;
+  const member = await organizationService.addMember(user.id, body.org, body.member);
+  res.send(member);
+});
+
 module.exports = {
   createOrganization,
   getOrganizations,
@@ -88,4 +100,5 @@ module.exports = {
   updateOrganization,
   deleteOrganization,
   getOrganizationByDomain,
+  addMemberToOrganization,
 };
