@@ -72,16 +72,6 @@ const updateUserSelf = {
           logo: Joi.string(),
         })
       ),
-      projects: Joi.array().items(
-        Joi.object().keys({
-          cover: Joi.string().required(),
-          description: Joi.string().required(),
-          title: Joi.string().required(),
-          content: Joi.string().required(),
-          tools: Joi.array().items(Joi.string()),
-          skills: Joi.array().items(Joi.string()),
-        })
-      ),
       oneLiner: Joi.string(),
       status: Joi.string().valid('unavailable', 'open-to-job'),
     })

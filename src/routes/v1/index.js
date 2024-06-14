@@ -12,6 +12,7 @@ const answerRoute = require('./answer.route');
 const assessmentRoute = require('./assessment.route');
 const feedbackRoute = require('./feedback.route');
 const genaiRoute = require('./genai.route');
+const projectRoute = require('./project.route');
 
 const config = require('../../config/config');
 
@@ -65,6 +66,10 @@ const defaultRoutes = [
   {
     path: '/genai',
     route: genaiRoute,
+  },
+  {
+    path: '/projects',
+    route: projectRoute,
   },
 ];
 
