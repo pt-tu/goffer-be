@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-const { getInteractionModel } = require('../../utils/interaction');
+const { getInteractionModel, interactionAllowed } = require('../../utils/interaction');
 
 async function getInteractions(type, user) {
   if (!user) return [];
@@ -74,8 +74,12 @@ const paginate = (schema) => {
 
     docsPromise = await docsPromise.exec();
 
-    const interactionPromise = getInteractions(this.modelName, options.user);
-    const countFollowPromise = countInteractions(this.modelName, docsPromise);
+    let interactionPromise;
+    let countFollowPromise;
+    if (interactionAllowed.includes(this.modelName)) {
+      interactionPromise = getInteractions(this.modelName, options.user);
+      countFollowPromise = countInteractions(this.modelName, docsPromise);
+    }
 
     return Promise.all([countPromise, docsPromise, interactionPromise, countFollowPromise]).then((values) => {
       const [totalResults, docs, interactions, follows] = values;
@@ -83,8 +87,8 @@ const paginate = (schema) => {
 
       const results = docs.map((doc) => ({
         ...doc.toJSON(),
-        saved: interactions.some((interactionId) => interactionId.equals(doc._id)),
-        follow: follows[doc._id],
+        saved: interactions && interactions.some((interactionId) => interactionId.equals(doc._id)),
+        follow: follows && follows[doc._id],
       }));
 
       const result = {

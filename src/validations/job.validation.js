@@ -17,7 +17,7 @@ const createJob = {
     org: Joi.string().required().custom(objectId),
     benefits: Joi.array().items(Joi.string()).max(7),
     pipeline: Joi.array().items(Joi.string()).max(7).required(),
-    questions: Joi.array().items(Joi.string()).max(10).required(),
+    questions: Joi.array().items(Joi.string()).max(10).default([]),
     assessments: Joi.array().items(Joi.string()).max(5),
   }),
 };

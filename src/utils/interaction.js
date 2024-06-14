@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
-const allowed = ['Job', 'Organization', 'User'];
+const interactionAllowed = ['Job', 'Organization', 'User'];
 
 async function getInteractionModel(type) {
-  if (!allowed.includes(type)) {
+  if (!interactionAllowed.includes(type)) {
     throw new Error('Invalid interaction type');
   }
 
@@ -38,4 +38,4 @@ async function getInteractionModel(type) {
   return Model;
 }
 
-module.exports = { getInteractionModel };
+module.exports = { getInteractionModel, interactionAllowed };
