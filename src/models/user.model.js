@@ -52,6 +52,24 @@ const experienceSchema = mongoose.Schema(
   { _id: false }
 );
 
+const projectSchema = mongoose.Schema(
+  {
+    cover: { type: String, required: true },
+    description: { type: String, required: true },
+    title: { type: String, required: true },
+    content: { type: String, required: true },
+    tools: {
+      type: [String],
+    },
+    skills: {
+      type: [String],
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const userSchema = mongoose.Schema(
   {
     name: {
@@ -140,6 +158,9 @@ const userSchema = mongoose.Schema(
     },
     experiences: {
       type: [experienceSchema],
+    },
+    projects: {
+      type: [projectSchema],
     },
     gender: {
       type: String,
