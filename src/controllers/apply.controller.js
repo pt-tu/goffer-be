@@ -40,22 +40,7 @@ const getApplication = catchAsync(async (req, res) => {
 });
 
 const queryApplication = catchAsync(async (req, res) => {
-  const filter = pick(req.query, [
-    'job',
-    'owner',
-    'phase',
-    'resume',
-    'email',
-    'name',
-    'lastCompany',
-    'linkedIn',
-    'location',
-    'personalWebsite',
-    'phoneNumber',
-    'role',
-  ]);
-  const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
-  const application = await applyService.getApplication(req.params.id);
+  const application = await applyService.queryApplication(req.params.id, req.user.id);
   if (!application) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Application not found');
   }
@@ -75,5 +60,6 @@ module.exports = {
   createApplication,
   getApplications,
   getApplication,
+  queryApplication,
   updateApplication,
 };

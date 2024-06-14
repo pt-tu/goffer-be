@@ -39,6 +39,18 @@ const getApplication = async (id) => {
 
 /**
  *
+ * @param {string} job
+ * @param {string} user
+ * @returns {Promise<Apply>}
+ */
+const queryApplication = async (job, user) => {
+  // let application = await Apply.f.populate('owner').populate('job').populate('answers');
+  // application = application.toJSON();
+  // return application;
+};
+
+/**
+ *
  * @param {string} id
  * @param {Apply} applyBody
  * @returns {Promise<Apply>}
@@ -57,5 +69,6 @@ module.exports = {
   createApplication,
   getApplications,
   getApplication,
+  queryApplication,
   updateApplication,
 };

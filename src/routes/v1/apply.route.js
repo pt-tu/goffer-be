@@ -14,6 +14,6 @@ router
 
 router.route('/:id').get(auth(), validate(applyValidation.getApplication), applyController.getApplication);
 
-router.route('/query').get(auth(), validate(applyValidation.getApplications), applyController.getApplication);
+router.route('/job/:id').get(auth(), validate(applyValidation.getApplication), applyController.getApplication);
 
 module.exports = router;
