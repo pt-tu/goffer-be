@@ -9,9 +9,11 @@ const router = express.Router();
 router
   .route('/')
   .post(auth(), validate(applyValidation.createApplication), applyController.createApplication)
-  .get(auth(), validate(applyValidation.getApplications), applyController.getApplications)
+  .get(auth(true), validate(applyValidation.getApplications), applyController.getApplications)
   .put(auth(), validate(applyValidation.updateApplication), applyController.updateApplication);
 
 router.route('/:id').get(auth(), validate(applyValidation.getApplication), applyController.getApplication);
+
+router.route('/query').get(auth(), validate(applyValidation.getApplications), applyController.getApplication);
 
 module.exports = router;

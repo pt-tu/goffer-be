@@ -15,7 +15,7 @@ const getApplications = catchAsync(async (req, res) => {
   const filter = pick(req.query, [
     'job',
     'owner',
-    'status',
+    'phase',
     'resume',
     'email',
     'name',
@@ -32,6 +32,29 @@ const getApplications = catchAsync(async (req, res) => {
 });
 
 const getApplication = catchAsync(async (req, res) => {
+  const application = await applyService.getApplication(req.params.id);
+  if (!application) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Application not found');
+  }
+  res.send(application);
+});
+
+const queryApplication = catchAsync(async (req, res) => {
+  const filter = pick(req.query, [
+    'job',
+    'owner',
+    'phase',
+    'resume',
+    'email',
+    'name',
+    'lastCompany',
+    'linkedIn',
+    'location',
+    'personalWebsite',
+    'phoneNumber',
+    'role',
+  ]);
+  const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
   const application = await applyService.getApplication(req.params.id);
   if (!application) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Application not found');

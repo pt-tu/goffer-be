@@ -5,7 +5,7 @@ const createApplication = {
   body: Joi.object().keys({
     job: Joi.string().required().custom(objectId),
     owner: Joi.string().custom(objectId),
-    status: Joi.string(),
+    phase: Joi.string(),
     resume: Joi.string().required(),
     email: Joi.string().email().required(),
     name: Joi.string().required().trim(),
@@ -24,7 +24,7 @@ const getApplications = {
   query: Joi.object().keys({
     job: Joi.string().custom(objectId),
     owner: Joi.string().custom(objectId),
-    status: Joi.string(),
+    phase: Joi.string(),
     resume: Joi.string(),
     email: Joi.string().email(),
     name: Joi.string().trim(),
@@ -51,7 +51,7 @@ const updateApplication = {
   body: Joi.object().keys({
     id: Joi.string().custom(objectId).required(),
     job: Joi.string().custom(objectId),
-    status: Joi.string(),
+    phase: Joi.string(),
     resume: Joi.string(),
     email: Joi.string().email(),
     name: Joi.string().trim(),

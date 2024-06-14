@@ -14,7 +14,7 @@ const applySchema = mongoose.Schema(
       required: true,
       ref: 'User',
     },
-    status: {
+    phase: {
       type: String, // the first step in pipeline
     },
     resume: {
