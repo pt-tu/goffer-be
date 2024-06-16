@@ -59,10 +59,21 @@ const summarizeAudio = async (audioUrl) => {
   return summary;
 };
 
+/**
+ *
+ * @param {string} owner
+ * @param {string} question
+ * @returns {Promise<string>}
+ */
+const getUserAnswerFromQuestion = async (owner, question) => {
+  return Answer.findOne({ owner, question });
+};
+
 module.exports = {
   createAnswer,
   queryAnswers,
   getAnswer,
   submitAnswer,
   summarizeAudio,
+  getUserAnswerFromQuestion,
 };

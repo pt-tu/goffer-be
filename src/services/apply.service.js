@@ -1,4 +1,3 @@
-const console = require('console');
 const httpStatus = require('http-status');
 const Apply = require('../models/apply.model');
 const ApiError = require('../utils/ApiError');
@@ -81,11 +80,6 @@ const submitAnswerToApplication = async (applicationId, answer) => {
   if (!application) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Application not found');
   }
-  console.log(
-    '🚀 ~ file: apply.service.js:84 ~ submitAnswerToApplication ~ application.owner:',
-    application.owner,
-    answer.owner
-  );
   if (answer.owner.toString() !== application.owner.toString()) {
     throw new ApiError(httpStatus.FORBIDDEN, 'Application Forbidden');
   }
