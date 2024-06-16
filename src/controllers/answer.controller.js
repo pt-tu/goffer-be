@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { answerService } = require('../services');
+const { answerService, applyService } = require('../services');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 
@@ -8,6 +8,11 @@ const submitAudioAnswer = catchAsync(async (req, res) => {
   const { user, body } = req;
   req.body.owner = user.id;
   const answer = await answerService.createAnswer(body);
+
+  if (body.apply) {
+    await applyService.submitAnswerToApplication(body.apply, answer);
+  }
+
   res.status(httpStatus.CREATED).send(answer);
 });
 

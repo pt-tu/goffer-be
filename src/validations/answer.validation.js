@@ -8,6 +8,7 @@ const submitAudioAnswer = {
     assessment: Joi.string(),
     question: Joi.string().required().custom(objectId),
     duration: Joi.number().required(),
+    apply: Joi.string().custom(objectId),
   }),
 };
 

@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { applyService } = require('../services');
+const { applyService, jobService, userService } = require('../services');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 
@@ -41,18 +41,24 @@ const getApplication = catchAsync(async (req, res) => {
 
 const queryApplication = catchAsync(async (req, res) => {
   const application = await applyService.queryApplication(req.params.id, req.user.id);
-  if (!application) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Application not found');
+  const result = application ? application.toJSON() : {};
+
+  const job = await jobService.getJob(req.params.id);
+  const applicant = await userService.getUserById(req.user.id);
+
+  if (!job) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Job not found');
   }
-  res.send(application);
+
+  result.job = job;
+  result.owner = undefined;
+  result.applicant = applicant;
+
+  res.send(result);
 });
 
 const updateApplication = catchAsync(async (req, res) => {
-  const application = await applyService.getApplication(req.body.id);
-  if (req.user.id !== application.owner.id) {
-    throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
-  }
-  const updatedApplication = await applyService.updateApplication(req.body.id, req.body);
+  const updatedApplication = await applyService.updateApplication(req);
   res.send(updatedApplication);
 });
 

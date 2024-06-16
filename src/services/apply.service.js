@@ -1,3 +1,4 @@
+const console = require('console');
 const httpStatus = require('http-status');
 const Apply = require('../models/apply.model');
 const ApiError = require('../utils/ApiError');
@@ -40,27 +41,59 @@ const getApplication = async (id) => {
 /**
  *
  * @param {string} job
- * @param {string} user
+ * @param {string} owner
  * @returns {Promise<Apply>}
  */
-const queryApplication = async (job, user) => {
-  // let application = await Apply.f.populate('owner').populate('job').populate('answers');
-  // application = application.toJSON();
-  // return application;
+const queryApplication = async (job, owner) => {
+  return Apply.findOne({ job, owner }).populate('answers');
 };
 
 /**
  *
- * @param {string} id
- * @param {Apply} applyBody
+ * @param {ReqBody} req
  * @returns {Promise<Apply>}
  */
-const updateApplication = async (id, applyBody) => {
-  const application = await Apply.findById(id);
+const updateApplication = async (req) => {
+  const { user, body } = req;
+  const application = await Apply.findById(body.id);
+
   if (!application) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Application not found');
   }
-  Object.assign(application, applyBody);
+  if (user.id !== application.owner.toString()) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Application Forbidden');
+  }
+
+  Object.assign(application, body);
+  await application.save();
+  return application;
+};
+
+/**
+ *
+ * @param {string} applicationId
+ * @param {Answer} answer
+ * @returns {Promise<Apply>}
+ */
+const submitAnswerToApplication = async (applicationId, answer) => {
+  const application = await Apply.findById(applicationId);
+
+  if (!application) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Application not found');
+  }
+  console.log(
+    '🚀 ~ file: apply.service.js:84 ~ submitAnswerToApplication ~ application.owner:',
+    application.owner,
+    answer.owner
+  );
+  if (answer.owner.toString() !== application.owner.toString()) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Application Forbidden');
+  }
+
+  if (!application.answers.includes(answer.id)) {
+    application.answers.push(answer.id);
+  }
+
   await application.save();
   return application;
 };
@@ -71,4 +104,5 @@ module.exports = {
   getApplication,
   queryApplication,
   updateApplication,
+  submitAnswerToApplication,
 };

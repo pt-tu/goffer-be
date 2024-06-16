@@ -10,10 +10,10 @@ router
   .route('/')
   .post(auth(), validate(applyValidation.createApplication), applyController.createApplication)
   .get(auth(true), validate(applyValidation.getApplications), applyController.getApplications)
-  .put(auth(), validate(applyValidation.updateApplication), applyController.updateApplication);
+  .patch(auth(), validate(applyValidation.updateApplication), applyController.updateApplication);
 
 router.route('/:id').get(auth(), validate(applyValidation.getApplication), applyController.getApplication);
 
-router.route('/job/:id').get(auth(), validate(applyValidation.getApplication), applyController.getApplication);
+router.route('/job/:id').get(auth(), validate(applyValidation.getApplication), applyController.queryApplication);
 
 module.exports = router;
