@@ -21,6 +21,8 @@ router
   .get(auth(), userController.getSelf)
   .put(auth(), validate(userValidation.updateUserSelf), userController.updateUserSelf);
 
+router.route('/subscribe-pro').post(auth(), userController.subscribePro);
+
 router
   .route('/:userId')
   .get(auth('getUsers'), validate(userValidation.getUser), userController.getUser)

@@ -2,7 +2,9 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { userService, interactionService } = require('../services');
+const { userService, interactionService, paymentService } = require('../services');
+const config = require('../config/config');
+const { PRICE_ENUM } = require('../config/stripe');
 
 const checkEmailExists = catchAsync(async (req, res) => {
   const emailExists = await userService.emailExists(req.query.email);
@@ -41,7 +43,10 @@ const getSelf = catchAsync(async (req, res) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  res.send(user);
+  const jsonUser = user.toJSON();
+  const isPro = await paymentService.checkProByUserId(req.user.id);
+  jsonUser.isPro = isPro;
+  res.send(jsonUser);
 });
 
 const updateUserSelf = catchAsync(async (req, res) => {
@@ -59,6 +64,21 @@ const deleteUser = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const subscribePro = catchAsync(async (req, res) => {
+  const customer = await paymentService.getCustomerData(req.user.id);
+
+  const session = await paymentService.createCheckoutSession(
+    {
+      mode: 'subscription',
+      successUrl: `${config.client.domain}/subscribe?result=success`,
+      cancelUrl: `${config.client.domain}/subscribe?result=cancel`,
+      customer: customer.customerId,
+    },
+    PRICE_ENUM.INDIVIDUAL_STAR_PLAN
+  );
+  res.send(session);
+});
+
 module.exports = {
   checkEmailExists,
   createUser,
@@ -68,4 +88,5 @@ module.exports = {
   deleteUser,
   getSelf,
   updateUserSelf,
+  subscribePro,
 };
