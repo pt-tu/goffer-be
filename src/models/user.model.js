@@ -166,6 +166,9 @@ const userSchema = mongoose.Schema(
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'Organization',
     },
+    customerId: {
+      type: String,
+    },
   },
   {
     timestamps: true,
