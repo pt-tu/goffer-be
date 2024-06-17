@@ -1,13 +1,24 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { answerService } = require('../services');
+const { answerService, applyService } = require('../services');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
+const { Answer } = require('../models');
 
 const submitAudioAnswer = catchAsync(async (req, res) => {
   const { user, body } = req;
-  req.body.owner = user.id;
-  const answer = await answerService.createAnswer(body);
+  const { apply, ...answerData } = body;
+
+  const answer = await Answer.findOneAndUpdate(
+    { owner: user.id, question: body.question },
+    { ...answerData, owner: user.id },
+    { upsert: true, new: true }
+  );
+
+  if (apply) {
+    await applyService.submitAnswerToApplication(body.apply, answer);
+  }
+
   res.status(httpStatus.CREATED).send(answer);
 });
 
@@ -41,10 +52,23 @@ const summarizeAudio = catchAsync(async (req, res) => {
   });
 });
 
+const getUserAnswerFromQuestion = catchAsync(async (req, res) => {
+  const { user, params } = req;
+
+  const answer = await answerService.getUserAnswerFromQuestion(user.id, params.id);
+
+  if (!answer) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Answer not found');
+  }
+
+  res.send(answer);
+});
+
 module.exports = {
   submitAudioAnswer,
   getAnswers,
   getAnswer,
   submitAssessmentAnswer,
   summarizeAudio,
+  getUserAnswerFromQuestion,
 };

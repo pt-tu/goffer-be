@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { applyService } = require('../services');
+const { applyService, jobService, userService } = require('../services');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 
@@ -15,7 +15,7 @@ const getApplications = catchAsync(async (req, res) => {
   const filter = pick(req.query, [
     'job',
     'owner',
-    'status',
+    'phase',
     'resume',
     'email',
     'name',
@@ -39,12 +39,26 @@ const getApplication = catchAsync(async (req, res) => {
   res.send(application);
 });
 
-const updateApplication = catchAsync(async (req, res) => {
-  const application = await applyService.getApplication(req.body.id);
-  if (req.user.id !== application.owner.id) {
-    throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
+const queryApplication = catchAsync(async (req, res) => {
+  const application = await applyService.queryApplication(req.params.id, req.user.id);
+  const result = application ? application.toJSON() : {};
+
+  const job = await jobService.getJob(req.params.id);
+  const applicant = await userService.getUserById(req.user.id);
+
+  if (!job) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Job not found');
   }
-  const updatedApplication = await applyService.updateApplication(req.body.id, req.body);
+
+  result.job = job;
+  result.owner = undefined;
+  result.applicant = applicant;
+
+  res.send(result);
+});
+
+const updateApplication = catchAsync(async (req, res) => {
+  const updatedApplication = await applyService.updateApplication(req);
   res.send(updatedApplication);
 });
 
@@ -52,5 +66,6 @@ module.exports = {
   createApplication,
   getApplications,
   getApplication,
+  queryApplication,
   updateApplication,
 };
