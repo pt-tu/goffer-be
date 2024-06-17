@@ -15,5 +15,6 @@ router
 
 router.route('/summarize/audio').post(auth(), validate(answerValidation.summarizeAudio), answerController.summarizeAudio);
 router.route('/:id').get(auth(), validate(answerValidation.getAnswer), answerController.getAnswer);
+router.route('/question/:id').get(auth(), validate(answerValidation.getAnswer), answerController.getUserAnswerFromQuestion);
 
 module.exports = router;

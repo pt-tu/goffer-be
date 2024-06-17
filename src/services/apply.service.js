@@ -39,16 +39,55 @@ const getApplication = async (id) => {
 
 /**
  *
- * @param {string} id
- * @param {Apply} applyBody
+ * @param {string} job
+ * @param {string} owner
  * @returns {Promise<Apply>}
  */
-const updateApplication = async (id, applyBody) => {
-  const application = await Apply.findById(id);
+const queryApplication = async (job, owner) => {
+  return Apply.findOne({ job, owner }).populate('answers');
+};
+
+/**
+ *
+ * @param {ReqBody} req
+ * @returns {Promise<Apply>}
+ */
+const updateApplication = async (req) => {
+  const { user, body } = req;
+  const application = await Apply.findById(body.id);
+
   if (!application) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Application not found');
   }
-  Object.assign(application, applyBody);
+  if (user.id !== application.owner.toString()) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Application Forbidden');
+  }
+
+  Object.assign(application, body);
+  await application.save();
+  return application;
+};
+
+/**
+ *
+ * @param {string} applicationId
+ * @param {Answer} answer
+ * @returns {Promise<Apply>}
+ */
+const submitAnswerToApplication = async (applicationId, answer) => {
+  const application = await Apply.findById(applicationId);
+
+  if (!application) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Application not found');
+  }
+  if (answer.owner.toString() !== application.owner.toString()) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Application Forbidden');
+  }
+
+  if (!application.answers.includes(answer.id)) {
+    application.answers.push(answer.id);
+  }
+
   await application.save();
   return application;
 };
@@ -57,5 +96,7 @@ module.exports = {
   createApplication,
   getApplications,
   getApplication,
+  queryApplication,
   updateApplication,
+  submitAnswerToApplication,
 };
