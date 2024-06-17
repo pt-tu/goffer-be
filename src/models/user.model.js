@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-const { toJSON, paginate } = require('./plugins');
+const { toJSON, paginate, duplicateKeyError } = require('./plugins');
 const { roles } = require('../config/roles');
 
 const educationSchema = mongoose.Schema(
@@ -215,6 +215,7 @@ const userSchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 userSchema.plugin(toJSON);
 userSchema.plugin(paginate);
+userSchema.plugin(duplicateKeyError);
 
 /**
  * Check if email is taken
