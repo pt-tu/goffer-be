@@ -76,6 +76,9 @@ const portfolioSchema = mongoose.Schema(
       enums: ['draft', 'published'],
       default: 'draft',
     },
+    images: {
+      type: [String],
+    },
   },
   {
     _id: false,
