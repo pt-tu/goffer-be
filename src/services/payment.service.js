@@ -61,6 +61,25 @@ const hasSubscription = async (customerId, priceId) => {
   return !!subscriptions.data?.find((sub) => sub.status === 'active' || sub.status === 'trialing');
 };
 
+const hasSubscriptionCustomerIds = async (customerIds, priceId) => {
+  const subscriptionPromises = customerIds.map((customerId) => stripe.subscriptions.list({ customer: customerId }));
+
+  // Wait for all promises to resolve
+  const results = await Promise.all(subscriptionPromises);
+
+  // Flatten the results into a single array
+  let subscriptions = results.flatMap((result) => result.data);
+
+  // Filter the results based on priceId and status
+  subscriptions = subscriptions.filter(
+    (sub) =>
+      sub.items?.data.some((item) => item.price.id === priceId) && (sub.status === 'active' || sub.status === 'trialing')
+  );
+
+  // Map the results to return the customer IDs
+  return subscriptions.map((sub) => sub.customer);
+};
+
 const createCustomer = async (email) => {
   const customer = await stripe.customers.create({ email });
   return customer;
@@ -96,10 +115,21 @@ const checkProByUserId = async (userId) => {
   return !!result;
 };
 
+const listProByUsers = async (users) => {
+  const customerIds = users
+    .map((user) => {
+      return user.customerId;
+    })
+    .filter((id) => !!id);
+  const proCustomerIds = await hasSubscriptionCustomerIds(customerIds, PRICE_ENUM.INDIVIDUAL_STAR_PLAN);
+  return users.filter((user) => proCustomerIds.includes(user.customerId));
+};
+
 module.exports = {
   createCheckoutSession,
   getCheckoutSession,
   hasSubscription,
   getCustomerData,
   checkProByUserId,
+  listProByUsers,
 };

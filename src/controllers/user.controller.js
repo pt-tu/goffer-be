@@ -6,6 +6,7 @@ const { userService, interactionService, paymentService } = require('../services
 const config = require('../config/config');
 const { PRICE_ENUM } = require('../config/stripe');
 const ProUserDecorator = require('../decorators/ProUserDecorator');
+const ProUserListDecorator = require('../decorators/ProUserListDecorator');
 
 const checkEmailExists = catchAsync(async (req, res) => {
   const emailExists = await userService.emailExists(req.query.email);
@@ -18,10 +19,12 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const getUsers = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['name', 'role']);
+  const filter = pick(req.query, ['name', 'role', 'portfolioDomain']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   options.user = req.user?._id;
   const result = await userService.queryUsers(filter, options);
+  const users = await new ProUserListDecorator(result.results).getUsers();
+  result.results = users;
   res.send(result);
 });
 
