@@ -74,6 +74,17 @@ const updateUserSelf = {
       ),
       oneLiner: Joi.string(),
       status: Joi.string().valid('unavailable', 'open-to-job'),
+      portfolio: Joi.object().keys({
+        palette: Joi.object(),
+        template: Joi.string().required(),
+        brandName: Joi.string().required(),
+        logo: Joi.string().required(),
+        status: Joi.string().valid('draft', 'published').default('draft'),
+        portfolioDomain: Joi.string()
+          .pattern(/^[a-z_-]+$/)
+          .message('Brand name can only contain lowercase alphabetic characters, underscores, and hyphens.')
+          .required(),
+      }),
     })
     .min(1),
 };

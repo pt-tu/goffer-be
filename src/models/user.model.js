@@ -52,6 +52,36 @@ const experienceSchema = mongoose.Schema(
   { _id: false }
 );
 
+const portfolioSchema = mongoose.Schema(
+  {
+    palette: {
+      type: String,
+      required: true,
+    },
+    template: {
+      type: String,
+      required: true,
+    },
+    brandName: {
+      type: String,
+      required: true,
+    },
+    logo: {
+      type: String,
+      required: true,
+    },
+    status: {
+      type: String,
+      required: true,
+      enums: ['draft', 'published'],
+      default: 'draft',
+    },
+  },
+  {
+    _id: false,
+  }
+);
+
 const userSchema = mongoose.Schema(
   {
     name: {
@@ -168,6 +198,13 @@ const userSchema = mongoose.Schema(
     },
     customerId: {
       type: String,
+    },
+    portfolioDomain: {
+      type: String,
+      unique: true,
+    },
+    portfolio: {
+      type: portfolioSchema,
     },
   },
   {

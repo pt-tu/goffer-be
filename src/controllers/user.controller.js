@@ -5,6 +5,7 @@ const catchAsync = require('../utils/catchAsync');
 const { userService, interactionService, paymentService } = require('../services');
 const config = require('../config/config');
 const { PRICE_ENUM } = require('../config/stripe');
+const ProUserDecorator = require('../decorators/ProUserDecorator');
 
 const checkEmailExists = catchAsync(async (req, res) => {
   const emailExists = await userService.emailExists(req.query.email);
@@ -43,14 +44,18 @@ const getSelf = catchAsync(async (req, res) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  const jsonUser = user.toJSON();
-  const isPro = await paymentService.checkProByUserId(req.user.id);
-  jsonUser.isPro = isPro;
-  res.send(jsonUser);
+  const result = await new ProUserDecorator(user).getUser();
+  res.send(result);
 });
 
 const updateUserSelf = catchAsync(async (req, res) => {
-  const user = await userService.updateUserById(req.user, req.body);
+  if (req.body.portfolio) {
+    const domain = req.body.portfolio.portfolioDomain;
+    delete req.body.portfolio.portfolioDomain;
+    req.body.portfolioDomain = domain;
+    req.body.portfolio.palette = JSON.stringify(req.body.portfolio.palette);
+  }
+  const user = await userService.updateUserById(req.user.id, req.body);
   res.send(user);
 });
 
