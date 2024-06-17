@@ -16,6 +16,7 @@ const applySchema = mongoose.Schema(
     },
     phase: {
       type: String, // the first step in pipeline
+      default: 'init',
     },
     resume: {
       type: String,

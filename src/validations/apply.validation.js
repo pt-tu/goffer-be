@@ -4,7 +4,6 @@ const { objectId } = require('./custom.validation');
 const createApplication = {
   body: Joi.object().keys({
     job: Joi.string().required().custom(objectId),
-    owner: Joi.string().custom(objectId),
     phase: Joi.string(),
     resume: Joi.string().required(),
     email: Joi.string().email().required(),
