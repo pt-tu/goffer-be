@@ -22,7 +22,7 @@ const getAssessments = {
     title: Joi.string(),
     owner: Joi.string().custom(objectId),
     org: Joi.string().custom(objectId),
-    job: Joi.string().custom(objectId),
+    job: Joi.string(),
     status: Joi.string().valid('draft', 'published', 'archived'),
     sortBy: Joi.string(),
     limit: Joi.number().integer(),

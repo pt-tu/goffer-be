@@ -15,6 +15,10 @@ const createAssessment = catchAsync(async (req, res) => {
 const getAssessments = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['title', 'owner', 'org', 'job', 'status', 'search', 'type']);
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
+  if (filter.job === 'all') delete filter.job;
+  else if (filter.job === 'global') {
+    filter.job = { $exists: false };
+  }
   const result = await assessmentService.queryAssessments(filter, options);
   res.send(result);
 });

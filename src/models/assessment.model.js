@@ -57,6 +57,8 @@ const assessmentSchema = mongoose.Schema(
     order: {
       type: Number,
       required: true,
+      default: -1,
+      max: 4,
     },
     status: {
       type: String,
