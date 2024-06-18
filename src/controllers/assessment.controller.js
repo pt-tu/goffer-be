@@ -41,10 +41,19 @@ const deleteAssessment = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const getPublicAssessmentById = catchAsync(async (req, res) => {
+  const assessment = await assessmentService.getPublicAssessmentById(req.params.assessmentId);
+  if (!assessment) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Assessment not found');
+  }
+  res.send(assessment);
+});
+
 module.exports = {
   createAssessment,
   getAssessments,
   getAssessment,
   updateAssessment,
   deleteAssessment,
+  getPublicAssessmentById,
 };

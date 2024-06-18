@@ -39,6 +39,12 @@ const getAssessment = {
   }),
 };
 
+const getPublicAssessment = {
+  params: Joi.object().keys({
+    assessmentId: Joi.string().custom(objectId),
+  }),
+};
+
 const updateAssessment = {
   params: Joi.object().keys({
     assessmentId: Joi.required().custom(objectId),
@@ -74,4 +80,5 @@ module.exports = {
   getAssessment,
   updateAssessment,
   deleteAssessment,
+  getPublicAssessment,
 };

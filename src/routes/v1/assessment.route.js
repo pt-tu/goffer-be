@@ -20,6 +20,10 @@ router
   .delete(auth(), validate(assessmentValidation.deleteAssessment), assessmentController.deleteAssessment);
 
 router
+  .route('/public/:assessmentId')
+  .get(validate(assessmentValidation.getPublicAssessment), assessmentController.getPublicAssessmentById);
+
+router
   .route('/starting')
   .post(auth(), validate(takeAssessmentValidation.startAssessment), takeAssessmentController.startAssessment);
 

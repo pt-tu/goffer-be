@@ -33,7 +33,7 @@ const queryAssessments = async (filter, options) => {
  * @returns {Promise<Assessment>}
  */
 const getAssessmentById = async (id) => {
-  return Assessment.findById(id).populate('questions').populate('job');
+  return Assessment.findById(id).populate('questions').populate('job').populate('org');
 };
 
 /**
@@ -66,10 +66,20 @@ const deleteAssessmentById = async (assessmentId) => {
   return assessment;
 };
 
+const getPublicAssessmentById = async (id) => {
+  const assessment = await getAssessmentById(id);
+  const selectedAssessments = assessment?.job?.assessments;
+  if (!selectedAssessments || !selectedAssessments.includes(assessment._id)) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Assessment not found');
+  }
+  return assessment;
+};
+
 module.exports = {
   createAssessment,
   queryAssessments,
   getAssessmentById,
   updateAssessmentById,
   deleteAssessmentById,
+  getPublicAssessmentById,
 };
