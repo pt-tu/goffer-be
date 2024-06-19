@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { jobService, interactionService } = require('../services');
+const { jobService, interactionService, applyService } = require('../services');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 
@@ -34,9 +34,10 @@ const getJobs = catchAsync(async (req, res) => {
 });
 
 const getJob = catchAsync(async (req, res) => {
-  const [job, saved] = await Promise.all([
+  const [job, saved, applied] = await Promise.all([
     jobService.getJob(req.params.id),
     interactionService.checkInteraction('Job', req.params.id, req.user?._id),
+    applyService.queryApplication(req.params.id, req.user?._id),
   ]);
 
   if (!job) {
@@ -46,6 +47,7 @@ const getJob = catchAsync(async (req, res) => {
   const result = job.toJSON();
   result.publicLink = `http://localhost:5173/job/${job.id}-${encodeURI(job.title.toLowerCase().replace(/\s/g, '-'))}`;
   result.saved = saved;
+  result.applied = !!applied;
 
   res.send(result);
 });
