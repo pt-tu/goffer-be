@@ -1,10 +1,10 @@
 // plugins/duplicateKeyErrorPlugin.js
-module.exports = function duplicateKeyErrorPlugin(schema) {
+const duplicateKeyErrorPlugin = (msgFn) => (schema) => {
   schema.post('save', function (error, doc, next) {
     if (error.name === 'MongoError' && error.code === 11000) {
       const field = Object.keys(error.keyValue)[0];
       const value = error.keyValue[field];
-      const message = `${field} '${value}' already exists. Please choose a different ${field}.`;
+      const message = msgFn(field, value);
       return next(new Error(message));
     }
     next(error);
@@ -14,7 +14,7 @@ module.exports = function duplicateKeyErrorPlugin(schema) {
     if (error.name === 'MongoError' && error.code === 11000) {
       const field = Object.keys(error.keyValue)[0];
       const value = error.keyValue[field];
-      const message = `${field} '${value}' already exists. Please choose a different ${field}.`;
+      const message = msgFn(field, value);
       return next(new Error(message));
     }
     next(error);
@@ -24,7 +24,7 @@ module.exports = function duplicateKeyErrorPlugin(schema) {
     if (error.name === 'MongoError' && error.code === 11000) {
       const field = Object.keys(error.keyValue)[0];
       const value = error.keyValue[field];
-      const message = `${field} '${value}' already exists. Please choose a different ${field}.`;
+      const message = msgFn(field, value);
       return next(new Error(message));
     }
     next(error);
@@ -34,9 +34,11 @@ module.exports = function duplicateKeyErrorPlugin(schema) {
     if (error.name === 'MongoError' && error.code === 11000) {
       const field = Object.keys(error.keyValue)[0];
       const value = error.keyValue[field];
-      const message = `${field} '${value}' already exists. Please choose a different ${field}.`;
+      const message = msgFn(field, value);
       return next(new Error(message));
     }
     next(error);
   });
 };
+
+module.exports = duplicateKeyErrorPlugin;

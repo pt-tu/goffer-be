@@ -25,6 +25,13 @@ const startAssessment = async (body) => {
   return takeAssessment;
 };
 
+const getTakingAssessmentByAssessmentIdAndUserId = async (assessmentId, userId) => {
+  const takeAssessment = await TakeAssessment.findOne({ assessment: assessmentId, user: userId })
+    .populate('user')
+    .populate('answers');
+  return takeAssessment;
+};
+
 /**
  *
  * @param {string} id
@@ -162,4 +169,5 @@ module.exports = {
   getAssessment,
   submitAnswer,
   submitAll,
+  getTakingAssessmentByAssessmentIdAndUserId,
 };

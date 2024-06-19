@@ -8,7 +8,7 @@ const ApiError = require('../utils/ApiError');
 const startAssessment = catchAsync(async (req, res) => {
   const { user, body } = req;
 
-  const assessment = await assessmentService.getAssessment(body.assessment);
+  const assessment = await assessmentService.getAssessmentById(body.assessment);
   if (!assessment) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Assessment not found');
   }
@@ -18,6 +18,15 @@ const startAssessment = catchAsync(async (req, res) => {
 
   const taking = await takeAssessmentService.startAssessment(body);
   res.status(httpStatus.CREATED).send(taking);
+});
+
+const getTakingAssessmentByAssessmentIdAndUserId = catchAsync(async (req, res) => {
+  const { user, query } = req;
+  const taking = await takeAssessmentService.getTakingAssessmentByAssessmentIdAndUserId(query.assessment, user.id);
+  if (!taking) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Taking assessment not found');
+  }
+  res.send(taking);
 });
 
 const getAssessment = catchAsync(async (req, res) => {
@@ -53,4 +62,5 @@ module.exports = {
   getAssessment,
   submitAnswer,
   submitAll,
+  getTakingAssessmentByAssessmentIdAndUserId,
 };

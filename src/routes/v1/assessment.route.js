@@ -27,6 +27,8 @@ router
   .route('/starting')
   .post(auth(), validate(takeAssessmentValidation.startAssessment), takeAssessmentController.startAssessment);
 
+router.route('/taking/current').get(auth(), takeAssessmentController.getTakingAssessmentByAssessmentIdAndUserId);
+
 router
   .route('/taking/submit')
   .post(auth(), validate(takeAssessmentValidation.submitAnswer), takeAssessmentController.submitAnswer);

@@ -204,7 +204,6 @@ const userSchema = mongoose.Schema(
     },
     portfolioDomain: {
       type: String,
-      unique: true,
     },
     portfolio: {
       type: portfolioSchema,
@@ -218,7 +217,20 @@ const userSchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 userSchema.plugin(toJSON);
 userSchema.plugin(paginate);
-userSchema.plugin(duplicateKeyError);
+userSchema.plugin(
+  duplicateKeyError((field, value) => {
+    return `${field} '${value}' already exists. Please choose a different ${field}.`;
+  })
+);
+
+userSchema.index(
+  {
+    portfolioDomain: 1,
+  },
+  {
+    partialFilterExpression: { portfolioDomain: { $type: 'string' } },
+  }
+);
 
 /**
  * Check if email is taken

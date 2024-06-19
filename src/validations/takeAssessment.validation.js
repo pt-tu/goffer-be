@@ -41,9 +41,16 @@ const submitAll = {
   }),
 };
 
+const getTakingAssessmentByAssessmentIdAndUserId = {
+  query: Joi.object().keys({
+    assessment: Joi.string().required().custom(objectId),
+  }),
+};
+
 module.exports = {
   startAssessment,
   getAssessment,
   submitAnswer,
   submitAll,
+  getTakingAssessmentByAssessmentIdAndUserId,
 };
