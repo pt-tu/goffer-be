@@ -13,7 +13,7 @@ const startAssessment = catchAsync(async (req, res) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Assessment not found');
   }
 
-  req.body.endingAt = new Date(Date.now() + assessment.duration * 1000);
+  req.body.endingAt = new Date(Date.now() + assessment.duration * 1000 * 60);
   req.body.user = user.id;
 
   const taking = await takeAssessmentService.startAssessment(body);
