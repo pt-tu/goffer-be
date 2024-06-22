@@ -14,7 +14,7 @@ const recommendationSchema = mongoose.Schema(
     },
     isHide: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     owner: {
       type: mongoose.SchemaTypes.ObjectId,

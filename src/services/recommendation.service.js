@@ -1,6 +1,8 @@
 const httpStatus = require('http-status');
 const { Recommendation } = require('../models');
 const ApiError = require('../utils/ApiError');
+const notificationService = require('./notification.service');
+const userService = require('./user.service');
 
 /**
  * Create a new recommendation
@@ -8,7 +10,17 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<Recommendation>}
  */
 const createRecommendation = async (recommendationBody) => {
-  return Recommendation.create(recommendationBody);
+  const response = await Recommendation.create(recommendationBody);
+  const owner = await userService.getUserById(recommendationBody.user);
+  await notificationService.createNotification(`notifications-${recommendationBody.user}`, {
+    title: 'New recommendation',
+    description: `You have a new recommendation from ${owner?.name}`,
+    type: 'recommendation',
+    user: owner,
+    link: `/app/profile?tab=recommendations`,
+    createdAt: new Date(),
+  });
+  return response;
 };
 
 /**
