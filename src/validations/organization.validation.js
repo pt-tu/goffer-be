@@ -29,6 +29,7 @@ const createOrganization = {
     field: Joi.string().required(),
     email: Joi.string().required().email(),
     visibility: Joi.string().required().valid('public', 'private'),
+    location: Joi.string().allow(''),
     website: Joi.string().required(),
   }),
 };
@@ -49,11 +50,13 @@ const updateOrganization = {
       description: Joi.string(),
       logo: Joi.string(),
       field: Joi.string(),
-      location: Joi.string(),
+      location: Joi.string().allow(''),
       email: Joi.string().email(),
       visibility: Joi.string().valid('public', 'private'),
       website: Joi.string(),
-      domain: Joi.string(),
+      domain: Joi.string()
+        .pattern(/^[a-z0-9_-]+$/)
+        .message('Domain can only contain lowercase alphabetic characters, numbers, underscores, and hyphens.'),
     })
     .min(1),
 };
