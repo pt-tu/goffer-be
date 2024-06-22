@@ -13,3 +13,4 @@ module.exports.answerService = require('./answer.service');
 module.exports.interactionService = require('./interaction.service');
 module.exports.assessmentService = require('./assessment.service');
 module.exports.projectService = require('./project.service');
+module.exports.recommendationService = require('./recommendation.service');
