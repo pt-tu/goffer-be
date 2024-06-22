@@ -48,12 +48,7 @@ const submitAnswer = catchAsync(async (req, res) => {
 const submitAll = catchAsync(async (req, res) => {
   const { user, body } = req;
 
-  const updatedAnswers = body.answers.map((answer) => ({
-    ...answer,
-    owner: user.id,
-  }));
-
-  const taking = await takeAssessmentService.submitAll(body.takeAssessmentId, updatedAnswers, user.id);
+  const taking = await takeAssessmentService.submitAll(body.takeAssessmentId, user.id);
   res.status(httpStatus.OK).send(taking);
 });
 

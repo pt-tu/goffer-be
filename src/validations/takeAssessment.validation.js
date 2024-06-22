@@ -21,6 +21,7 @@ const submitAnswer = {
         question: Joi.string().required().custom(objectId),
         content: Joi.string().required(),
         point: Joi.number(),
+        ref: Joi.string().required(),
       })
       .required(),
   }),
@@ -29,15 +30,6 @@ const submitAnswer = {
 const submitAll = {
   body: Joi.object().keys({
     takeAssessmentId: Joi.string().required().custom(objectId),
-    answers: Joi.array()
-      .items(
-        Joi.object().keys({
-          question: Joi.string().required().custom(objectId),
-          content: Joi.string().required(),
-          point: Joi.number(),
-        })
-      )
-      .required(),
   }),
 };
 

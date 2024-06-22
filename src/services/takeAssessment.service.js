@@ -120,48 +120,13 @@ const submitAnswer = async (takeAssessmentId, answerBody, userId) => {
 /**
  *
  * @param {string} takeAssessmentId
- * @param {List<Answer>} answers
  * @param {string} userId
  * @returns {Promise<TakeAssessment>}
  */
-const submitAll = async (takeAssessmentId, answers, userId) => {
-  const valid = await validateAssessment(takeAssessmentId, userId);
-
-  const questions = valid.assessment.questions.map((question) => question.toString());
-  answers.forEach((answer) => {
-    if (!questions.includes(answer.question)) {
-      throw new ApiError(httpStatus.BAD_REQUEST, `Question ${answer.question} not found in the assessment`);
-    }
-  });
-
-  const answerPromises = answers.map(async (answerBody) => {
-    const answer = await Answer.findOneAndUpdate({ owner: answerBody.owner, question: answerBody.question }, answerBody, {
-      new: true, // return data after update
-      upsert: true, // if not found, create a new
-      setDefaultsOnInsert: true, // apply default value on schema
-    });
-    return answer._id;
-  });
-
-  const answerIds = await Promise.all(answerPromises);
-  const takeAssessment = await TakeAssessment.findByIdAndUpdate(
-    takeAssessmentId,
-    {
-      $addToSet: { answers: { $each: answerIds } },
-      $set: { status: 'closed' },
-    },
-    { new: true }
-  )
-    .populate('user')
-    .populate({
-      path: 'assessment',
-      populate: {
-        path: 'questions',
-      },
-    })
-    .populate('answers');
-
-  return takeAssessment;
+const submitAll = async (takeAssessmentId, userId) => {
+  const takeAssessment = await validateAssessment(takeAssessmentId, userId);
+  Object.assign(takeAssessment, { status: 'closed' });
+  await takeAssessment.save();
 };
 
 module.exports = {

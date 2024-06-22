@@ -32,13 +32,17 @@ const answerSchema = mongoose.Schema(
     content: {
       type: String,
     },
+    ref: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-answerSchema.index({ owner: 1, question: 1 }, { unique: true });
+answerSchema.index({ owner: 1, question: 1, ref: 1 }, { unique: true });
 
 // add plugin that converts mongoose to json
 answerSchema.plugin(toJSON);
