@@ -57,6 +57,32 @@ const getJob = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const recommendJobs = catchAsync(async (req, res) => {
+  const filter = pick(req.query, [
+    'title',
+    'description',
+    'location',
+    'salaryFrom',
+    'salaryTo',
+    'experience',
+    'skills',
+    'tools',
+    'slots',
+    'time',
+    'workingHours',
+    'org',
+    'status',
+  ]);
+  const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
+  options.user = req.user?._id;
+  const recomJobIds = await recombeeService.recommendJobs(req.user?._id, options.limit || 10, options.page || 1);
+  filter._id = {
+    $in: recomJobIds,
+  };
+  const result = await jobService.queryJobs(filter, options);
+  res.send(result);
+});
+
 const getSourcing = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['status']);
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
@@ -82,4 +108,5 @@ module.exports = {
   updateJob,
   deleteJob,
   getSourcing,
+  recommendJobs,
 };

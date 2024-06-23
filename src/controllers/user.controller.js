@@ -35,6 +35,30 @@ const getUsers = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const recommendUsers = catchAsync(async (req, res) => {
+  const filter = pick(req.query, ['name', 'role', 'portfolioDomain']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  options.user = req.user?._id;
+  const recomUserIds = await recombeeService.recommendUsers(req.user?.id, options.limit || 10, options.page || 1);
+  filter._id = { $in: recomUserIds };
+  const result = await userService.queryUsers(filter, options);
+  const users = await new ProUserListDecorator(result.results).getUsers();
+  result.results = users;
+  res.send(result);
+});
+
+const recommendCandidates = catchAsync(async (req, res) => {
+  const filter = pick(req.query, ['name', 'role', 'portfolioDomain']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  options.user = req.user?._id;
+  const recomUserIds = await recombeeService.recommendCandidates(req.params?.jobId, options.limit || 10, options.page || 1);
+  filter._id = { $in: recomUserIds };
+  const result = await userService.queryUsers(filter, options);
+  const users = await new ProUserListDecorator(result.results).getUsers();
+  result.results = users;
+  res.send(result);
+});
+
 const getUser = catchAsync(async (req, res) => {
   const [user, saved] = await Promise.all([
     userService.getUserById(req.params.userId),
@@ -106,4 +130,6 @@ module.exports = {
   getSelf,
   updateUserSelf,
   subscribePro,
+  recommendUsers,
+  recommendCandidates,
 };

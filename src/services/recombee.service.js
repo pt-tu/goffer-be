@@ -1,6 +1,6 @@
 const { client, rqs } = require('../config/recombeeClient');
 const logger = require('../config/logger');
-const { Job, Organization, User } = require('../models');
+const { User } = require('../models');
 const flattenPlatejsData = require('../utils/flattenPlatejsData');
 
 const recommendJobs = async (userId, limit = 10, page = 1) => {
@@ -27,6 +27,9 @@ const recommendJobs = async (userId, limit = 10, page = 1) => {
         scenario: 'job_recommendation',
         cascadeCreate: true,
         returnProperties: true,
+        diversity: 0,
+        rotationTime: 0.0,
+        rotationRate: 0.2,
         page,
         ...(booster && {
           booster,
@@ -35,9 +38,7 @@ const recommendJobs = async (userId, limit = 10, page = 1) => {
     );
 
     const jobIds = recommendations.recomms.map((r) => r.id);
-    return Job.find({ _id: { $in: jobIds } })
-      .populate('org')
-      .populate('owner');
+    return jobIds;
   } catch (error) {
     logger.error('Error getting job recommendations:', error);
   }
@@ -51,11 +52,13 @@ const recommendOrganizations = async (userId, limit = 10, page = 1) => {
         cascadeCreate: true,
         returnProperties: true,
         diversity: 0,
+        rotationTime: 0.0,
+        rotationRate: 0.2,
         page,
       })
     );
     const orgIds = recommendations.recomms.map((r) => r.id);
-    return Organization.find({ _id: { $in: orgIds } });
+    return orgIds;
   } catch (error) {
     logger.error('Error getting organization recommendations:', error);
   }
@@ -67,11 +70,14 @@ const recommendCandidates = async (jobId, limit = 10, page = 1) => {
       new rqs.RecommendUsersToItem(jobId.toString(), limit, {
         cascadeCreate: true,
         returnProperties: true,
+        diversity: 0,
+        rotationTime: 0.0,
+        rotationRate: 0.2,
         page,
       })
     );
     const userIds = recommendations.recomms.map((r) => r.id);
-    return User.find({ _id: { $in: userIds } });
+    return userIds;
   } catch (error) {
     logger.error('Error getting candidate recommendations:', error);
   }
@@ -86,10 +92,10 @@ const sendInteraction = async (userId, itemId, interactionType) => {
       //   timestamp: new Date(),
       // });
     } else if (interactionType === 'bookmark') {
-      req = new rqs.AddBookmark(userId, itemId, {
-        cascadeCreate: true,
-        timestamp: new Date(),
-      });
+      // req = new rqs.AddBookmark(userId, itemId, {
+      //   cascadeCreate: true,
+      //   timestamp: new Date(),
+      // });
     }
 
     await client.send(req);
@@ -137,12 +143,15 @@ const recommendUsers = async (userId, limit = 10, page = 1) => {
       new rqs.RecommendUsersToUser(userId.toString(), limit, {
         returnProperties: true,
         scenario: 'users_recommendation',
+        diversity: 0,
+        rotationTime: 0.0,
+        rotationRate: 0.2,
         page,
         // booster: `if "skills" in item then 2 else 1 + if "tools" in item then 2 else 1`,
       })
     );
     const userIds = recommendations.recomms.map((r) => r.id);
-    return User.find({ _id: { $in: userIds } });
+    return userIds;
   } catch (error) {
     logger.error('Error getting user recommendations:', error);
   }
