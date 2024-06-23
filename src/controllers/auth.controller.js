@@ -1,11 +1,12 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { authService, userService, tokenService, emailService } = require('../services');
+const { authService, userService, tokenService, emailService, recombeeService } = require('../services');
 const config = require('../config/config');
 const ApiError = require('../utils/ApiError');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body, req.query);
+  await recombeeService.addUserToRecombee(user);
   const tokens = await tokenService.generateAuthTokens(user);
   res.cookie('token', tokens.refresh.token, {
     expires: tokens.refresh.expires,

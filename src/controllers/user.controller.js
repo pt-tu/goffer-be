@@ -2,7 +2,7 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { userService, interactionService, paymentService } = require('../services');
+const { userService, interactionService, paymentService, recombeeService, tokenService } = require('../services');
 const config = require('../config/config');
 const { PRICE_ENUM } = require('../config/stripe');
 const ProUserDecorator = require('../decorators/ProUserDecorator');
@@ -15,7 +15,14 @@ const checkEmailExists = catchAsync(async (req, res) => {
 
 const createUser = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
-  res.status(httpStatus.CREATED).send(user);
+  await recombeeService.addUserToRecombee(user);
+  const tokens = await tokenService.generateAuthTokens(user);
+  res.cookie('token', tokens.refresh.token, {
+    expires: tokens.refresh.expires,
+    ...config.jwt.cookieRefreshOptions,
+  });
+  delete tokens.refresh;
+  res.status(httpStatus.CREATED).send({ user, tokens });
 });
 
 const getUsers = catchAsync(async (req, res) => {
@@ -59,11 +66,13 @@ const updateUserSelf = catchAsync(async (req, res) => {
     req.body.portfolio.palette = JSON.stringify(req.body.portfolio.palette);
   }
   const user = await userService.updateUserById(req.user.id, req.body);
+  await recombeeService.updateUserInRecombee(user);
   res.send(user);
 });
 
 const updateUser = catchAsync(async (req, res) => {
   const user = await userService.updateUserById(req.params.userId, req.body);
+  await recombeeService.updateUserInRecombee(user);
   res.send(user);
 });
 

@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { jobService, interactionService, applyService } = require('../services');
+const { jobService, interactionService, applyService, recombeeService } = require('../services');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 
@@ -8,6 +8,7 @@ const createJob = catchAsync(async (req, res) => {
   const { user, body } = req;
   req.body.owner = user.id;
   const job = await jobService.createJob(body);
+  await recombeeService.addJobToRecombee(job);
   res.status(httpStatus.CREATED).send(job);
 });
 
@@ -61,6 +62,7 @@ const getSourcing = catchAsync(async (req, res) => {
 
 const updateJob = catchAsync(async (req, res) => {
   const job = await jobService.updateJob(req.params.id, req.body);
+  await recombeeService.updateJobInRecombee(job);
   res.send(job);
 });
 

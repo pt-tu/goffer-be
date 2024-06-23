@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
+const { rqs, client } = require('../config/recombeeClient');
 
 /**
  *
@@ -93,6 +94,35 @@ const deleteUserById = async (userId) => {
   return user;
 };
 
+const addUserToRecombee = async (user) => {
+  const req = new rqs.SetUserValues(
+    user.id.toString(),
+    {
+      skills: user.skills.join(', '),
+      tools: user.tools.join(', '),
+      location: user.location,
+    },
+    {
+      cascadeCreate: true,
+    }
+  );
+
+  await client.send(req);
+};
+
+const recommendCandidates = async (jobId, limit = 10, page = 1) => {
+  const recommendations = await client.send(
+    new rqs.RecommendUsersToItem(jobId.toString(), limit, {
+      scenario: 'homepage',
+      cascadeCreate: true,
+      returnProperties: true,
+      page,
+    })
+  );
+  const userIds = recommendations.recomms.map((r) => r.id);
+  return User.find({ _id: { $in: userIds } });
+};
+
 module.exports = {
   createUser,
   queryUsers,
@@ -101,4 +131,6 @@ module.exports = {
   updateUserById,
   deleteUserById,
   emailExists,
+  addUserToRecombee,
+  recommendCandidates,
 };
