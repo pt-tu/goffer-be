@@ -13,6 +13,7 @@ const getOrganizations = {
     limit: Joi.number().integer(),
     populate: Joi.string(),
     page: Joi.number().integer(),
+    searchQuery: Joi.string().allow(''),
   }),
 };
 

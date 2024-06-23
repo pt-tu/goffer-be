@@ -52,11 +52,14 @@ const recommendOrganizations = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'field', 'email', 'visibility', 'domain', 'owner']);
   // filter.owner = req.user.id;
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
+  const advanced = pick(req.query, ['searchQuery']);
   options.user = req.user?._id;
-  const recomOrgIds = await recombeeService.recommendOrganizations(req.user?.id, options.limit || 10, options.page || 1);
+  const recomOrgIds = await recombeeService.recommendOrganizations(req.user?.id, 100, options.page || 1);
   filter._id = { $in: recomOrgIds };
-  const result = await organizationService.queryOrganizations(filter, options);
-  logger.debug(`Organizations: ${result.results.length}`);
+  const result = await organizationService.queryOrganizations(filter, options, advanced);
+  if (result.results.length === 0) {
+    result.endOfResults = true;
+  }
   res.send(result);
 });
 

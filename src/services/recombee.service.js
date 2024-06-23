@@ -156,7 +156,7 @@ const addJobToRecombee = async (job) => {
   }
 };
 
-const recommendUsers = async (userId, limit = 10, page = 1) => {
+const recommendUsers = async (userId, limit = 10) => {
   try {
     const recommendations = await client.send(
       new rqs.RecommendUsersToUser(userId.toString(), limit, {
@@ -165,7 +165,6 @@ const recommendUsers = async (userId, limit = 10, page = 1) => {
         diversity: 0,
         rotationTime: 0.0,
         rotationRate: 0.2,
-        page,
         // booster: `if "skills" in item then 2 else 1 + if "tools" in item then 2 else 1`,
       })
     );

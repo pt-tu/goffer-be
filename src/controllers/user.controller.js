@@ -37,13 +37,31 @@ const getUsers = catchAsync(async (req, res) => {
 
 const recommendUsers = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role', 'portfolioDomain']);
-  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page', 'recommId']);
+  const advanced = pick(req.query, ['searchQuery', 'tools', 'skills']);
+
+  if (advanced.tools) {
+    advanced.tools = advanced.tools.split(',');
+  }
+
+  if (advanced.skills) {
+    advanced.skills = advanced.skills.split(',');
+  }
+
   options.user = req.user?._id;
-  const recomUserIds = await recombeeService.recommendUsers(req.user?.id, options.limit || 10, options.page || 1);
+  const recomUserIds = await recombeeService.recommendUsers(
+    req.user?.id,
+    100
+    // (options.limit || 10) * (options.page || 1)
+  );
   filter._id = { $in: recomUserIds };
-  const result = await userService.queryUsers(filter, options);
+  const result = await userService.queryUsers(filter, options, advanced);
   const users = await new ProUserListDecorator(result.results).getUsers();
   result.results = users;
+
+  if (result.results.length === 0) {
+    result.endOfResults = true;
+  }
   res.send(result);
 });
 

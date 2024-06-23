@@ -25,6 +25,9 @@ const getUsers = {
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
     populate: Joi.string(),
+    skills: Joi.string(),
+    tools: Joi.string(),
+    searchQuery: Joi.string(),
   }),
 };
 

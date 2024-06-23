@@ -58,33 +58,27 @@ const getJob = catchAsync(async (req, res) => {
 });
 
 const recommendJobs = catchAsync(async (req, res) => {
-  const filter = pick(req.query, [
-    'title',
-    'description',
-    'location',
-    'salaryFrom',
-    'salaryTo',
-    'experience',
-    'skills',
-    'tools',
-    'slots',
-    'time',
-    'workingHours',
-    'org',
-    'status',
-  ]);
+  const filter = pick(req.query, ['title', 'description', 'location', 'slots', 'time', 'workingHours', 'org', 'status']);
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
+  const advanced = pick(req.query, ['searchQuery', 'skills', 'tools', 'salaryFrom', 'salaryTo', 'experience']);
+
+  if (advanced.skills) {
+    advanced.skills = advanced.skills.split(',');
+  }
+  if (advanced.tools) {
+    advanced.tools = advanced.tools.split(',');
+  }
+
   options.user = req.user?._id;
-  const recomJobIds = await recombeeService.recommendJobs(
-    req.user?._id,
-    req.query.searchQuery,
-    options.limit || 10,
-    options.page || 1
-  );
+  const recomJobIds = await recombeeService.recommendJobs(req.user?._id, req.query.searchQuery, 100);
   filter._id = {
     $in: recomJobIds,
   };
-  const result = await jobService.queryJobs(filter, options);
+  const result = await jobService.queryJobs(filter, options, advanced);
+
+  if (result.results.length === 0) {
+    result.endOfResults = true;
+  }
   res.send(result);
 });
 
