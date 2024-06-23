@@ -41,6 +41,7 @@ const getJobs = {
     page: Joi.number().integer(),
     populate: Joi.string(),
     status: Joi.string().valid('unpublished', 'published', 'closed', 'expired'),
+    searchQuery: Joi.string().allow('').default(''),
   }),
 };
 

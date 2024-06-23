@@ -75,7 +75,12 @@ const recommendJobs = catchAsync(async (req, res) => {
   ]);
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
   options.user = req.user?._id;
-  const recomJobIds = await recombeeService.recommendJobs(req.user?._id, options.limit || 10, options.page || 1);
+  const recomJobIds = await recombeeService.recommendJobs(
+    req.user?._id,
+    req.query.searchQuery,
+    options.limit || 10,
+    options.page || 1
+  );
   filter._id = {
     $in: recomJobIds,
   };

@@ -3,7 +3,7 @@ const logger = require('../config/logger');
 const { User } = require('../models');
 const flattenPlatejsData = require('../utils/flattenPlatejsData');
 
-const recommendJobs = async (userId, limit = 10, page = 1) => {
+const recommendJobs = async (userId, searchQuery, limit = 10, page = 1) => {
   try {
     const user = await User.findById(userId).lean(); // Fetch the user profile
 
@@ -22,25 +22,44 @@ const recommendJobs = async (userId, limit = 10, page = 1) => {
     // Join boosters with multiplication to create a combined booster string
     const booster = boosters.length > 0 ? boosters.join(' * ') : undefined;
 
-    const recommendations = await client.send(
-      new rqs.RecommendItemsToUser(userId.toString(), limit, {
-        scenario: 'job_recommendation',
-        cascadeCreate: true,
-        returnProperties: true,
-        diversity: 0,
-        rotationTime: 0.0,
-        rotationRate: 0.2,
-        page,
-        ...(booster && {
-          booster,
-        }),
-      })
-    );
+    let recommendations = null;
+    if (searchQuery) {
+      recommendations = await client.send(
+        new rqs.SearchItems(userId.toString(), searchQuery, limit, {
+          scenario: 'job_recommendation',
+          cascadeCreate: true,
+          returnProperties: true,
+          diversity: 0,
+          rotationTime: 0.0,
+          rotationRate: 0.2,
+          page,
+          ...(booster && {
+            booster,
+          }),
+        })
+      );
+    } else {
+      recommendations = await client.send(
+        new rqs.RecommendItemsToUser(userId.toString(), limit, {
+          filter: `'type' == "job"`,
+          cascadeCreate: true,
+          returnProperties: true,
+          diversity: 0,
+          rotationTime: 0.0,
+          rotationRate: 0.2,
+          page,
+          ...(booster && {
+            booster,
+          }),
+        })
+      );
+    }
 
     const jobIds = recommendations.recomms.map((r) => r.id);
     return jobIds;
   } catch (error) {
     logger.error('Error getting job recommendations:', error);
+    throw error;
   }
 };
 
