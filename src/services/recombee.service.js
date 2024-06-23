@@ -10,14 +10,10 @@ const recommendJobs = async (userId, limit = 10, page = 1) => {
     // Initialize boosting conditions based on available user attributes
     const boosters = [];
     if (user.skills && user.skills.length > 0) {
-      boosters.push(`if ('skills' in ${JSON.stringify(user.skills)}, 1.5, 1.0)`);
+      boosters.push(`if ('skills' in ${JSON.stringify(user.skills || [])}) then 1.5 else 1`);
     }
     if (user.tools && user.tools.length > 0) {
-      boosters.push(`if ('tools' in ${JSON.stringify(user.tools)}, 1.5, 1.0)`);
-    }
-    if (user.experiences && user.experiences.length > 0) {
-      const experienceCompanies = user.experiences.map((exp) => exp.company);
-      boosters.push(`if ('company' in ${JSON.stringify(experienceCompanies)}, 1.3, 1.0)`);
+      boosters.push(`if ('tools' in ${JSON.stringify(user.tools || [])}) then 1.5 else 1`);
     }
     if (user.location) {
       boosters.push(`if ('location' == "${user.location}", 1.2, 1.0)`);
@@ -39,7 +35,9 @@ const recommendJobs = async (userId, limit = 10, page = 1) => {
     );
 
     const jobIds = recommendations.recomms.map((r) => r.id);
-    return Job.find({ _id: { $in: jobIds } });
+    return Job.find({ _id: { $in: jobIds } })
+      .populate('org')
+      .populate('owner');
   } catch (error) {
     logger.error('Error getting job recommendations:', error);
     throw error;
@@ -142,7 +140,9 @@ const recommendUsers = async (userId, limit = 10, page = 1) => {
       new rqs.RecommendUsersToUser(userId.toString(), limit, {
         cascadeCreate: true,
         returnProperties: true,
+        scenario: 'users_recommendation',
         page,
+        booster: `if "skills" in item then 2 else 1 + if "tools" in item then 2 else 1`,
       })
     );
     const userIds = recommendations.recomms.map((r) => r.id);

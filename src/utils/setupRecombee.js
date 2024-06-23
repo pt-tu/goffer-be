@@ -3,7 +3,7 @@ const { addUserPropertiesToRecombee, addEntityPropertiesToRecombee } = require('
 
 const setupRecombee = async () => {
   try {
-    await Promise.all([addUserPropertiesToRecombee(), addEntityPropertiesToRecombee()]);
+    // await Promise.all([addUserPropertiesToRecombee(), addEntityPropertiesToRecombee()]);
   } catch (error) {
     logger.info('Already added properties to Recombee');
   }

@@ -6,6 +6,7 @@ const { recombeeValidation } = require('../../validations');
 
 const router = express.Router();
 
+router.get('/users', auth(), validate(recombeeValidation.getRecommendations), recombeeController.getUsersRecommendations);
 router.get('/jobs', auth(), validate(recombeeValidation.getRecommendations), recombeeController.getJobRecommendations);
 router.get(
   '/organizations',
@@ -20,6 +21,5 @@ router.get(
   recombeeController.getCandidateRecommendations
 );
 router.post('/interact/:itemId', auth(), validate(recombeeValidation.interactWithItem), recombeeController.interactWithItem);
-router.get('/users', auth(), validate(recombeeValidation.getRecommendations), recombeeController.getUsersRecommendations);
 
 module.exports = router;
