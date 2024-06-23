@@ -50,6 +50,35 @@ const getJob = catchAsync(async (req, res) => {
   result.saved = saved;
   result.applied = !!applied;
 
+  if (req.user?._id) {
+    await recombeeService.sendInteraction(req.user?._id, req.params.id, 'view');
+  }
+
+  res.send(result);
+});
+
+const recommendJobs = catchAsync(async (req, res) => {
+  const filter = pick(req.query, ['title', 'description', 'location', 'slots', 'time', 'workingHours', 'org', 'status']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
+  const advanced = pick(req.query, ['searchQuery', 'skills', 'tools', 'salaryFrom', 'salaryTo', 'experience']);
+
+  if (advanced.skills) {
+    advanced.skills = advanced.skills.split(',');
+  }
+  if (advanced.tools) {
+    advanced.tools = advanced.tools.split(',');
+  }
+
+  options.user = req.user?._id;
+  const recomJobIds = await recombeeService.recommendJobs(req.user?._id, req.query.searchQuery, 100);
+  filter._id = {
+    $in: recomJobIds,
+  };
+  const result = await jobService.queryJobs(filter, options, advanced);
+
+  if (result.results.length === 0) {
+    result.endOfResults = true;
+  }
   res.send(result);
 });
 
@@ -78,4 +107,5 @@ module.exports = {
   updateJob,
   deleteJob,
   getSourcing,
+  recommendJobs,
 };

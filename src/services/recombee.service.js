@@ -1,45 +1,62 @@
 const { client, rqs } = require('../config/recombeeClient');
 const logger = require('../config/logger');
-const { Job, Organization, User } = require('../models');
+const { User } = require('../models');
 const flattenPlatejsData = require('../utils/flattenPlatejsData');
 
-const recommendJobs = async (userId, limit = 10, page = 1) => {
+const recommendJobs = async (userId, searchQuery, limit = 10, page = 1) => {
   try {
     const user = await User.findById(userId).lean(); // Fetch the user profile
 
     // Initialize boosting conditions based on available user attributes
     const boosters = [];
     if (user.skills && user.skills.length > 0) {
-      boosters.push(`if ('skills' in ${JSON.stringify(user.skills)}, 1.5, 1.0)`);
+      boosters.push(`(if ('skills' in ${JSON.stringify(user.skills || [])}) then 1.5 else 1)`);
     }
     if (user.tools && user.tools.length > 0) {
-      boosters.push(`if ('tools' in ${JSON.stringify(user.tools)}, 1.5, 1.0)`);
-    }
-    if (user.experiences && user.experiences.length > 0) {
-      const experienceCompanies = user.experiences.map((exp) => exp.company);
-      boosters.push(`if ('company' in ${JSON.stringify(experienceCompanies)}, 1.3, 1.0)`);
+      boosters.push(`(if ('tools' in ${JSON.stringify(user.tools || [])}) then 1.5 else 1)`);
     }
     if (user.location) {
-      boosters.push(`if ('location' == "${user.location}", 1.2, 1.0)`);
+      boosters.push(`(if ('location' == "${user.location}") then 1.2 else 1.0)`);
     }
 
     // Join boosters with multiplication to create a combined booster string
     const booster = boosters.length > 0 ? boosters.join(' * ') : undefined;
 
-    const recommendations = await client.send(
-      new rqs.RecommendItemsToUser(userId.toString(), limit, {
-        scenario: 'job_recommendation',
-        cascadeCreate: true,
-        returnProperties: true,
-        page,
-        ...(booster && {
-          booster,
-        }),
-      })
-    );
+    let recommendations = null;
+    if (searchQuery) {
+      recommendations = await client.send(
+        new rqs.SearchItems(userId.toString(), searchQuery, limit, {
+          scenario: 'job_recommendation',
+          cascadeCreate: true,
+          returnProperties: true,
+          diversity: 0,
+          rotationTime: 0.0,
+          rotationRate: 0.2,
+          page,
+          ...(booster && {
+            booster,
+          }),
+        })
+      );
+    } else {
+      recommendations = await client.send(
+        new rqs.RecommendItemsToUser(userId.toString(), limit, {
+          filter: `'type' == "job"`,
+          cascadeCreate: true,
+          returnProperties: true,
+          diversity: 0,
+          rotationTime: 0.0,
+          rotationRate: 0.2,
+          page,
+          ...(booster && {
+            booster,
+          }),
+        })
+      );
+    }
 
     const jobIds = recommendations.recomms.map((r) => r.id);
-    return Job.find({ _id: { $in: jobIds } });
+    return jobIds;
   } catch (error) {
     logger.error('Error getting job recommendations:', error);
     throw error;
@@ -53,14 +70,16 @@ const recommendOrganizations = async (userId, limit = 10, page = 1) => {
         scenario: 'organization_recommendation',
         cascadeCreate: true,
         returnProperties: true,
+        diversity: 0,
+        rotationTime: 0.0,
+        rotationRate: 0.2,
         page,
       })
     );
     const orgIds = recommendations.recomms.map((r) => r.id);
-    return Organization.find({ _id: { $in: orgIds } });
+    return orgIds;
   } catch (error) {
     logger.error('Error getting organization recommendations:', error);
-    throw error;
   }
 };
 
@@ -70,14 +89,16 @@ const recommendCandidates = async (jobId, limit = 10, page = 1) => {
       new rqs.RecommendUsersToItem(jobId.toString(), limit, {
         cascadeCreate: true,
         returnProperties: true,
+        diversity: 0,
+        rotationTime: 0.0,
+        rotationRate: 0.2,
         page,
       })
     );
     const userIds = recommendations.recomms.map((r) => r.id);
-    return User.find({ _id: { $in: userIds } });
+    return userIds;
   } catch (error) {
     logger.error('Error getting candidate recommendations:', error);
-    throw error;
   }
 };
 
@@ -85,21 +106,20 @@ const sendInteraction = async (userId, itemId, interactionType) => {
   try {
     let req;
     if (interactionType === 'view') {
-      req = new rqs.AddDetailView(userId, itemId, {
-        cascadeCreate: true,
-        timestamp: new Date(),
-      });
-    } else if (interactionType === 'like') {
-      req = new rqs.AddPurchase(userId, itemId, {
-        cascadeCreate: true,
-        timestamp: new Date(),
-      });
+      // req = new rqs.AddDetailView(userId, itemId, {
+      //   cascadeCreate: true,
+      //   timestamp: new Date(),
+      // });
+    } else if (interactionType === 'bookmark') {
+      // req = new rqs.AddBookmark(userId, itemId, {
+      //   cascadeCreate: true,
+      //   timestamp: new Date(),
+      // });
     }
 
     await client.send(req);
   } catch (error) {
     logger.error(`Error sending ${interactionType} interaction to Recombee:`, error);
-    throw error;
   }
 };
 
@@ -136,20 +156,22 @@ const addJobToRecombee = async (job) => {
   }
 };
 
-const recommendUsers = async (userId, limit = 10, page = 1) => {
+const recommendUsers = async (userId, limit = 10) => {
   try {
     const recommendations = await client.send(
       new rqs.RecommendUsersToUser(userId.toString(), limit, {
-        cascadeCreate: true,
         returnProperties: true,
-        page,
+        scenario: 'users_recommendation',
+        diversity: 0,
+        rotationTime: 0.0,
+        rotationRate: 0.2,
+        // booster: `if "skills" in item then 2 else 1 + if "tools" in item then 2 else 1`,
       })
     );
     const userIds = recommendations.recomms.map((r) => r.id);
-    return User.find({ _id: { $in: userIds } });
+    return userIds;
   } catch (error) {
     logger.error('Error getting user recommendations:', error);
-    throw error;
   }
 };
 

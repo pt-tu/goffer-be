@@ -7,3 +7,4 @@ module.exports.answerController = require('./answer.controller');
 module.exports.assessmentController = require('./assessment.controller');
 module.exports.recommendationController = require('./recommendation.controller');
 module.exports.recombeeController = require('./recombee.controller');
+module.exports.jobController = require('./job.controller');

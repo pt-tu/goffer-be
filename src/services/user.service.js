@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const httpStatus = require('http-status');
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
@@ -38,7 +39,22 @@ const createUser = async (userBody, userQuery) => {
  * @param {number} [options.page] - Current page (default = 1)
  * @returns {Promise<QueryResult>}
  */
-const queryUsers = async (filter, options) => {
+const queryUsers = async (filter, options, advanced) => {
+  if (advanced) {
+    if (advanced.skills) {
+      filter.skills = { $in: advanced.skills };
+    }
+    if (advanced.tools) {
+      filter.tools = { $in: advanced.tools };
+    }
+    if (advanced.searchQuery) {
+      filter.$or = [
+        { name: { $regex: advanced.searchQuery, $options: 'i' } },
+        { email: { $regex: advanced.searchQuery, $options: 'i' } },
+        { location: { $regex: advanced.searchQuery, $options: 'i' } },
+      ];
+    }
+  }
   const users = await User.paginate(filter, options);
   return users;
 };

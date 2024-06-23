@@ -30,8 +30,8 @@ const getJobs = {
     salaryFrom: Joi.string(),
     salaryTo: Joi.string(),
     experience: Joi.string(),
-    skills: Joi.array().items(Joi.string()),
-    tools: Joi.array().items(Joi.string()),
+    skills: Joi.string(),
+    tools: Joi.string(),
     slots: Joi.number(),
     time: Joi.string(),
     workingHours: Joi.number(),
@@ -41,6 +41,7 @@ const getJobs = {
     page: Joi.number().integer(),
     populate: Joi.string(),
     status: Joi.string().valid('unpublished', 'published', 'closed', 'expired'),
+    searchQuery: Joi.string().allow('').default(''),
   }),
 };
 

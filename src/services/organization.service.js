@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const { v4: uuid } = require('uuid');
 const httpStatus = require('http-status');
 const { Organization, User } = require('../models');
@@ -25,7 +26,14 @@ const createOrganization = async (organizationBody) => {
  * @param {number} [options.page] - Current page (default = 1)
  * @returns {Promise<QueryResult>}
  */
-const queryOrganizations = async (filter, options) => {
+const queryOrganizations = async (filter, options, advanced) => {
+  if (advanced?.searchQuery) {
+    filter.$or = [
+      { name: { $regex: advanced.searchQuery, $options: 'i' } },
+      { field: { $regex: advanced.searchQuery, $options: 'i' } },
+      { location: { $regex: advanced.searchQuery, $options: 'i' } },
+    ];
+  }
   const organizations = await Organization.paginate(filter, options);
   return organizations;
 };

@@ -13,7 +13,7 @@ const interactWithItem = {
     itemId: Joi.string().custom(objectId).required(),
   }),
   body: Joi.object().keys({
-    interactionType: Joi.string().valid('view', 'like').required(),
+    interactionType: Joi.string().valid('view', 'bookmark').required(),
   }),
 };
 

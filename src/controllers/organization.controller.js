@@ -48,6 +48,21 @@ const getOrganizations = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const recommendOrganizations = catchAsync(async (req, res) => {
+  const filter = pick(req.query, ['name', 'field', 'email', 'visibility', 'domain', 'owner']);
+  // filter.owner = req.user.id;
+  const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
+  const advanced = pick(req.query, ['searchQuery']);
+  options.user = req.user?._id;
+  const recomOrgIds = await recombeeService.recommendOrganizations(req.user?.id, 100, options.page || 1);
+  filter._id = { $in: recomOrgIds };
+  const result = await organizationService.queryOrganizations(filter, options, advanced);
+  if (result.results.length === 0) {
+    result.endOfResults = true;
+  }
+  res.send(result);
+});
+
 const getOrganization = catchAsync(async (req, res) => {
   const [organization, saved, members] = await Promise.all([
     organizationService.getOrganizationById(req.params.organizationId),
@@ -103,4 +118,5 @@ module.exports = {
   deleteOrganization,
   getOrganizationByDomain,
   addMemberToOrganization,
+  recommendOrganizations,
 };
