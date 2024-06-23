@@ -1,7 +1,7 @@
 const { v4: uuid } = require('uuid');
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { organizationService, paymentService, cacheService, interactionService } = require('../services');
+const { organizationService, paymentService, cacheService, interactionService, recombeeService } = require('../services');
 const config = require('../config/config');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
@@ -18,6 +18,24 @@ const createOrganization = catchAsync(async (req, res) => {
   req.body.sessionId = session.id;
   await cacheService.set(sessionRef, req.body);
   res.send(session);
+});
+
+const verifyCreation = catchAsync(async (req, res) => {
+  const { session_ref: sessionRef } = req.query;
+  const data = await cacheService.get(sessionRef);
+  const session = await paymentService.getCheckoutSession(data.sessionId);
+  if (session.payment_status !== 'paid') {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Payment is not completed');
+  }
+  await cacheService.del(sessionRef);
+  if (!data) {
+    res.redirect(`${config.client.domain}/organization/new?result=error`);
+  }
+  const organization = await organizationService.createOrganization(data);
+  await recombeeService.addOrganizationToRecombee(organization);
+  res.redirect(
+    `${config.client.domain}/organization/new?result=success&name=${organization.name}&domain=${organization.domain}`
+  );
 });
 
 const getOrganizations = catchAsync(async (req, res) => {
@@ -61,29 +79,13 @@ const getOrganizationByDomain = catchAsync(async (req, res) => {
 
 const updateOrganization = catchAsync(async (req, res) => {
   const organization = await organizationService.updateOrganizationById(req.params.organizationId, req.body, req.user.id);
+  await recombeeService.updateOrganizationInRecombee(organization);
   res.send(organization);
 });
 
 const deleteOrganization = catchAsync(async (req, res) => {
   await organizationService.deleteOrganizationById(req.params.organizationId, req.user.id);
   res.status(httpStatus.NO_CONTENT).send();
-});
-
-const verifyCreation = catchAsync(async (req, res) => {
-  const { session_ref: sessionRef } = req.query;
-  const data = await cacheService.get(sessionRef);
-  const session = await paymentService.getCheckoutSession(data.sessionId);
-  if (session.payment_status !== 'paid') {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Payment is not completed');
-  }
-  await cacheService.del(sessionRef);
-  if (!data) {
-    res.redirect(`${config.client.domain}/organization/new?result=error`);
-  }
-  const organization = await organizationService.createOrganization(data);
-  res.redirect(
-    `${config.client.domain}/organization/new?result=success&name=${organization.name}&domain=${organization.domain}`
-  );
 });
 
 const addMemberToOrganization = catchAsync(async (req, res) => {
