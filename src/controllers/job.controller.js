@@ -50,6 +50,10 @@ const getJob = catchAsync(async (req, res) => {
   result.saved = saved;
   result.applied = !!applied;
 
+  if (req.user?._id) {
+    await recombeeService.sendInteraction(req.user?._id, req.params.id, 'view');
+  }
+
   res.send(result);
 });
 

@@ -10,13 +10,13 @@ const recommendJobs = async (userId, limit = 10, page = 1) => {
     // Initialize boosting conditions based on available user attributes
     const boosters = [];
     if (user.skills && user.skills.length > 0) {
-      boosters.push(`if ('skills' in ${JSON.stringify(user.skills || [])}) then 1.5 else 1`);
+      boosters.push(`(if ('skills' in ${JSON.stringify(user.skills || [])}) then 1.5 else 1)`);
     }
     if (user.tools && user.tools.length > 0) {
-      boosters.push(`if ('tools' in ${JSON.stringify(user.tools || [])}) then 1.5 else 1`);
+      boosters.push(`(if ('tools' in ${JSON.stringify(user.tools || [])}) then 1.5 else 1)`);
     }
     if (user.location) {
-      boosters.push(`if ('location' == "${user.location}", 1.2, 1.0)`);
+      boosters.push(`(if ('location' == "${user.location}") then 1.2 else 1.0)`);
     }
 
     // Join boosters with multiplication to create a combined booster string
@@ -40,7 +40,6 @@ const recommendJobs = async (userId, limit = 10, page = 1) => {
       .populate('owner');
   } catch (error) {
     logger.error('Error getting job recommendations:', error);
-    throw error;
   }
 };
 
@@ -51,6 +50,7 @@ const recommendOrganizations = async (userId, limit = 10, page = 1) => {
         scenario: 'organization_recommendation',
         cascadeCreate: true,
         returnProperties: true,
+        diversity: 0,
         page,
       })
     );
@@ -58,7 +58,6 @@ const recommendOrganizations = async (userId, limit = 10, page = 1) => {
     return Organization.find({ _id: { $in: orgIds } });
   } catch (error) {
     logger.error('Error getting organization recommendations:', error);
-    throw error;
   }
 };
 
@@ -75,7 +74,6 @@ const recommendCandidates = async (jobId, limit = 10, page = 1) => {
     return User.find({ _id: { $in: userIds } });
   } catch (error) {
     logger.error('Error getting candidate recommendations:', error);
-    throw error;
   }
 };
 
@@ -83,12 +81,12 @@ const sendInteraction = async (userId, itemId, interactionType) => {
   try {
     let req;
     if (interactionType === 'view') {
-      req = new rqs.AddDetailView(userId, itemId, {
-        cascadeCreate: true,
-        timestamp: new Date(),
-      });
-    } else if (interactionType === 'like') {
-      req = new rqs.AddPurchase(userId, itemId, {
+      // req = new rqs.AddDetailView(userId, itemId, {
+      //   cascadeCreate: true,
+      //   timestamp: new Date(),
+      // });
+    } else if (interactionType === 'bookmark') {
+      req = new rqs.AddBookmark(userId, itemId, {
         cascadeCreate: true,
         timestamp: new Date(),
       });
@@ -97,7 +95,6 @@ const sendInteraction = async (userId, itemId, interactionType) => {
     await client.send(req);
   } catch (error) {
     logger.error(`Error sending ${interactionType} interaction to Recombee:`, error);
-    throw error;
   }
 };
 
@@ -138,18 +135,16 @@ const recommendUsers = async (userId, limit = 10, page = 1) => {
   try {
     const recommendations = await client.send(
       new rqs.RecommendUsersToUser(userId.toString(), limit, {
-        cascadeCreate: true,
         returnProperties: true,
         scenario: 'users_recommendation',
         page,
-        booster: `if "skills" in item then 2 else 1 + if "tools" in item then 2 else 1`,
+        // booster: `if "skills" in item then 2 else 1 + if "tools" in item then 2 else 1`,
       })
     );
     const userIds = recommendations.recomms.map((r) => r.id);
     return User.find({ _id: { $in: userIds } });
   } catch (error) {
     logger.error('Error getting user recommendations:', error);
-    throw error;
   }
 };
 
