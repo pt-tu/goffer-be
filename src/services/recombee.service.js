@@ -29,7 +29,7 @@ const recommendJobs = async (userId, searchQuery, limit = 10, page = 1) => {
           scenario: 'job_recommendation',
           cascadeCreate: true,
           returnProperties: true,
-          diversity: 0.5,
+          diversity: 0.0,
           rotationTime: 0.0,
           rotationRate: 0.2,
           page,
@@ -44,7 +44,7 @@ const recommendJobs = async (userId, searchQuery, limit = 10, page = 1) => {
           filter: `'type' == "job"`,
           cascadeCreate: true,
           returnProperties: true,
-          diversity: 0.5,
+          diversity: 0.0,
           rotationTime: 0.0,
           rotationRate: 0.2,
           page,
@@ -55,7 +55,22 @@ const recommendJobs = async (userId, searchQuery, limit = 10, page = 1) => {
       );
     }
 
-    const jobIds = recommendations.recomms.map((r) => r.id);
+    let jobIds = recommendations.recomms.map((r) => r.id);
+
+    // Fallback to ListItems if there are no recommendations
+    if (jobIds.length === 0) {
+      const allItems = await client.send(
+        new rqs.ListItems({
+          returnProperties: true,
+          filter: '`type` == "job"',
+          page,
+          limit,
+        })
+      );
+
+      jobIds = allItems.items.map((item) => item.itemId);
+    }
+
     return jobIds;
   } catch (error) {
     logger.error('Error getting job recommendations:', error);
@@ -76,7 +91,23 @@ const recommendOrganizations = async (userId, limit = 10, page = 1) => {
         page,
       })
     );
-    const orgIds = recommendations.recomms.map((r) => r.id);
+
+    let orgIds = recommendations?.recomms.map((r) => r.id);
+
+    // Fallback to ListItems if there are no recommendations
+    if (orgIds.length === 0) {
+      const allItems = await client.send(
+        new rqs.ListItems({
+          returnProperties: true,
+          filter: `'type' == "organization"`, // Adjust this filter to match your use case
+          page,
+          limit,
+        })
+      );
+
+      orgIds = allItems.map((item) => item.itemId);
+    }
+
     return orgIds;
   } catch (error) {
     logger.error('Error getting organization recommendations:', error);
@@ -118,10 +149,26 @@ const recommendCandidates = async (jobId, limit = 10, page = 1) => {
         page,
       })
     );
-    const userIds = recommendations.recomms.map((r) => r.id);
+
+    let userIds = recommendations.recomms.map((r) => r.id);
+
+    // Fallback to ListUsers if there are no recommendations
+    if (userIds.length === 0) {
+      const allUsers = await client.send(
+        new rqs.ListUsers({
+          returnProperties: true,
+          page,
+          limit,
+        })
+      );
+
+      userIds = allUsers.items.map((item) => item.userId);
+    }
+
     return userIds;
   } catch (error) {
     logger.error('Error getting candidate recommendations:', error);
+    throw error; // Rethrow error to ensure it can be handled by the caller
   }
 };
 
@@ -132,16 +179,32 @@ const recommendUsers = async (userId, limit = 10) => {
         returnProperties: true,
         scenario: 'users_recommendation',
         filter: `'isJobIdeal' == null`,
-        diversity: 0.5,
+        diversity: 0,
         rotationTime: 0.0,
         rotationRate: 0.2,
+        minRelevance: 'low',
         // booster: `if "skills" in item then 2 else 1 + if "tools" in item then 2 else 1`,
       })
     );
-    const userIds = recommendations.recomms.map((r) => r.id);
+
+    let userIds = recommendations.recomms.map((r) => r.id);
+
+    // Fallback to ListUsers if there are no recommendations
+    if (userIds.length === 0) {
+      const allUsers = await client.send(
+        new rqs.ListUsers({
+          returnProperties: true,
+          limit,
+        })
+      );
+
+      userIds = allUsers.items.map((item) => item.userId);
+    }
+
     return userIds;
   } catch (error) {
     logger.error('Error getting user recommendations:', error);
+    throw error; // Rethrow error to ensure it can be handled by the caller
   }
 };
 
