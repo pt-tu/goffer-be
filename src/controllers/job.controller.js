@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { jobService, interactionService, applyService } = require('../services');
+const { jobService, interactionService, applyService, recombeeService } = require('../services');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 
@@ -8,6 +8,7 @@ const createJob = catchAsync(async (req, res) => {
   const { user, body } = req;
   req.body.owner = user.id;
   const job = await jobService.createJob(body);
+  await recombeeService.addJobToRecombee(job);
   res.status(httpStatus.CREATED).send(job);
 });
 
@@ -49,6 +50,40 @@ const getJob = catchAsync(async (req, res) => {
   result.saved = saved;
   result.applied = !!applied;
 
+  if (req.user?._id) {
+    await recombeeService.sendInteraction(req.user?._id, req.params.id, 'view');
+  }
+
+  res.send(result);
+});
+
+const recommendJobs = catchAsync(async (req, res) => {
+  const filter = pick(req.query, ['title', 'description', 'location', 'slots', 'time', 'workingHours', 'org', 'status']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
+  const advanced = pick(req.query, ['searchQuery', 'skills', 'tools', 'salaryFrom', 'salaryTo', 'experience']);
+
+  if (advanced.skills) {
+    advanced.skills = advanced.skills.split(',');
+  }
+  if (advanced.tools) {
+    advanced.tools = advanced.tools.split(',');
+  }
+
+  options.user = req.user?._id;
+  const recomJobIds = await recombeeService.recommendJobs(req.user?._id, req.query.searchQuery, 100);
+  filter._id = {
+    $in: recomJobIds,
+  };
+  const result = await jobService.queryJobs(filter, options, advanced);
+
+  const jobMap = new Map(result.results.map((job) => [job.id, job]));
+  const sortedJobs = recomJobIds.map((id) => jobMap.get(id)).filter((job) => job !== undefined);
+
+  result.results = sortedJobs;
+
+  if (result.results.length === 0) {
+    result.endOfResults = true;
+  }
   res.send(result);
 });
 
@@ -61,6 +96,7 @@ const getSourcing = catchAsync(async (req, res) => {
 
 const updateJob = catchAsync(async (req, res) => {
   const job = await jobService.updateJob(req.params.id, req.body);
+  await recombeeService.updateJobInRecombee(job);
   res.send(job);
 });
 
@@ -76,4 +112,5 @@ module.exports = {
   updateJob,
   deleteJob,
   getSourcing,
+  recommendJobs,
 };

@@ -1,6 +1,8 @@
+/* eslint-disable no-param-reassign */
 const httpStatus = require('http-status');
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
+const { rqs, client } = require('../config/recombeeClient');
 
 /**
  *
@@ -37,7 +39,47 @@ const createUser = async (userBody, userQuery) => {
  * @param {number} [options.page] - Current page (default = 1)
  * @returns {Promise<QueryResult>}
  */
-const queryUsers = async (filter, options) => {
+const queryUsers = async (filter, options, advanced) => {
+  if (advanced) {
+    if (advanced.skills) {
+      filter.skills = { $in: advanced.skills };
+    }
+    if (advanced.tools) {
+      filter.tools = { $in: advanced.tools };
+    }
+    if (advanced.searchQuery) {
+      filter.$or = [
+        { name: { $regex: advanced.searchQuery, $options: 'i' } },
+        { email: { $regex: advanced.searchQuery, $options: 'i' } },
+        { location: { $regex: advanced.searchQuery, $options: 'i' } },
+      ];
+    }
+
+    if (advanced.experience) {
+      switch (advanced.experience) {
+        case '0-1 year':
+          filter.yoe = { $lte: 1 };
+          break;
+        case '1-2 years':
+          filter.yoe = { $gte: 1, $lte: 2 };
+          break;
+        case '2-4 years':
+          filter.yoe = { $gte: 2, $lte: 4 };
+          break;
+        case '4-7 years':
+          filter.yoe = { $gte: 4, $lte: 7 };
+          break;
+        case '7-10 years':
+          filter.yoe = { $gte: 7, $lte: 10 };
+          break;
+        case '10+ years':
+          filter.yoe = { $gte: 10 };
+          break;
+        default:
+          break;
+      }
+    }
+  }
   const users = await User.paginate(filter, options);
   return users;
 };
@@ -93,6 +135,35 @@ const deleteUserById = async (userId) => {
   return user;
 };
 
+const addUserToRecombee = async (user) => {
+  const req = new rqs.SetUserValues(
+    user.id.toString(),
+    {
+      skills: user.skills.join(', '),
+      tools: user.tools.join(', '),
+      location: user.location,
+    },
+    {
+      cascadeCreate: true,
+    }
+  );
+
+  await client.send(req);
+};
+
+const recommendCandidates = async (jobId, limit = 10, page = 1) => {
+  const recommendations = await client.send(
+    new rqs.RecommendUsersToItem(jobId.toString(), limit, {
+      scenario: 'homepage',
+      cascadeCreate: true,
+      returnProperties: true,
+      page,
+    })
+  );
+  const userIds = recommendations.recomms.map((r) => r.id);
+  return User.find({ _id: { $in: userIds } });
+};
+
 module.exports = {
   createUser,
   queryUsers,
@@ -101,4 +172,6 @@ module.exports = {
   updateUserById,
   deleteUserById,
   emailExists,
+  addUserToRecombee,
+  recommendCandidates,
 };

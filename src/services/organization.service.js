@@ -1,8 +1,10 @@
+/* eslint-disable no-param-reassign */
 const { v4: uuid } = require('uuid');
 const httpStatus = require('http-status');
 const { Organization, User } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { userService } = require('.');
+const { rqs, client } = require('../config/recombeeClient');
 
 /**
  *
@@ -24,7 +26,14 @@ const createOrganization = async (organizationBody) => {
  * @param {number} [options.page] - Current page (default = 1)
  * @returns {Promise<QueryResult>}
  */
-const queryOrganizations = async (filter, options) => {
+const queryOrganizations = async (filter, options, advanced) => {
+  if (advanced?.searchQuery) {
+    filter.$or = [
+      { name: { $regex: advanced.searchQuery, $options: 'i' } },
+      { field: { $regex: advanced.searchQuery, $options: 'i' } },
+      { location: { $regex: advanced.searchQuery, $options: 'i' } },
+    ];
+  }
   const organizations = await Organization.paginate(filter, options);
   return organizations;
 };
@@ -118,6 +127,37 @@ const getOrganizationMembers = async (id) => {
   return User.find({ org: id });
 };
 
+const addOrganizationToRecombee = async (organization) => {
+  const req = new rqs.SetItemValues(
+    organization.id.toString(),
+    {
+      name: organization.name,
+      description: organization.description,
+      field: organization.field,
+      location: organization.location,
+      website: organization.website,
+    },
+    {
+      cascadeCreate: true,
+    }
+  );
+
+  await client.send(req);
+};
+
+const recommendOrganizations = async (userId, limit = 10, page = 1) => {
+  const recommendations = await client.send(
+    new rqs.RecommendItemsToUser(userId.toString(), limit, {
+      scenario: 'homepage',
+      cascadeCreate: true,
+      returnProperties: true,
+      page,
+    })
+  );
+  const orgIds = recommendations.recomms.map((r) => r.id);
+  return Organization.find({ _id: { $in: orgIds } });
+};
+
 module.exports = {
   queryOrganizations,
   createOrganization,
@@ -127,4 +167,6 @@ module.exports = {
   getOrganizationByDomain,
   addMember,
   getOrganizationMembers,
+  addOrganizationToRecombee,
+  recommendOrganizations,
 };

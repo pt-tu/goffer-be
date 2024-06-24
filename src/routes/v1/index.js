@@ -14,6 +14,7 @@ const feedbackRoute = require('./feedback.route');
 const genaiRoute = require('./genai.route');
 const projectRoute = require('./project.route');
 const recommendationRoute = require('./recommendation.route');
+const recombeeRoute = require('./recombee.route');
 
 const config = require('../../config/config');
 
@@ -75,6 +76,10 @@ const defaultRoutes = [
   {
     path: '/recommendations',
     route: recommendationRoute,
+  },
+  {
+    path: '/recombee',
+    route: recombeeRoute,
   },
 ];
 

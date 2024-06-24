@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const httpStatus = require('http-status');
 const { Organization } = require('../models');
 const Job = require('../models/job.model');
@@ -30,7 +31,23 @@ const createJob = async (jobBody) => {
  * @param {number} [options.page] - Current page (default = 1)
  * @returns {Promise<QueryResult>}
  */
-const queryJobs = async (filter, options) => {
+const queryJobs = async (filter, options, advanced) => {
+  if (advanced?.tools) {
+    filter.tools = { $in: advanced.tools };
+  }
+  if (advanced?.skills) {
+    filter.skills = { $in: advanced.skills };
+  }
+  if (advanced?.salaryFrom) {
+    filter.salaryFrom = { $gte: advanced.salaryFrom };
+  }
+  if (advanced?.salaryTo) {
+    filter.salaryTo = { $lte: advanced.salaryTo };
+  }
+  if (advanced?.experience) {
+    filter.experience = advanced.experience;
+  }
+
   const jobs = await Job.paginate(filter, options);
   return jobs;
 };

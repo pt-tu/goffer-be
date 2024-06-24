@@ -6,3 +6,5 @@ module.exports.questionValidation = require('./question.validation');
 module.exports.assessmentValidation = require('./assessment.validation');
 module.exports.projectValidation = require('./project.validation');
 module.exports.recommendationValidation = require('./recommendation.validation');
+module.exports.recombeeValidation = require('./recombee.validation');
+module.exports.jobValidation = require('./job.validation');

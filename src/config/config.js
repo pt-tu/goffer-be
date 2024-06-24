@@ -48,6 +48,10 @@ const envVarsSchema = Joi.object()
     // Stream Chat
     STREAM_PUBLIC_KEY: Joi.string().required().description('Stream Chat public key'),
     STREAM_SECRET_KEY: Joi.string().required().description('Stream Chat secret key'),
+    // Recombee
+    RECOMBEE_DATABASE_ID: Joi.string().required().description('Recombee database id'),
+    RECOMBEE_PRIVATE_TOKEN: Joi.string().required().description('Recombee private token'),
+    RECOMBEE_DB_REGION: Joi.string().required().description('Recombee database region'),
   })
   .unknown();
 
@@ -124,5 +128,10 @@ module.exports = {
   stream: {
     publicKey: envVars.STREAM_PUBLIC_KEY,
     secretKey: envVars.STREAM_SECRET_KEY,
+  },
+  recombee: {
+    databaseId: envVars.RECOMBEE_DATABASE_ID,
+    privateToken: envVars.RECOMBEE_PRIVATE_TOKEN,
+    dbRegion: envVars.RECOMBEE_DB_REGION,
   },
 };

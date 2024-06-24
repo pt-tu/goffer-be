@@ -6,3 +6,4 @@ module.exports.Question = require('./question.model');
 module.exports.Assessment = require('./assessment.model');
 module.exports.Project = require('./project.model');
 module.exports.Recommendation = require('./recommendation.model');
+module.exports.Job = require('./job.model');
