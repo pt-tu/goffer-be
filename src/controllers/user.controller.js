@@ -49,19 +49,21 @@ const recommendUsers = catchAsync(async (req, res) => {
   }
 
   options.user = req.user?._id;
-  const recomUserIds = await recombeeService.recommendUsers(
-    req.user?.id,
-    100
-    // (options.limit || 10) * (options.page || 1)
-  );
+
+  const recomUserIds = await recombeeService.recommendUsers(req.user?.id, 100);
   filter._id = { $in: recomUserIds };
   const result = await userService.queryUsers(filter, options, advanced);
-  const users = await new ProUserListDecorator(result.results).getUsers();
+
+  const userMap = new Map(result.results.map((user) => [user.id, user]));
+  const sortedUsers = recomUserIds.map((id) => userMap.get(id)).filter((user) => user !== undefined);
+
+  const users = await new ProUserListDecorator(sortedUsers).getUsers();
   result.results = users;
 
   if (result.results.length === 0) {
     result.endOfResults = true;
   }
+
   res.send(result);
 });
 
@@ -69,11 +71,22 @@ const recommendCandidates = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role', 'portfolioDomain']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   options.user = req.user?._id;
-  const recomUserIds = await recombeeService.recommendCandidates(req.params?.jobId, options.limit || 10, options.page || 1);
+
+  const advanced = pick(req.query, ['searchQuery', 'tools', 'skills', 'experience']);
+
+  const recomUserIds = await recombeeService.recommendCandidates(req.params?.jobId, 100, options.page || 1);
   filter._id = { $in: recomUserIds };
-  const result = await userService.queryUsers(filter, options);
-  const users = await new ProUserListDecorator(result.results).getUsers();
+  const result = await userService.queryUsers(filter, options, advanced);
+
+  const userMap = new Map(result.results.map((user) => [user.id, user]));
+  const sortedUsers = recomUserIds.map((id) => userMap.get(id)).filter((user) => user !== undefined);
+  const users = await new ProUserListDecorator(sortedUsers).getUsers();
+
   result.results = users;
+
+  if (result.results.length === 0) {
+    result.endOfResults = true;
+  }
   res.send(result);
 });
 

@@ -76,6 +76,11 @@ const recommendJobs = catchAsync(async (req, res) => {
   };
   const result = await jobService.queryJobs(filter, options, advanced);
 
+  const jobMap = new Map(result.results.map((job) => [job.id, job]));
+  const sortedJobs = recomJobIds.map((id) => jobMap.get(id)).filter((job) => job !== undefined);
+
+  result.results = sortedJobs;
+
   if (result.results.length === 0) {
     result.endOfResults = true;
   }
