@@ -54,6 +54,31 @@ const queryUsers = async (filter, options, advanced) => {
         { location: { $regex: advanced.searchQuery, $options: 'i' } },
       ];
     }
+
+    if (advanced.experience) {
+      switch (advanced.experience) {
+        case '0-1 year':
+          filter.yoe = { $lte: 1 };
+          break;
+        case '1-2 years':
+          filter.yoe = { $gte: 1, $lte: 2 };
+          break;
+        case '2-4 years':
+          filter.yoe = { $gte: 2, $lte: 4 };
+          break;
+        case '4-7 years':
+          filter.yoe = { $gte: 4, $lte: 7 };
+          break;
+        case '7-10 years':
+          filter.yoe = { $gte: 7, $lte: 10 };
+          break;
+        case '10+ years':
+          filter.yoe = { $gte: 10 };
+          break;
+        default:
+          break;
+      }
+    }
   }
   const users = await User.paginate(filter, options);
   return users;
