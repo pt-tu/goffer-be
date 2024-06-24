@@ -208,6 +208,9 @@ const userSchema = mongoose.Schema(
     portfolio: {
       type: portfolioSchema,
     },
+    yoe: {
+      type: Number,
+    },
   },
   {
     timestamps: true,

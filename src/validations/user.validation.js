@@ -36,6 +36,7 @@ const getUser = {
 const updateUserSelf = {
   body: Joi.object()
     .keys({
+      yoe: Joi.number(),
       password: Joi.string().custom(password),
       name: Joi.string(),
       avatar: Joi.string(),
