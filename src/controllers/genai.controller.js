@@ -13,7 +13,7 @@ const catchAsync = require('../utils/catchAsync');
 
 const getResponse = catchAsync(async (req, res) => {
   const { prompt, systemMessage, maxTokens } = req.body;
-  const response = await genaiService.generateResponse(prompt, systemMessage, maxTokens);
+  const response = await genaiService.bedrockGenerateResponse(prompt, systemMessage, maxTokens);
   res.json({ response });
 });
 

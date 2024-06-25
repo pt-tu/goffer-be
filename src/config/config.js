@@ -52,6 +52,9 @@ const envVarsSchema = Joi.object()
     RECOMBEE_DATABASE_ID: Joi.string().required().description('Recombee database id'),
     RECOMBEE_PRIVATE_TOKEN: Joi.string().required().description('Recombee private token'),
     RECOMBEE_DB_REGION: Joi.string().required().description('Recombee database region'),
+    // AWS
+    SECRET_ACCESS_KEY: Joi.string().required().description('AWS secret access key'),
+    ACCESS_KEY_ID: Joi.string().required().description('AWS access key id'),
   })
   .unknown();
 
@@ -133,5 +136,11 @@ module.exports = {
     databaseId: envVars.RECOMBEE_DATABASE_ID,
     privateToken: envVars.RECOMBEE_PRIVATE_TOKEN,
     dbRegion: envVars.RECOMBEE_DB_REGION,
+  },
+  aws: {
+    credentials: {
+      secretAccessKey: process.env.SECRET_ACCESS_KEY,
+      accessKeyId: process.env.ACCESS_KEY_ID,
+    },
   },
 };
