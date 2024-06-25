@@ -20,7 +20,7 @@ const chat = async (messages) => {
     else if (chatHistory.length > 0) chatHistory[chatHistory.length - 1].push(message.content.at(0).text);
   });
 
-  console.log('chatHistory', chatHistory);
+  // console.log('chatHistory', chatHistory);
   const question = messages[messages.length - 1].content.at(0).text;
   const restHistory = chatHistory.slice(0, -1);
   const conversationalRetrievalQAChain = getConversationalRetrievalQAChain();

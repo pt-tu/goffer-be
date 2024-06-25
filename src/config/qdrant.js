@@ -36,7 +36,7 @@ let conversationalRetrievalQAChain = null;
   });
   retriever = vectorStore.asRetriever();
 
-  const condenseQuestionTemplate = `${genai.RAG_SYSTEM_PROMPT}. Here are also the history of your conversation with user. Use this for reference if needed. REPLY IN PLAIN TEXT. DON'T USE MARKDOWN.
+  const condenseQuestionTemplate = `Here are also the history of your conversation with user. Use this for reference if needed. REPLY IN PLAIN TEXT. DON'T USE MARKDOWN.
 
   Chat History:
   {chat_history}
@@ -48,7 +48,7 @@ let conversationalRetrievalQAChain = null;
   {context}
 
   Question: {question}
-  REPLY IN PLAIN TEXT. DON'T USE MARKDOWN.
+  You are an HR expert. You need to guide the user on how to use the application. Answer the user's question.
   `;
   const ANSWER_PROMPT = PromptTemplate.fromTemplate(answerTemplate);
 
