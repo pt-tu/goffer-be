@@ -91,7 +91,7 @@ const updateUserSelf = {
           .message('Brand name can only contain lowercase alphabetic characters, underscores, and hyphens.')
           .required(),
         images: Joi.array()
-          .items(Joi.string())
+          .items(Joi.string().allow(''))
           .when('portfolio.template', {
             is: 'ONCE_IN_A_MOON',
             then: Joi.array().items(Joi.string()).length(3).required(),
