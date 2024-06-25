@@ -15,3 +15,4 @@ module.exports.assessmentService = require('./assessment.service');
 module.exports.projectService = require('./project.service');
 module.exports.recommendationService = require('./recommendation.service');
 module.exports.recombeeService = require('./recombee.service');
+module.exports.ragService = require('./rag.service');
