@@ -55,6 +55,9 @@ const envVarsSchema = Joi.object()
     // AWS
     SECRET_ACCESS_KEY: Joi.string().required().description('AWS secret access key'),
     ACCESS_KEY_ID: Joi.string().required().description('AWS access key id'),
+    // QDRANT
+    QDRANT_API_KEY: Joi.string().required().description('Qdrant api key'),
+    QDRANT_URL: Joi.string().required().description('Qdrant url'),
   })
   .unknown();
 
@@ -142,5 +145,10 @@ module.exports = {
       secretAccessKey: process.env.SECRET_ACCESS_KEY,
       accessKeyId: process.env.ACCESS_KEY_ID,
     },
+  },
+  qdrant: {
+    apiKey: envVars.QDRANT_API_KEY,
+    url: envVars.QDRANT_URL,
+    collectionName: 'test05',
   },
 };
