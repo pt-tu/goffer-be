@@ -4,14 +4,82 @@
 const pdfParse = require('pdf-parse');
 const fs = require('fs');
 const marked = require('marked');
+const { RunnableSequence } = require('@langchain/core/runnables');
+const { PromptTemplate } = require('@langchain/core/prompts');
 const axios = require('axios');
+const { StringOutputParser } = require('@langchain/core/output_parsers');
 const embeddings = require('../config/embedding');
-const { client, getConversationalRetrievalQAChain } = require('../config/qdrant');
+const { client } = require('../config/qdrant');
 const genaiService = require('./genai.service');
 const genai = require('../config/genai');
 const logger = require('../config/logger');
+const config = require('../config/config');
+const { langchainOpenai } = require('../config/openai');
+
+async function performSearchQuery(query, collectionTable) {
+  try {
+    const queryEmbedding = await embeddings.embedQuery(query);
+    const response = await client.search(collectionTable, {
+      vector: queryEmbedding,
+      score_threshold: 0.0,
+      limit: 3,
+    });
+
+    return response.map((res) => res.payload.content).join('\n');
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+}
 
 /** CHAT */
+//
+//
+const condenseQuestionTemplate = `${genai.RAG_SYSTEM_PROMPT}. Here the context/documentation: {context}
+
+  Here are also the history of your conversation with user. Use this for reference if needed. REPLY IN PLAIN TEXT. DON'T USE MARKDOWN.
+  Chat History:
+  {chat_history}
+
+  Follow Up Input: {question}`;
+const CONDENSE_QUESTION_PROMPT = PromptTemplate.fromTemplate(condenseQuestionTemplate);
+
+// const answerTemplate = `Context:
+//   {context}
+
+//   Question: {question}
+//   You are an HR expert. You need to guide the user on how to use the application. Answer the user's question.
+//   `;
+// const ANSWER_PROMPT = PromptTemplate.fromTemplate(answerTemplate);
+
+const formatChatHistory = (chatHistory) => {
+  const formattedDialogueTurns = chatHistory.map(
+    (dialogueTurn) => `Human: ${dialogueTurn[0]}\nAssistant: ${dialogueTurn[1]}`
+  );
+  return formattedDialogueTurns.join('\n');
+};
+
+const standaloneQuestionChain = RunnableSequence.from([
+  {
+    question: (input) => input.question,
+    chat_history: (input) => formatChatHistory(input.chat_history),
+    context: async (input) => performSearchQuery(input.question, config.qdrant.collectionName),
+  },
+  CONDENSE_QUESTION_PROMPT,
+  langchainOpenai,
+  new StringOutputParser(),
+]);
+
+// const answerChain = RunnableSequence.from([
+//   async (input) => ({
+//     context: await performSearchQuery(input, config.qdrant.collectionName),
+//     question: new RunnablePassthrough(),
+//   }),
+//   ANSWER_PROMPT,
+//   langchainOpenai,
+// ]);
+
+// const conversationalRetrievalQAChain = standaloneQuestionChain.pipe(answerChain);
 
 const chat = async (messages) => {
   const chatHistory = [];
@@ -23,16 +91,18 @@ const chat = async (messages) => {
   // console.log('chatHistory', chatHistory);
   const question = messages[messages.length - 1].content.at(0).text;
   const restHistory = chatHistory.slice(0, -1);
-  const conversationalRetrievalQAChain = getConversationalRetrievalQAChain();
-  const { content } = await conversationalRetrievalQAChain.invoke({
+  const response = await standaloneQuestionChain.invoke({
     chat_history: restHistory,
     question,
   });
 
-  return content;
+  return response;
 };
 
-/** CHAT */
+/** END OF CHAT */
+//
+//
+
 async function loadPDF(filePathOrUrl) {
   let dataBuffer;
   if (filePathOrUrl.startsWith('http://') || filePathOrUrl.startsWith('https://')) {
