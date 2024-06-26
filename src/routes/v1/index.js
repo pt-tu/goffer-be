@@ -16,6 +16,7 @@ const projectRoute = require('./project.route');
 const recommendationRoute = require('./recommendation.route');
 const recombeeRoute = require('./recombee.route');
 const ragRoute = require('./rag.route');
+const membershipRoute = require('./membership.route');
 
 const config = require('../../config/config');
 
@@ -85,6 +86,10 @@ const defaultRoutes = [
   {
     path: '/rag',
     route: ragRoute,
+  },
+  {
+    path: '/memberships',
+    route: membershipRoute,
   },
 ];
 

@@ -4,6 +4,7 @@ const tokenTypes = {
   RESET_PASSWORD: 'resetPassword',
   VERIFY_EMAIL: 'verifyEmail',
   OTP: 'otp',
+  INVITATION: 'invitation',
 };
 
 module.exports = {
