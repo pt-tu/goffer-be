@@ -149,6 +149,6 @@ module.exports = {
   qdrant: {
     apiKey: envVars.QDRANT_API_KEY,
     url: envVars.QDRANT_URL,
-    collectionName: 'test05',
+    collectionName: 'goffer',
   },
 };
