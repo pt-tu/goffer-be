@@ -14,8 +14,8 @@ const processPDF = catchAsync(async (req, res) => {
 
   const pdfText = await ragService.loadPDF(filePath);
   await ragService.persistEmbeddings(config.qdrant.collectionName, pdfText, customMeta);
-  const answer = await ragService.conductQuery('What is this about?', config.qdrant.collectionName);
-  res.status(200).json({ answer });
+  // const answer = await ragService.conductQuery('What is this about?', config.qdrant.collectionName);
+  res.status(200).send();
 });
 
 const processMarkdown = catchAsync(async (req, res) => {
