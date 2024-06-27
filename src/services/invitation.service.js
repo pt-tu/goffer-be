@@ -1,9 +1,10 @@
+const httpStatus = require('http-status');
 const moment = require('moment');
 const config = require('../config/config');
 const tokenService = require('./token.service');
 const { tokenTypes } = require('../config/tokens');
-const { organizationService, userService, membershipService } = require('.');
-const { Token } = require('../models');
+const { organizationService, userService } = require('.');
+const { Token, Membership } = require('../models');
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -40,11 +41,11 @@ const verifyInvitationToken = async (invitationToken) => {
 
 /**
  *
- * @param {string} verifyToken
+ * @param {string} token
  * @returns {Promise<Membership>}
  */
-const deleteInvitationToken = async (verifyToken) => {
-  const tokenDoc = await tokenService.verifyToken(verifyToken, tokenTypes.INVITATION);
+const deleteInvitationToken = async (token) => {
+  const tokenDoc = await tokenService.verifyToken(token, tokenTypes.INVITATION);
 
   const user = await userService.getUserById(tokenDoc.user);
   if (!user) {
@@ -56,11 +57,13 @@ const deleteInvitationToken = async (verifyToken) => {
     throw new ApiError('Organization not found with this token');
   }
 
-  const membership = await membershipService.queryMembership({ user: user.id, org: org.id });
-  if (membership) {
-    membership.invitationToken = null;
-    await membership.save();
+  const membership = await Membership.findOne({ user: user.id, org: org.id });
+  if (!membership) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Membership not found');
   }
+
+  membership.invitationToken = null;
+  await membership.save();
   await Token.deleteMany({ user: user.id, type: tokenTypes.INVITATION, org: org.id });
 
   return membership;
