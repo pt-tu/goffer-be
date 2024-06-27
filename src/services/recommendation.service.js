@@ -11,12 +11,14 @@ const userService = require('./user.service');
  */
 const createRecommendation = async (recommendationBody) => {
   const response = await Recommendation.create(recommendationBody);
-  const owner = await userService.getUserById(recommendationBody.user);
+  const owner = await userService.getUserById(recommendationBody.owner);
+  const user = await userService.getUserById(recommendationBody.user);
   await notificationService.createNotification(`notifications-${recommendationBody.user}`, {
     title: 'New recommendation',
-    description: `You have a new recommendation from ${owner?.name}`,
+    description: `You have a new recommendation from ${user?.name}`,
     type: 'recommendation',
-    user: owner,
+    user,
+    owner,
     link: `/app/profile?tab=recommendations`,
     createdAt: new Date(),
   });
