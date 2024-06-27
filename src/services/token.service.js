@@ -14,14 +14,16 @@ const { tokenTypes } = require('../config/tokens');
  * @param {Moment} expires
  * @param {string} type
  * @param {string} [secret]
+ * @param {ObjectId} organizationId
  * @returns {string}
  */
-const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
+const generateToken = (userId, expires, type, secret = config.jwt.secret, orgId = null) => {
   const payload = {
     sub: userId,
     iat: moment().unix(),
     exp: expires.unix(),
     type,
+    org: orgId,
   };
   return jwt.sign(payload, secret);
 };
@@ -33,15 +35,17 @@ const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
  * @param {Moment} expires
  * @param {string} type
  * @param {boolean} [blacklisted]
+ * @param {ObjectId} orgId
  * @returns {Promise<Token>}
  */
-const saveToken = async (token, userId, expires, type, blacklisted = false) => {
+const saveToken = async (token, userId, expires, type, blacklisted = false, orgId) => {
   const tokenDoc = await Token.create({
     token,
     user: userId,
     expires: expires.toDate(),
     type,
     blacklisted,
+    org: orgId,
   });
   return tokenDoc;
 };

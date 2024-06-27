@@ -16,3 +16,5 @@ module.exports.projectService = require('./project.service');
 module.exports.recommendationService = require('./recommendation.service');
 module.exports.recombeeService = require('./recombee.service');
 module.exports.ragService = require('./rag.service');
+module.exports.invitationService = require('./invitation.service');
+module.exports.membershipService = require('./membership.service');

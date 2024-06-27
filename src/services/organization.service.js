@@ -110,7 +110,7 @@ const addMember = async (user, org, member) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Organization not found');
   }
   if (organization.owner.toString() !== user) {
-    throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
+    throw new ApiError(httpStatus.FORBIDDEN, 'Only owner can add new members');
   }
 
   return userService.updateUserById(member, {

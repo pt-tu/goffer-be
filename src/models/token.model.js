@@ -16,12 +16,16 @@ const tokenSchema = mongoose.Schema(
     },
     type: {
       type: String,
-      enum: [tokenTypes.REFRESH, tokenTypes.RESET_PASSWORD, tokenTypes.VERIFY_EMAIL, tokenTypes.OTP],
+      enum: [tokenTypes.REFRESH, tokenTypes.RESET_PASSWORD, tokenTypes.VERIFY_EMAIL, tokenTypes.OTP, tokenTypes.INVITATION],
       required: true,
     },
     expires: {
       type: Date,
       required: true,
+    },
+    org: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'Organization',
     },
     blacklisted: {
       type: Boolean,
