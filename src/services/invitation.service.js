@@ -2,8 +2,9 @@ const moment = require('moment');
 const config = require('../config/config');
 const tokenService = require('./token.service');
 const { tokenTypes } = require('../config/tokens');
-const { organizationService } = require('.');
+const { organizationService, userService, membershipService } = require('.');
 const { Token } = require('../models');
+const ApiError = require('../utils/ApiError');
 
 /**
  *
@@ -15,7 +16,13 @@ const generateInvitationToken = async (userId, organizationId) => {
   const expires = moment().add(config.jwt.invitationExpirationDays, 'days');
   const token = tokenService.generateToken(userId, expires, tokenTypes.INVITATION, config.jwt.secret, organizationId);
 
-  await tokenService.saveToken(token, userId, expires, tokenTypes.INVITATION, false, organizationId);
+  const update = {
+    token,
+    expires: expires.toDate(),
+  };
+
+  const options = { upsert: true, new: true, setDefaultsOnInsert: true };
+  await Token.findOneAndUpdate({ user: userId, org: organizationId, type: tokenTypes.INVITATION }, update, options);
 
   return { token, expires: expires.toDate() };
 };
@@ -34,7 +41,7 @@ const verifyInvitationToken = async (invitationToken) => {
 /**
  *
  * @param {string} verifyToken
- * @returns {Promise<Object>}
+ * @returns {Promise<Membership>}
  */
 const deleteInvitationToken = async (verifyToken) => {
   const tokenDoc = await tokenService.verifyToken(verifyToken, tokenTypes.INVITATION);
@@ -56,7 +63,7 @@ const deleteInvitationToken = async (verifyToken) => {
   }
   await Token.deleteMany({ user: user.id, type: tokenTypes.INVITATION, org: org.id });
 
-  return { token, expires: expires.toDate() };
+  return membership;
 };
 
 module.exports = {

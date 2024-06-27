@@ -177,22 +177,6 @@ const verifyOtpToken = async (otp, user) => {
   return tokenDoc;
 };
 
-/**
- *
- * @param {string} token
- * @param {Object} body
- * @returns {Promise<Token>}
- */
-const updateInvitationToken = async (token, body) => {
-  const tokenDoc = await Token.findOne({ token, type: tokenTypes.INVITATION });
-  if (!tokenDoc) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Token not found');
-  }
-  Object.assign(tokenDoc, body);
-  await tokenDoc.save();
-  return tokenDoc;
-};
-
 module.exports = {
   generateToken,
   saveToken,
@@ -202,5 +186,4 @@ module.exports = {
   generateVerifyEmailToken,
   generateOtpToken,
   verifyOtpToken,
-  updateInvitationToken,
 };

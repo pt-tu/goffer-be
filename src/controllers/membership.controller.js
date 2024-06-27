@@ -15,7 +15,7 @@ const createMembership = catchAsync(async (req, res) => {
 
   const { membership, expires } = await membershipService.createMembership(body);
 
-  // ... (gửi thông báo với invitationLink)
+  // ... gửi thông báo với invitation link
 
   membership.toJSON();
   membership.expires = expires;
