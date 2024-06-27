@@ -19,10 +19,12 @@ router
 
 router.route('/user/:userId').get(membershipController.getUserMemberships);
 
-router.route('/org/:orgId').get(auth('getMemberships'), membershipController.getOrganizationMemberships);
+router
+  .route('/org/:orgId')
+  .get(validate(membershipValidation.getOrganizationMemberships), membershipController.getOrganizationMemberships);
 
-router.route('/:invitationToken/accept').post(auth(), membershipController.acceptInvitation);
+router.route('/accept').post(auth(), validate(membershipValidation.replyInvitation), membershipController.acceptInvitation);
 
-router.route('/:invitationToken/reject').post(auth(), membershipController.rejectInvitation);
+router.route('/reject').post(auth(), validate(membershipValidation.replyInvitation), membershipController.rejectInvitation);
 
 module.exports = router;

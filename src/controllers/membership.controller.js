@@ -1,9 +1,7 @@
 const httpStatus = require('http-status');
-const console = require('console');
 const pick = require('../utils/pick');
 const catchAsync = require('../utils/catchAsync');
-const { membershipService, invitationService, tokenService } = require('../services');
-const config = require('../config/config');
+const { membershipService, invitationService } = require('../services');
 const ApiError = require('../utils/ApiError');
 const { Membership } = require('../models');
 
@@ -17,10 +15,12 @@ const createMembership = catchAsync(async (req, res) => {
 
   const { membership, expires } = await membershipService.createMembership(body);
 
-  const invitationLink = `${config.domain}/v1/memberships/${membership.invitationToken}`;
   // ... (gửi thông báo với invitationLink)
 
-  res.status(httpStatus.CREATED).send({ message: 'Invitation sent successfully', invitationLink, expires });
+  membership.toJSON();
+  membership.expires = expires;
+
+  res.status(httpStatus.CREATED).send(membership);
 });
 
 const getMemberships = catchAsync(async (req, res) => {
@@ -59,15 +59,13 @@ const getOrganizationMemberships = catchAsync(async (req, res) => {
 const acceptInvitation = catchAsync(async (req, res) => {
   const { user } = req;
 
-  const invitation = await invitationService.verifyInvitationToken(req.params.invitationToken);
-  const { userId, org } = invitation;
-  console.log('🚀 ~ file: membership.controller.js:87 ~ rejectInvitation ~ userId, orgId:', invitation);
+  const { userId, orgId } = await invitationService.verifyInvitationToken(req.body.token);
 
   if (userId.toString() !== user.id) {
     throw new ApiError(httpStatus.FORBIDDEN, 'This invitation is not for you');
   }
 
-  const membership = await Membership.findOne({ user: userId, org });
+  const membership = await Membership.findOne({ user: userId, org: orgId });
   if (!membership || membership.status !== 'sent') {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid or expired invitation');
   }
@@ -76,31 +74,30 @@ const acceptInvitation = catchAsync(async (req, res) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'You are already a member of this organization');
   }
 
-  await membershipService.updateMembershipById(membership.id, { status: 'accepted' });
-  await tokenService.updateInvitationToken(membership.invitationToken, { blacklisted: true });
+  const result = await membershipService.updateMembershipById(membership.id, { status: 'accepted' });
+  await invitationService.deleteInvitationToken(membership.invitationLink);
 
-  res.status(httpStatus.OK).send({ message: 'Invitation accepted successfully' });
+  res.status(httpStatus.OK).send(result);
 });
 
 const rejectInvitation = catchAsync(async (req, res) => {
-  const { invitationToken } = req.params;
   const { user } = req;
 
-  const { userId, org } = await invitationService.verifyInvitationToken(invitationToken);
+  const { userId, orgId } = await invitationService.verifyInvitationToken(req.body.token);
 
   if (userId.toString() !== user.id) {
     throw new ApiError(httpStatus.FORBIDDEN, 'This invitation is not for you');
   }
 
-  const membership = await Membership.findOne({ user: userId, org });
+  const membership = await Membership.findOne({ user: userId, org: orgId });
   if (!membership || membership.status !== 'sent') {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid or expired invitation');
   }
 
-  await membershipService.updateMembershipById(membership.id, { status: 'rejected' });
-  await tokenService.updateInvitationToken(membership.invitationToken, { blacklisted: true });
+  const result = await membershipService.updateMembershipById(membership.id, { status: 'rejected' });
+  await invitationService.deleteInvitationToken(membership.invitationLink);
 
-  res.status(httpStatus.OK).send({ message: 'Invitation rejected' });
+  res.status(httpStatus.OK).send(result);
 });
 
 module.exports = {

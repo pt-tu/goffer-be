@@ -23,6 +23,10 @@ const tokenSchema = mongoose.Schema(
       type: Date,
       required: true,
     },
+    org: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'Organization',
+    },
     blacklisted: {
       type: Boolean,
       default: false,

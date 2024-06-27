@@ -42,7 +42,7 @@ const createMembership = async (body) => {
   update.invitationToken = token;
 
   const options = { upsert: true, new: true, setDefaultsOnInsert: true };
-  const membership = await Membership.findOneAndUpdate({ user: user.id, org: org.id }, update, options);
+  const membership = await Membership.findOneAndUpdate({ user: user.id, org: org.id }, update, options).populate('user');
 
   return { membership, expires };
 };
@@ -59,6 +59,19 @@ const createMembership = async (body) => {
 const queryMemberships = async (filter, options) => {
   const memberships = await Membership.paginate(filter, options);
   return memberships;
+};
+
+/**
+ *
+ * @param {Object} body
+ * @returns {Promise<QueryResult>}
+ */
+const queryMembership = async (body) => {
+  const membership = await Membership.findOne(body);
+  if (!membership) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Membership not found');
+  }
+  return membership;
 };
 
 /**
@@ -146,6 +159,7 @@ module.exports = {
   isUserOwner,
   createMembership,
   queryMemberships,
+  queryMembership,
   getMembershipById,
   updateMembershipById,
   deleteMembershipById,

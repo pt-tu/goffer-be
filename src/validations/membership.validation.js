@@ -27,13 +27,13 @@ const getMemberships = {
 
 const getMembership = {
   params: Joi.object().keys({
-    id: Joi.string().custom(objectId),
+    id: Joi.string().custom(objectId).required(),
   }),
 };
 
 const updateMembership = {
   params: Joi.object().keys({
-    id: Joi.string().custom(objectId),
+    id: Joi.string().custom(objectId).required(),
   }),
   body: Joi.object()
     .keys({
@@ -46,7 +46,19 @@ const updateMembership = {
 
 const deleteMembership = {
   params: Joi.object().keys({
-    id: Joi.string().custom(objectId),
+    id: Joi.string().custom(objectId).required(),
+  }),
+};
+
+const getOrganizationMemberships = {
+  params: Joi.object().keys({
+    orgId: Joi.string().custom(objectId).required(),
+  }),
+};
+
+const replyInvitation = {
+  body: Joi.object().keys({
+    token: Joi.string().required(),
   }),
 };
 
@@ -56,4 +68,6 @@ module.exports = {
   getMembership,
   updateMembership,
   deleteMembership,
+  getOrganizationMemberships,
+  replyInvitation,
 };
