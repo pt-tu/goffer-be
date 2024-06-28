@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+const mongoose = require('mongoose');
 const httpStatus = require('http-status');
 const Apply = require('../models/apply.model');
 const ApiError = require('../utils/ApiError');
@@ -92,8 +94,15 @@ const submitAnswerToApplication = async (applicationId, answer) => {
   return application;
 };
 
-const countApplicationsByPhases = async () => {
+const countApplicationsByPhases = async (filter) => {
+  if (filter.job) {
+    filter.job = mongoose.Types.ObjectId(filter.job);
+  }
+
   return Apply.aggregate([
+    {
+      $match: filter,
+    },
     {
       $group: {
         _id: '$phase',

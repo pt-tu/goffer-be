@@ -12,7 +12,7 @@ router
   .get(auth(true), validate(applyValidation.getApplications), applyController.getApplications)
   .patch(auth(), validate(applyValidation.updateApplication), applyController.updateApplication);
 
-router.route('/count').get(auth(true), applyController.countApplicationsByPhases);
+router.route('/count').get(auth(true), validate(applyValidation.getApplications), applyController.countApplicationsByPhases);
 
 router.route('/:id').get(auth(), validate(applyValidation.getApplication), applyController.getApplication);
 

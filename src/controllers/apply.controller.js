@@ -63,7 +63,9 @@ const updateApplication = catchAsync(async (req, res) => {
 });
 
 const countApplicationsByPhases = catchAsync(async (req, res) => {
-  const result = await applyService.countApplicationsByPhases(req.params.id);
+  const filter = pick(req.query, ['job']);
+
+  const result = await applyService.countApplicationsByPhases(filter);
   res.send(result);
 });
 
