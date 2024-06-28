@@ -92,6 +92,17 @@ const submitAnswerToApplication = async (applicationId, answer) => {
   return application;
 };
 
+const countApplicationsByPhases = async () => {
+  return Apply.aggregate([
+    {
+      $group: {
+        _id: '$phase',
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+};
+
 module.exports = {
   createApplication,
   getApplications,
@@ -99,4 +110,5 @@ module.exports = {
   queryApplication,
   updateApplication,
   submitAnswerToApplication,
+  countApplicationsByPhases,
 };

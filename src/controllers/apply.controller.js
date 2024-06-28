@@ -62,10 +62,16 @@ const updateApplication = catchAsync(async (req, res) => {
   res.send(updatedApplication);
 });
 
+const countApplicationsByPhases = catchAsync(async (req, res) => {
+  const result = await applyService.countApplicationsByPhases(req.params.id);
+  res.send(result);
+});
+
 module.exports = {
   createApplication,
   getApplications,
   getApplication,
   queryApplication,
   updateApplication,
+  countApplicationsByPhases,
 };
