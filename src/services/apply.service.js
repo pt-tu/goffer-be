@@ -10,6 +10,8 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<Apply>}
  */
 const createApplication = async (applyBody) => {
+  const match = Math.floor(Math.random() * 100);
+  applyBody.match = match;
   const application = await Apply.create(applyBody);
   return application;
 };
@@ -94,6 +96,16 @@ const updateApplication = async (req) => {
   return application;
 };
 
+const updateApplicationRaw = async (applicationId, updateBody) => {
+  const application = await Apply.findById(applicationId);
+  if (!application) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Application not found');
+  }
+  Object.assign(application, updateBody);
+  await application.save();
+  return application;
+};
+
 /**
  *
  * @param {string} applicationId
@@ -144,4 +156,5 @@ module.exports = {
   updateApplication,
   submitAnswerToApplication,
   countApplicationsByPhases,
+  updateApplicationRaw,
 };
