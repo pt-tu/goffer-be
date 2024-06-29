@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "apis": [
+    {
+      "identifier": "magicalapi",
+      "source": "@magicalapi/v1.0#imo6klwufsw2c",
+      "integrity": "sha512-YNPuLuT8iHE++ClNLcQ/Vg+DJxJ7AvF7Vs1ZS4m7sdxGYWaqnT6nN6ZXU2HqqJ6A7c2aL/ft7YKbbHZvhsmStA==",
+      "installerVersion": "6.1.1"
+    }
+  ]
+}

@@ -1,0 +1,1941 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "MagicalAPI Services",
+    "version": "unknown"
+  },
+  "servers": [
+    {
+      "url": "https://gw.magicalapi.com/"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "api-key",
+        "x-default": "YOUR-API-KEY"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/youtube-seo/": {
+      "post": {
+        "summary": "YouTube SEO",
+        "description": "The API endpoint of the YouTube SEO service.",
+        "operationId": "youtube-seo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "video_url": {
+                    "type": "string",
+                    "description": "URL of video on YouTube.",
+                    "default": "https://www.youtube.com/watch?v=PZZI1QXlM80"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"score\": 46,\n  \"result\": {\n    \"title\": {\n      \"pros\": [\n        \"Title length is within the optimal range, enhancing visibility and engagement.\"\n      ],\n      \"cons\": [\n        \"No relevant keywords found in the title. \\n<b>Tip:</b> Incorporate at least one significant keyword in your video title to improve SEO. This makes your video more likely to be discovered by your target audience.\\n\"\n      ]\n    },\n    \"description\": {\n      \"pros\": [\n        \"Your description's length is ideal, providing ample context for viewers and search engines.\",\n        \"Suggested video link included encouraging viewers to watch more content.\",\n        \"Social media links present, facilitating cross-platform engagement.\"\n      ],\n      \"cons\": [\n        \"Title not repeated in the description.\\n<b>Tip:</b> Incorporate your video's title within the description to strengthen SEO. This repetition can help with search engine relevance.\\n\",\n        \"Inadequate or excessive use of keywords in the description.\\n<b>Tip:</b> Incorporate video tags within the description for improved search engine optimization.\\n\",\n        \"No hashtags found in the description.\\n<b>Tip:</b> Use relevant hashtags to improve discover ability in searches and on social platforms.\\n\",\n        \"Hashtags count is outside the ideal range.\\n<b>Tip:</b> Use between 3 to 5 hashtags to maintain focus and avoid diluting your video's categorization strength.\\n\",\n        \"No video chapters found.\\n<b>Tip:</b> Add video chapters by including timestamps in your description. This improves user experience and can lead to better engagement rates.\\n\"\n      ]\n    },\n    \"tags\": {\n      \"pros\": [],\n      \"cons\": [\n        \"Tag usage is outside the optimal range.\\n<b>Tip:</b> Ensure your video includes at least 5 relevant tags to balance discoverability with focus.\\n\",\n        \"Tags length outside 200-400 characters.\\n<b>Tip:</b> Ensure your video tags are between 200 and 400 characters to maximize keyword coverage.\\n\"\n      ]\n    },\n    \"video_quality\": {\n      \"pros\": [\"Video is in HD, ensuring a high-quality viewing experience.\"],\n      \"cons\": []\n    },\n    \"comments\": {\n      \"pros\": [\"Engagement with viewers demonstrated by hearting comments.\"],\n      \"cons\": []\n    },\n    \"thumbnail\": {\n      \"pros\": [\n        \"The Thumbnail is high-resolution, making your video more appealing and likely to be clicked.\"\n      ],\n      \"cons\": []\n    }\n  },\n  \"details\": {\n    \"kind\": \"youtube#videoListResponse\",\n    \"etag\": \"dMya8POAnGaC_CkvoXRttpecmXc\",\n    \"items\": [\n      {\n        \"kind\": \"youtube#video\",\n        \"etag\": \"gXbJW6X4O8bSGIc92RfK70R3BcM\",\n        \"id\": \"PZZI1QXlM80\",\n        \"snippet\": {\n          \"title\": \"#MicrosoftEvent in less than 2 minutes | September 21, 2023\",\n          \"description\": \"Enter the new era of AI with Copilot for Microsoft. See event announcements from Bing, Edge, Microsoft 365, Surface and Windows. Hear from Satya Nadella and other leaders from Microsoft about our commitment to providing technology to empower every person and organization on the planet achieve more. We're excited to discover what you'll do with these new capabilities.\\n\\nWatch the full event: https://youtu.be/XYUEQ0SyOyE\\n\\nSubscribe to Microsoft on YouTube here: https://aka.ms/SubscribeToYouTube\\r\\n\\r\\nFollow us on social: \\r\\nLinkedIn: https://www.linkedin.com/company/microsoft/ \\r\\nTwitter: https://twitter.com/Microsoft\\r\\nFacebook: https://www.facebook.com/Microsoft/ \\r\\nInstagram: https://www.instagram.com/microsoft/ \\r\\n \\r\\nFor more about Microsoft, our technology, and our mission, visit https://aka.ms/microsoftstories\",\n          \"publishedAt\": \"2023-09-21T23:41:47Z\",\n          \"channelId\": \"UCFtEEv80fQVKkD4h1PF-Xqw\",\n          \"thumbnails\": {\n            \"default\": {\n              \"url\": \"https://i.ytimg.com/vi/PZZI1QXlM80/default.jpg\",\n              \"width\": 120,\n              \"height\": 90\n            },\n            \"medium\": {\n              \"url\": \"https://i.ytimg.com/vi/PZZI1QXlM80/mqdefault.jpg\",\n              \"width\": 320,\n              \"height\": 180\n            },\n            \"high\": {\n              \"url\": \"https://i.ytimg.com/vi/PZZI1QXlM80/hqdefault.jpg\",\n              \"width\": 480,\n              \"height\": 360\n            },\n            \"standard\": {\n              \"url\": \"https://i.ytimg.com/vi/PZZI1QXlM80/sddefault.jpg\",\n              \"width\": 640,\n              \"height\": 480\n            },\n            \"maxres\": {\n              \"url\": \"https://i.ytimg.com/vi/PZZI1QXlM80/maxresdefault.jpg\",\n              \"width\": 1280,\n              \"height\": 720\n            }\n          },\n          \"channelTitle\": \"Microsoft\",\n          \"tags\": [],\n          \"categoryId\": \"28\",\n          \"liveBroadcastContent\": \"none\",\n          \"defaultAudioLanguage\": \"en\"\n        },\n        \"contentDetails\": { \"definition\": \"hd\", \"duration\": \"PT1M50S\" },\n        \"statistics\": {\n          \"viewCount\": 1489789,\n          \"likeCount\": 1543,\n          \"favoriteCount\": 0,\n          \"commentCount\": 80\n        }\n      }\n    ]\n  }\n}\n"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "score": {
+                      "type": "integer",
+                      "example": 46,
+                      "default": 0
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "object",
+                          "properties": {
+                            "pros": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "Title length is within the optimal range, enhancing visibility and engagement."
+                              }
+                            },
+                            "cons": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "No relevant keywords found in the title. \n<b>Tip:</b> Incorporate at least one significant keyword in your video title to improve SEO. This makes your video more likely to be discovered by your target audience.\n"
+                              }
+                            }
+                          }
+                        },
+                        "description": {
+                          "type": "object",
+                          "properties": {
+                            "pros": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "Your description's length is ideal, providing ample context for viewers and search engines."
+                              }
+                            },
+                            "cons": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "Title not repeated in the description.\n<b>Tip:</b> Incorporate your video's title within the description to strengthen SEO. This repetition can help with search engine relevance.\n"
+                              }
+                            }
+                          }
+                        },
+                        "tags": {
+                          "type": "object",
+                          "properties": {
+                            "pros": {
+                              "type": "array"
+                            },
+                            "cons": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "Tag usage is outside the optimal range.\n<b>Tip:</b> Ensure your video includes at least 5 relevant tags to balance discoverability with focus.\n"
+                              }
+                            }
+                          }
+                        },
+                        "video_quality": {
+                          "type": "object",
+                          "properties": {
+                            "pros": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "Video is in HD, ensuring a high-quality viewing experience."
+                              }
+                            },
+                            "cons": {
+                              "type": "array"
+                            }
+                          }
+                        },
+                        "comments": {
+                          "type": "object",
+                          "properties": {
+                            "pros": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "Engagement with viewers demonstrated by hearting comments."
+                              }
+                            },
+                            "cons": {
+                              "type": "array"
+                            }
+                          }
+                        },
+                        "thumbnail": {
+                          "type": "object",
+                          "properties": {
+                            "pros": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "The Thumbnail is high-resolution, making your video more appealing and likely to be clicked."
+                              }
+                            },
+                            "cons": {
+                              "type": "array"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string",
+                          "example": "youtube#videoListResponse"
+                        },
+                        "etag": {
+                          "type": "string",
+                          "example": "dMya8POAnGaC_CkvoXRttpecmXc"
+                        },
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "kind": {
+                                "type": "string",
+                                "example": "youtube#video"
+                              },
+                              "etag": {
+                                "type": "string",
+                                "example": "gXbJW6X4O8bSGIc92RfK70R3BcM"
+                              },
+                              "id": {
+                                "type": "string",
+                                "example": "PZZI1QXlM80"
+                              },
+                              "snippet": {
+                                "type": "object",
+                                "properties": {
+                                  "title": {
+                                    "type": "string",
+                                    "example": "#MicrosoftEvent in less than 2 minutes | September 21, 2023"
+                                  },
+                                  "description": {
+                                    "type": "string",
+                                    "example": "Enter the new era of AI with Copilot for Microsoft. See event announcements from Bing, Edge, Microsoft 365, Surface and Windows. Hear from Satya Nadella and other leaders from Microsoft about our commitment to providing technology to empower every person and organization on the planet achieve more. We're excited to discover what you'll do with these new capabilities.\n\nWatch the full event: https://youtu.be/XYUEQ0SyOyE\n\nSubscribe to Microsoft on YouTube here: https://aka.ms/SubscribeToYouTube\r\n\r\nFollow us on social: \r\nLinkedIn: https://www.linkedin.com/company/microsoft/ \r\nTwitter: https://twitter.com/Microsoft\r\nFacebook: https://www.facebook.com/Microsoft/ \r\nInstagram: https://www.instagram.com/microsoft/ \r\n \r\nFor more about Microsoft, our technology, and our mission, visit https://aka.ms/microsoftstories"
+                                  },
+                                  "publishedAt": {
+                                    "type": "string",
+                                    "example": "2023-09-21T23:41:47Z"
+                                  },
+                                  "channelId": {
+                                    "type": "string",
+                                    "example": "UCFtEEv80fQVKkD4h1PF-Xqw"
+                                  },
+                                  "thumbnails": {
+                                    "type": "object",
+                                    "properties": {
+                                      "default": {
+                                        "type": "object",
+                                        "properties": {
+                                          "url": {
+                                            "type": "string",
+                                            "example": "https://i.ytimg.com/vi/PZZI1QXlM80/default.jpg"
+                                          },
+                                          "width": {
+                                            "type": "integer",
+                                            "example": 120,
+                                            "default": 0
+                                          },
+                                          "height": {
+                                            "type": "integer",
+                                            "example": 90,
+                                            "default": 0
+                                          }
+                                        }
+                                      },
+                                      "medium": {
+                                        "type": "object",
+                                        "properties": {
+                                          "url": {
+                                            "type": "string",
+                                            "example": "https://i.ytimg.com/vi/PZZI1QXlM80/mqdefault.jpg"
+                                          },
+                                          "width": {
+                                            "type": "integer",
+                                            "example": 320,
+                                            "default": 0
+                                          },
+                                          "height": {
+                                            "type": "integer",
+                                            "example": 180,
+                                            "default": 0
+                                          }
+                                        }
+                                      },
+                                      "high": {
+                                        "type": "object",
+                                        "properties": {
+                                          "url": {
+                                            "type": "string",
+                                            "example": "https://i.ytimg.com/vi/PZZI1QXlM80/hqdefault.jpg"
+                                          },
+                                          "width": {
+                                            "type": "integer",
+                                            "example": 480,
+                                            "default": 0
+                                          },
+                                          "height": {
+                                            "type": "integer",
+                                            "example": 360,
+                                            "default": 0
+                                          }
+                                        }
+                                      },
+                                      "standard": {
+                                        "type": "object",
+                                        "properties": {
+                                          "url": {
+                                            "type": "string",
+                                            "example": "https://i.ytimg.com/vi/PZZI1QXlM80/sddefault.jpg"
+                                          },
+                                          "width": {
+                                            "type": "integer",
+                                            "example": 640,
+                                            "default": 0
+                                          },
+                                          "height": {
+                                            "type": "integer",
+                                            "example": 480,
+                                            "default": 0
+                                          }
+                                        }
+                                      },
+                                      "maxres": {
+                                        "type": "object",
+                                        "properties": {
+                                          "url": {
+                                            "type": "string",
+                                            "example": "https://i.ytimg.com/vi/PZZI1QXlM80/maxresdefault.jpg"
+                                          },
+                                          "width": {
+                                            "type": "integer",
+                                            "example": 1280,
+                                            "default": 0
+                                          },
+                                          "height": {
+                                            "type": "integer",
+                                            "example": 720,
+                                            "default": 0
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "channelTitle": {
+                                    "type": "string",
+                                    "example": "Microsoft"
+                                  },
+                                  "tags": {
+                                    "type": "array"
+                                  },
+                                  "categoryId": {
+                                    "type": "string",
+                                    "example": "28"
+                                  },
+                                  "liveBroadcastContent": {
+                                    "type": "string",
+                                    "example": "none"
+                                  },
+                                  "defaultAudioLanguage": {
+                                    "type": "string",
+                                    "example": "en"
+                                  }
+                                }
+                              },
+                              "contentDetails": {
+                                "type": "object",
+                                "properties": {
+                                  "definition": {
+                                    "type": "string",
+                                    "example": "hd"
+                                  },
+                                  "duration": {
+                                    "type": "string",
+                                    "example": "PT1M50S"
+                                  }
+                                }
+                              },
+                              "statistics": {
+                                "type": "object",
+                                "properties": {
+                                  "viewCount": {
+                                    "type": "integer",
+                                    "example": 1489789,
+                                    "default": 0
+                                  },
+                                  "likeCount": {
+                                    "type": "integer",
+                                    "example": 1543,
+                                    "default": 0
+                                  },
+                                  "favoriteCount": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "commentCount": {
+                                    "type": "integer",
+                                    "example": 80,
+                                    "default": 0
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"data\": {\n        \"request_id\": \"37d88fe6-caf9-47d7-858b-5b8eb6edd275\"\n    },\n    \"usage\": {\n        \"credits\": 30\n    }\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "request_id": {
+                          "type": "string",
+                          "example": "37d88fe6-caf9-47d7-858b-5b8eb6edd275"
+                        }
+                      }
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "credits": {
+                          "type": "integer",
+                          "example": 30,
+                          "default": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/youtube-keywords/": {
+      "post": {
+        "summary": "YouTube Top Keywords",
+        "description": "The main API endpoint of the YouTube Top Keywords service which has three fields in the request body.",
+        "operationId": "youtube-top-keywords",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "search_sentence": {
+                    "type": "string",
+                    "description": "This item should be minimum 3 and maximum 50 characters."
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "This item is code of one country from Get Countries request."
+                  },
+                  "language": {
+                    "type": "string",
+                    "description": "This item is code of one language from Get Languages request."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n        \"data\": {\n          \"keywords\": [\n            {\n              \"keyword\": \"minecraft\",\n              \"competition\": \"LOW\",\n              \"competition_index\": \"7\",\n              \"search_volume\": \"9140000\"\n            },\n            {\n              \"keyword\": \"minecraft pocket edition\",\n              \"competition\": \"LOW\",\n              \"competition_index\": \"25\",\n              \"search_volume\": \"90500\"\n            },\n            {\n              \"keyword\": \"namemc\",\n              \"competition\": \"LOW\",\n              \"competition_index\": \"0\",\n              \"search_volume\": \"135000\"\n            },\n            {\n              \"keyword\": \"minecraft 1.19\",\n              \"competition\": \"LOW\",\n              \"competition_index\": \"2\",\n              \"search_volume\": \"60500\"\n            },\n            {\n              \"keyword\": \"optifine\",\n              \"competition\": \"LOW\",\n              \"competition_index\": \"0\",\n              \"search_volume\": \"201000\"\n            },\n            {\n              \"keyword\": \"https aka ms remoteconnect\",\n              \"competition\": \"LOW\",\n              \"competition_index\": \"0\",\n              \"search_volume\": \"165000\"\n            },\n            {\n              \"keyword\": \"curseforge\",\n              \"competition\": \"LOW\",\n              \"competition_index\": \"0\",\n              \"search_volume\": \"301000\"\n            },\n         ]\n        },\n      \"usage\": {\n        \"credits\": 0\n      },\n      \"message\": \"\"\n    }"
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"data\": {\n        \"request_id\": \"37d88fe6-caf9-47d7-858b-5b8eb6edd275\"\n    },\n    \"usage\": {\n        \"credits\": 30\n    }\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "request_id": {
+                          "type": "string",
+                          "example": "37d88fe6-caf9-47d7-858b-5b8eb6edd275"
+                        }
+                      }
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "credits": {
+                          "type": "integer",
+                          "example": 30,
+                          "default": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/youtube-keywords/countries": {
+      "get": {
+        "summary": "Countries",
+        "description": "This endpoint returns a list of countries that are supported in YouTube Top Keywords Service.",
+        "operationId": "countries",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}  {\n  \"data\": [\n      {\n          \"name\": \"Worldwide\",\n          \"code\": \"1\"\n      },\n      {\n          \"name\": \"United States\",\n          \"code\": \"2840\"\n      },\n      {\n          \"name\": \"India\",\n          \"code\": \"2356\"\n      },\n      {\n          \"name\": \"Turkey\",\n          \"code\": \"2792\"\n      },\n      {\n          \"name\": \"China\",\n          \"code\": \"2156\"\n      },\n      {\n          \"name\": \"Oman\",\n          \"code\": \"2512\"\n      },\n      {\n          \"name\": \"Qatar\",\n          \"code\": \"2634\"\n      },\n      {\n          \"name\": \"United Arab Emirates\",\n          \"code\": \"2784\"\n      },\n      {\n          \"name\": \"Bahrain\",\n          \"code\": \"2048\"\n      },\n      {\n          \"name\": \"Malaysia\",\n          \"code\": \"2458\"\n      },\n      {\n          \"name\": \"Brazil\",\n          \"code\": \"2076\"\n      },\n      {\n          \"name\": \"Canada\",\n          \"code\": \"2124\"\n      },\n      {\n          \"name\": \"Italy\",\n          \"code\": \"2380\"\n      },\n      {\n          \"name\": \"Japan\",\n          \"code\": \"2392\"\n      },\n      {\n          \"name\": \"France\",\n          \"code\": \"2250\"\n      },\n      {\n          \"name\": \"Germany\",\n          \"code\": \"2276\"\n      },\n      {\n          \"name\": \"Spain\",\n          \"code\": \"2724\"\n      },\n      {\n          \"name\": \"United Kingdom\",\n          \"code\": \"2826\"\n      }\n  ]\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/youtube-keywords/languages": {
+      "get": {
+        "summary": "Languages",
+        "description": "This endpoint returns a list of languages that are supported in YouTube Top Keywords Service.",
+        "operationId": "languages",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}{\n          \"data\": [\n            {\n              \"name\": \"English\",\n              \"code\": \"1000\"\n            },\n            {\n              \"name\": \"Arabic\",\n              \"code\": \"1019\"\n            },\n            {\n              \"name\": \"Chinese\",\n              \"code\": \"1017\"\n            },\n            {\n              \"name\": \"Dutch\",\n              \"code\": \"1010\"\n            },\n            {\n              \"name\": \"French\",\n              \"code\": \"1002\"\n            },\n            {\n              \"name\": \"Hindi\",\n              \"code\": \"1023\"\n            },\n            {\n              \"name\": \"Italian\",\n              \"code\": \"1004\"\n            },\n            {\n              \"name\": \"Japanese\",\n              \"code\": \"1005\"\n            },\n            {\n              \"name\": \"Malay\",\n              \"code\": \"1102\"\n            },\n            {\n              \"name\": \"Portuguese\",\n              \"code\": \"1014\"\n            },\n            {\n              \"name\": \"Spanish\",\n              \"code\": \"1003\"\n            },\n            {\n              \"name\": \"Turkish\",\n              \"code\": \"1037\"\n            }\n          ],\n          \"usage\": {\n            \"credits\": 0\n          }\n        }"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/youtube-suggestions/": {
+      "post": {
+        "summary": "YouTube Suggestions",
+        "description": "The API endpoint of the YouTube Suggestions service.",
+        "operationId": "youtube-suggestions",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "prompt_sentence": {
+                    "type": "string",
+                    "description": "This item should be minimum 10 characters and maximum 500 characters."
+                  },
+                  "suggestion_goal": {
+                    "type": "string",
+                    "description": "This item can be one of this items: \"description\", \"title\", \"hashtag\""
+                  },
+                  "count": {
+                    "type": "string",
+                    "description": "This item for \"description\" should be between 1 to 3, for \"title\" should be between 2 to 10 and for \"hashtag\" should be between 5 to 20."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Descriptions": {
+                    "value": "{\n        \"data\": {\n          \"captions\": [\n            \"Learn how to start and build a profitable Shopify store from scratch with this comprehensive tutorial! In this step-by-step video guide, we'll cover everything you need to know about setting up your online store, selecting the right products, optimizing your website for conversions, and implementing effective marketing strategies. Discover the secrets to finding winning products, sourcing suppliers, and managing inventory seamlessly. Dive into the world of Shopify themes and apps to enhance your store's functionality and aesthetics. Unleash the power of social media marketing, email campaigns, and influencer collaborations to drive traffic and boost sales. With expert tips on search engine optimization (SEO) and customer retention techniques, you'll gain the knowledge to achieve long-term success in the competitive e-commerce landscape. Don't miss out on this opportunity to create a profitable Shopify store with proven strategies that work!\",\n            \"Are you ready to turn your passion into a profitable online business? Look no further! This in-depth tutorial will guide you through the process of creating a highly profitable Shopify store that generates consistent income. Discover how to identify lucrative niches, conduct market research, and select products that customers can't resist. Master the art of designing an attractive and user-friendly website using Shopify's intuitive platform. Learn essential techniques for optimizing product pages, crafting compelling product descriptions, and implementing effective pricing strategies that maximize profits. Harness the power of social media advertising campaigns, influencer partnerships, and email marketing tactics to drive targeted traffic and increase conversions. You'll also gain valuable insights into customer service best practices that will keep your shoppers coming back for more! Whether you're a beginner or experienced entrepreneur looking for new ideas, this video has got you covered with practical tips and strategies to make your Shopify store succeed!\"\n          ]\n        },\n        \"usage\": {\n          \"credits\": -9\n        }\n      }"
+                  },
+                  "Titles": {
+                    "value": "{\n        \"data\": {\n          \"titles\": [\n            \"5 Proven Strategies for Building a Profitable Shopify Store\",\n            \"Step-by-Step Guide: Creating a Profitable Shopify Store from Scratch\",\n            \"Secrets to Running a Highly Profitable Shopify Store Revealed\"\n          ]\n        },\n        \"usage\": {\n          \"credits\": 10\n        }\n      }"
+                  },
+                  "Hashtags": {
+                    "value": "{\n        \"data\": {\n          \"hashtags\": [\n            \"#ShopifyTips\",\n            \"#OnlineBusinessSuccess\",\n            \"#EcommerceStrategies\",\n            \"#ProfitableStoreIdeas\",\n            \"#ShopifyStoreTutorial\"\n          ]\n        },\n        \"usage\": {\n          \"credits\": 9\n        }\n      }"
+                  }
+                },
+                "schema": {
+                  "oneOf": [
+                    {
+                      "title": "Descriptions",
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "captions": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "Learn how to start and build a profitable Shopify store from scratch with this comprehensive tutorial! In this step-by-step video guide, we'll cover everything you need to know about setting up your online store, selecting the right products, optimizing your website for conversions, and implementing effective marketing strategies. Discover the secrets to finding winning products, sourcing suppliers, and managing inventory seamlessly. Dive into the world of Shopify themes and apps to enhance your store's functionality and aesthetics. Unleash the power of social media marketing, email campaigns, and influencer collaborations to drive traffic and boost sales. With expert tips on search engine optimization (SEO) and customer retention techniques, you'll gain the knowledge to achieve long-term success in the competitive e-commerce landscape. Don't miss out on this opportunity to create a profitable Shopify store with proven strategies that work!"
+                              }
+                            }
+                          }
+                        },
+                        "usage": {
+                          "type": "object",
+                          "properties": {
+                            "credits": {
+                              "type": "integer",
+                              "example": -9,
+                              "default": 0
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "title": "Titles",
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "titles": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "5 Proven Strategies for Building a Profitable Shopify Store"
+                              }
+                            }
+                          }
+                        },
+                        "usage": {
+                          "type": "object",
+                          "properties": {
+                            "credits": {
+                              "type": "integer",
+                              "example": 10,
+                              "default": 0
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "title": "Hashtags",
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "hashtags": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "#ShopifyTips"
+                              }
+                            }
+                          }
+                        },
+                        "usage": {
+                          "type": "object",
+                          "properties": {
+                            "credits": {
+                              "type": "integer",
+                              "example": 9,
+                              "default": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n        \"data\": {\n          \"request_id\": \"ddc4a15b-9f33-47c1-893c-efc1a9613587\"\n        },\n        \"usage\": {\n          \"credits\": 50\n        }\n      }"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "request_id": {
+                          "type": "string",
+                          "example": "ddc4a15b-9f33-47c1-893c-efc1a9613587"
+                        }
+                      }
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "credits": {
+                          "type": "integer",
+                          "example": 50,
+                          "default": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/profile-data/": {
+      "post": {
+        "summary": "Profile Data",
+        "description": "The API endpoint of the Profile Data service.",
+        "operationId": "profile-data",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "default": "1"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "profile_name": {
+                    "type": "string",
+                    "description": "This item is USERNAME of LinkedIn (https://linkedin.com/in/USERANAME/).",
+                    "default": "williamhgates"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\"url\":\"https://linkedin.com/in/conanobrien/\",\"profile\":\"conanobrien\",\"crawled_at\":\"30/03/2024 20:57:21\",\"name\":\"Conan O'Brien\",\"description\":\"\",\"location\":\"Burbank, California, United States\",\"followers\":\"418K followers\",\"connections\":\"500+ connections\",\"experience\":[{\"image_url\":null,\"title\":null,\"company_name\":\"Conan\",\"company_link\":\"https://www.linkedin.com/company/conan\",\"date\":{\"start_date\":null,\"end_date\":null,\"duration\":null},\"location\":null,\"description\":null}],\"education\":[],\"certifications\":[{\"image_url\":\"https://static.licdn.com/aero-v1/sc/h/cs8pjfgyw96g44ln9r7tct85f\",\"title\":\"Minister\",\"course_link\":\"\",\"issuer\":\"Universal Life Church\",\"credential\":\"\",\"issued_date\":\"Nov 2011\"}],\"languages\":[{\"name\":\"English\",\"description\":\"Native or bilingual proficiency\"},{\"name\":\"Afro-Asiatic languages\",\"description\":\"Elementary proficiency\"}],\"volunteerings\":[],\"publications\":[{\"title\":\"Chicago Sun-Times\",\"publisher\":\"August 14, 1986\",\"publication_link\":\"\",\"publication_date\":\"\",\"description\":\"Classified ad for used humidifier.\"}],\"projects\":[],\"courses\":[{\"name\":\"Build Wealth by Suing Donald Trump Over Failure to Build Wealth\",\"number\":\"Online\"},{\"name\":\"Build Wealth the Trump Way\",\"number\":\"Online\"}],\"honors_and_awards\":[{\"title\":\"Oscar for Best Performance by an Actress in a Supporting Role\",\"issuer\":\"-\",\"issued_date\":\"Feb 2008\",\"description\":\"for: Michael Clayton (2007)\"}]}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "example": "https://linkedin.com/in/conanobrien/"
+                    },
+                    "profile": {
+                      "type": "string",
+                      "example": "conanobrien"
+                    },
+                    "crawled_at": {
+                      "type": "string",
+                      "example": "30/03/2024 20:57:21"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Conan O'Brien"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "location": {
+                      "type": "string",
+                      "example": "Burbank, California, United States"
+                    },
+                    "followers": {
+                      "type": "string",
+                      "example": "418K followers"
+                    },
+                    "connections": {
+                      "type": "string",
+                      "example": "500+ connections"
+                    },
+                    "experience": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "image_url": {},
+                          "title": {},
+                          "company_name": {
+                            "type": "string",
+                            "example": "Conan"
+                          },
+                          "company_link": {
+                            "type": "string",
+                            "example": "https://www.linkedin.com/company/conan"
+                          },
+                          "date": {
+                            "type": "object",
+                            "properties": {
+                              "start_date": {},
+                              "end_date": {},
+                              "duration": {}
+                            }
+                          },
+                          "location": {},
+                          "description": {}
+                        }
+                      }
+                    },
+                    "education": {
+                      "type": "array"
+                    },
+                    "certifications": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "image_url": {
+                            "type": "string",
+                            "example": "https://static.licdn.com/aero-v1/sc/h/cs8pjfgyw96g44ln9r7tct85f"
+                          },
+                          "title": {
+                            "type": "string",
+                            "example": "Minister"
+                          },
+                          "course_link": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "issuer": {
+                            "type": "string",
+                            "example": "Universal Life Church"
+                          },
+                          "credential": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "issued_date": {
+                            "type": "string",
+                            "example": "Nov 2011"
+                          }
+                        }
+                      }
+                    },
+                    "languages": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "example": "English"
+                          },
+                          "description": {
+                            "type": "string",
+                            "example": "Native or bilingual proficiency"
+                          }
+                        }
+                      }
+                    },
+                    "volunteerings": {
+                      "type": "array"
+                    },
+                    "publications": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "example": "Chicago Sun-Times"
+                          },
+                          "publisher": {
+                            "type": "string",
+                            "example": "August 14, 1986"
+                          },
+                          "publication_link": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "publication_date": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "description": {
+                            "type": "string",
+                            "example": "Classified ad for used humidifier."
+                          }
+                        }
+                      }
+                    },
+                    "projects": {
+                      "type": "array"
+                    },
+                    "courses": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "example": "Build Wealth by Suing Donald Trump Over Failure to Build Wealth"
+                          },
+                          "number": {
+                            "type": "string",
+                            "example": "Online"
+                          }
+                        }
+                      }
+                    },
+                    "honors_and_awards": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "example": "Oscar for Best Performance by an Actress in a Supporting Role"
+                          },
+                          "issuer": {
+                            "type": "string",
+                            "example": "-"
+                          },
+                          "issued_date": {
+                            "type": "string",
+                            "example": "Feb 2008"
+                          },
+                          "description": {
+                            "type": "string",
+                            "example": "for: Michael Clayton (2007)"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"data\": {\n        \"request_id\": \"37d88fe6-caf9-47d7-858b-5b8eb6edd275\"\n    },\n    \"usage\": {\n        \"credits\": 30\n    }\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "request_id": {
+                          "type": "string",
+                          "example": "37d88fe6-caf9-47d7-858b-5b8eb6edd275"
+                        }
+                      }
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "credits": {
+                          "type": "integer",
+                          "example": 30,
+                          "default": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/company-data/": {
+      "post": {
+        "summary": "Company Data",
+        "description": "The API endpoint of the Company Data service.",
+        "operationId": "company-data",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "default": "1"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "company_username": {
+                    "type": "string",
+                    "description": "This item is USERNAME of LinkedIn (https://linkedin.com/company/USERANAME/).",
+                    "default": "magicalapi"
+                  },
+                  "company_name": {
+                    "type": "string",
+                    "description": "Then name of company.",
+                    "default": "apple"
+                  },
+                  "company_website": {
+                    "type": "string",
+                    "description": "The website of company.",
+                    "default": "apple.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"url\": \"https://linkedin.com/company/atlassian/\",\n  \"company_name\": \"atlassian\",\n  \"crawled_at\": \"30/05/2024 09:50:38\",\n  \"name\": \"Atlassian\",\n  \"tagline\": \"Tools for teams, from startup to enterprise:\\nAtlassian provides tools to help every team unleash their full potential\",\n  \"cover_image_url\": \"https://media.licdn.com/dms/image/D4E3DAQGSifFZXCq3PQ/image-scale_191_1128/0/1697721326923/atlassian_cover?e=2147483647&v=beta&t=gMYZwKscOaqOmSXvFYn_e699aln3W54Yi1I1IOSLEhI\",\n  \"logo_url\": \"https://media.licdn.com/dms/image/C560BAQH5FOSGbPkisg/company-logo_200_200/0/1654721406036/atlassian_logo?e=2147483647&v=beta&t=2VSPCFJQYAbHFz5H8WPlOoNsR4SrSDaXTcex5RQcbsM\",\n  \"employees\": \"23,951 employees\",\n  \"followers\": \"1,474,388 followers\",\n  \"about\": \"We're a team of 7000+ Atlassians supporting an international group of 250,000+ customers. We build tools like Jira, Confluence, Bitbucket, and Trello to help teams across the world become more nimble, creative, and aligned.\",\n  \"website\": \"http://www.atlassian.com/\",\n  \"industry\": \"Software Development\",\n  \"size\": \"5,001-10,000 employees\",\n  \"headquarters\": \"Sydney, NSW\",\n  \"organizationType\": \"Public Company\",\n  \"foundedOn\": \"2002\",\n  \"specialties\": \"b2b enterprise software, bug tracker, issue tracker, enterprise wiki, corporate wiki, business wiki, team collaboration, project management, and downtime communication\",\n  \"products\": [\n    {\n      \"name\": \"Bitbucket\",\n      \"link\": \"https://www.linkedin.com/products/atlassian-bitbucket/?trk=organization_guest_product_card_related-content-card\",\n      \"url\": \"https://bitbucket.org/product?trk=products_details_guest_secondary_call_to_action\",\n      \"about\": \"Built for professional teams, Bitbucket is more than just Git code management. Bitbucket gives teams one place to plan projects, collaborate on code, test, and deploy. Get started for free!\",\n      \"used_for\": [\n        \"Software Engineer\",\n        \"Developer\",\n        \"Senior Software Engineer\",\n        \"Chief Technology Officer\",\n        \"Web Designer\",\n        \"Java Software Engineer\",\n        \"Senior Java Software Engineer\"\n      ],\n      \"customers\": [\n        \"https://linkedin.com/company/dropbox?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/splunk?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/paypal?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/ford-motor-company?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/looker?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/pandora?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/trulia?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/wework?trk=products_details_guest_organization_image\"\n      ]\n    },\n    {\n      \"name\": \"Jira Service Management\",\n      \"link\": \"https://www.linkedin.com/products/atlassian-jira-service-management/?trk=organization_guest_product_card_related-content-card\",\n      \"url\": \"https://www.atlassian.com/software/jira/service-management/free?Source=LinkedIn&trk=products_details_guest_secondary_call_to_action\",\n      \"about\": \"Jira Service Management empowers Dev and Ops teams to collaborate at high-velocity, so they can respond to business changes and deliver great customer and employee service experiences fast.\",\n      \"used_for\": [\n        \"Project Manager\",\n        \"Software Engineer\",\n        \"Developer\",\n        \"Information Technology Manager\",\n        \"Information Technology Specialist\",\n        \"Senior Project Manager\",\n        \"Web Developer\",\n        \"Chief Technology Officer\",\n        \"Information Technology Project Manager\"\n      ],\n      \"customers\": [\n        \"https://linkedin.com/company/twitter?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/joinsquare?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/telegraph-media-group?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/domino's-pizza?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/sothebys?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/puppet?trk=products_details_guest_organization_image\"\n      ]\n    },\n    {\n      \"name\": \"Jira Software\",\n      \"link\": \"https://www.linkedin.com/products/atlassian-jira/?trk=organization_guest_product_card_related-content-card\",\n      \"url\": \"https://www.atlassian.com/software/jira?trk=products_details_guest_secondary_call_to_action\",\n      \"about\": \"The #1 software development tool used by agile teams. Jira Software is built for every member of your software team to plan, track, and release great software. Get started for free!\",\n      \"used_for\": [\n        \"Project Manager\",\n        \"Software Engineer\",\n        \"Marketing Manager\",\n        \"Senior Software Engineer\",\n        \"Marketing Director\",\n        \"Senior Project Manager\",\n        \"Director of Operations\",\n        \"Chief Technology Officer\",\n        \"Senior Developer\",\n        \"Senior Product Manager\"\n      ],\n      \"customers\": [\n        \"https://linkedin.com/company/joinsquare?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/cisco?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/ebay?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/airbnb?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/spotify?trk=products_details_guest_organization_image\"\n      ]\n    },\n    {\n      \"name\": \"Opsgenie\",\n      \"link\": \"https://www.linkedin.com/products/atlassian-opsgenie/?trk=organization_guest_product_card_related-content-card\",\n      \"url\": \"https://www.atlassian.com/software/opsgenie/what-is-opsgenie?source=linkedinprodpage&trk=products_details_guest_secondary_call_to_action\",\n      \"about\": \"Opsgenie empowers Dev & Ops teams to plan for service disruptions and stay in control during incidents. With deep integrations into monitoring, ticketing, and chat tools, Opsgenie groups alerts, filters out the noise, and notifies you using multiple channels, providing the necessary information for your team to immediately begin resolution.\",\n      \"used_for\": [\n        \"Software Engineer\",\n        \"System Administrator\",\n        \"Information Technology Manager\",\n        \"Chief Technology Officer\",\n        \"Technical Support Engineer\",\n        \"Site Reliability Engineer\",\n        \"Customer Success Specialist\"\n      ],\n      \"customers\": [\n        \"https://linkedin.com/company/glassdoor?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/looker?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/ebsco-information-services?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/washingtonpost?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/columbia-university?trk=products_details_guest_organization_image\",\n        \"https://linkedin.com/company/bitly?trk=products_details_guest_organization_image\"\n      ]\n    },\n    {\n      \"name\": \"Trello\",\n      \"link\": \"https://www.linkedin.com/products/atlassian-trello/?trk=organization_guest_product_card_related-content-card\",\n      \"url\": \"http://www.trello.com?trk=products_details_guest_secondary_call_to_action\",\n      \"about\": \"Trello lets you work more collaboratively and get more done. Trello's boards, lists, and cards enable you to organize and prioritize your projects in a fun, flexible, and rewarding way.\",\n      \"used_for\": [],\n      \"customers\": []\n    }\n  ],\n  \"locations\": [\n    [\n      \"Level 6/341 George St Sydney, NSW 2000, AU\",\n      \"https://www.bing.com/maps?where=Level+6%2F341+George+St+Sydney+2000+NSW+AU&trk=org-locations_url\"\n    ],\n    [\n      \"Singel 236 Amsterdam, Holland 1016 AB, NL\",\n      \"https://www.bing.com/maps?where=Singel+236+Amsterdam+1016+AB+Holland+NL&trk=org-locations_url\"\n    ],\n    [\n      \"465 Pine St Level 13 Sa Francisco, California 94104, US\",\n      \"https://www.bing.com/maps?where=465+Pine+St+Level+13+San+Francisco+94104+California+US&trk=org-locations_url\"\n    ],\n    [\n      \"816 Congress Ave Suite 1800 Austin, TX 78701, US\",\n      \"https://www.bing.com/maps?where=816+Congress+Ave+Suite+1800+Austin+78701+TX+US&trk=org-locations_url\"\n    ],\n    [\n      \"321 E Evely Ave Mountai View, California 94041, US\",\n      \"https://www.bing.com/maps?where=321+E+Evelyn+Ave+Mountain+View+94041+California+US&trk=org-locations_url\"\n    ],\n    [\n      \"55 Broadway New York, NY 10023, US\",\n      \"https://www.bing.com/maps?where=55+Broadway+New+York+10023+NY+US&trk=org-locations_url\"\n    ],\n    [\n      \"Embassy Golf Links Business Park, Domlur 3rd Floor, Sunriver, Wework Bengaluru, Karnataka 560071, IN\",\n      \"https://www.bing.com/maps?where=Embassy+Golf+Links+Business+Park%2C+Domlur+3rd+Floor%2C+Sunriver%2C+Wework+Bengaluru+560071+Karnataka+IN&trk=org-locations_url\"\n    ],\n    [\n      \"55 Causeway St Boston, Massachusetts 02114, US\",\n      \"https://www.bing.com/maps?where=55+Causeway+St+Boston+02114+Massachusetts+US&trk=org-locations_url\"\n    ],\n    [\n      \"Odtu Teknokent, Gumus Blok 29/BK-2 Ankara, Cankaya 06800, TR\",\n      \"https://www.bing.com/maps?where=Odtu+Teknokent%2C+Gumus+Blok+29%2FBK-2+Ankara+06800+Cankaya+TR&trk=org-locations_url\"\n    ]\n  ]\n}\n"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "example": "https://linkedin.com/company/atlassian/"
+                    },
+                    "company_name": {
+                      "type": "string",
+                      "example": "atlassian"
+                    },
+                    "crawled_at": {
+                      "type": "string",
+                      "example": "30/05/2024 09:50:38"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Atlassian"
+                    },
+                    "tagline": {
+                      "type": "string",
+                      "example": "Tools for teams, from startup to enterprise:\nAtlassian provides tools to help every team unleash their full potential"
+                    },
+                    "cover_image_url": {
+                      "type": "string",
+                      "example": "https://media.licdn.com/dms/image/D4E3DAQGSifFZXCq3PQ/image-scale_191_1128/0/1697721326923/atlassian_cover?e=2147483647&v=beta&t=gMYZwKscOaqOmSXvFYn_e699aln3W54Yi1I1IOSLEhI"
+                    },
+                    "logo_url": {
+                      "type": "string",
+                      "example": "https://media.licdn.com/dms/image/C560BAQH5FOSGbPkisg/company-logo_200_200/0/1654721406036/atlassian_logo?e=2147483647&v=beta&t=2VSPCFJQYAbHFz5H8WPlOoNsR4SrSDaXTcex5RQcbsM"
+                    },
+                    "employees": {
+                      "type": "string",
+                      "example": "23,951 employees"
+                    },
+                    "followers": {
+                      "type": "string",
+                      "example": "1,474,388 followers"
+                    },
+                    "about": {
+                      "type": "string",
+                      "example": "We're a team of 7000+ Atlassians supporting an international group of 250,000+ customers. We build tools like Jira, Confluence, Bitbucket, and Trello to help teams across the world become more nimble, creative, and aligned."
+                    },
+                    "website": {
+                      "type": "string",
+                      "example": "http://www.atlassian.com/"
+                    },
+                    "industry": {
+                      "type": "string",
+                      "example": "Software Development"
+                    },
+                    "size": {
+                      "type": "string",
+                      "example": "5,001-10,000 employees"
+                    },
+                    "headquarters": {
+                      "type": "string",
+                      "example": "Sydney, NSW"
+                    },
+                    "organizationType": {
+                      "type": "string",
+                      "example": "Public Company"
+                    },
+                    "foundedOn": {
+                      "type": "string",
+                      "example": "2002"
+                    },
+                    "specialties": {
+                      "type": "string",
+                      "example": "b2b enterprise software, bug tracker, issue tracker, enterprise wiki, corporate wiki, business wiki, team collaboration, project management, and downtime communication"
+                    },
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "example": "Bitbucket"
+                          },
+                          "link": {
+                            "type": "string",
+                            "example": "https://www.linkedin.com/products/atlassian-bitbucket/?trk=organization_guest_product_card_related-content-card"
+                          },
+                          "url": {
+                            "type": "string",
+                            "example": "https://bitbucket.org/product?trk=products_details_guest_secondary_call_to_action"
+                          },
+                          "about": {
+                            "type": "string",
+                            "example": "Built for professional teams, Bitbucket is more than just Git code management. Bitbucket gives teams one place to plan projects, collaborate on code, test, and deploy. Get started for free!"
+                          },
+                          "used_for": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "example": "Software Engineer"
+                            }
+                          },
+                          "customers": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "example": "https://linkedin.com/company/dropbox?trk=products_details_guest_organization_image"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "locations": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "example": "Level 6/341 George St Sydney, NSW 2000, AU"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"data\": {\n        \"request_id\": \"37d88fe6-caf9-47d7-858b-5b8eb6edd275\"\n    },\n    \"usage\": {\n        \"credits\": 30\n    }\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "request_id": {
+                          "type": "string",
+                          "example": "37d88fe6-caf9-47d7-858b-5b8eb6edd275"
+                        }
+                      }
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "credits": {
+                          "type": "integer",
+                          "example": 30,
+                          "default": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/resume-parser/": {
+      "post": {
+        "summary": "Resume Parser",
+        "description": "The API endpoint of the Resume Parser service.",
+        "operationId": "resume-parser",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "default": "1"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "description": "This item is url of PDF/DOC/DOCX resume file (https://PATH/file.pdf).",
+                    "default": "https://PATH/file.pdf"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n        \"data\": {\n          \"basic\": {\n            \"first_name\": \"Richard\",\n            \"last_name\": \"Levinson\",\n            \"email\": \"rlevinson@yahoo.com\",\n            \"phone_number\": \"817-466-0015\",\n            \"location\": \"Fort Worth, Texas\",\n            \"portfolio_website_url\": \"\",\n            \"linkedin_url\": \"\",\n            \"github_url\": \"\",\n            \"university\": \"University of California\",\n            \"graduation_year\": \"\",\n            \"majors\": \"Health Administration\"\n          },\n          \"summary\": \"Highly qualified, resourceful management professional with year-over-year success in improving team capabilities, meeting international deployment objectives, developing and executing strategic plans, and raising funds for key programs. Strong communicator, advocate, counselor, and relationship developer.\",\n          \"work_experiences\": [\n            {\n              \"title\": \"Department Head\",\n              \"company\": \"United States Navy\",\n              \"location\": \"Fort Worth, Texas\",\n              \"duration\": \"2005-PRESENT\",\n              \"summary\": \"Supervise team of 42, including employees and volunteers. Manage $85,000 operating budget, $145,000 in funding, and $65,000 in annual foundation gifts. Ensure fulfillment of team member’s training and personal development goals, conducting over 65 services and 225 counseling cases. Provided training for over 750 team members, creating training materials and publishing paper that addressed “hot button” issues. Serve as liaison to Fort Worth Air Power Foundation, planning and executing fundraising events for in-need military members. Planning member for various special events.\",\n              \"achievements\": [\n                \"Expanded relief services to members 300% through interaction with Fort Worth Air Power Foundation, raising over $400,000 in relief support.\",\n                \"Created proposal for Stress Control Program currently before HQ for use as template and as expansion of program to create Public Service Announcements using former NFL veterans (both Roger Staubach and Chad Hennings have agreed to participate in the program).\",\n                \"Facilitated additional personnel for 6 months and $50,000 in financial assistance by writing proposal to HQ for additional support during Hurricane Katrina and Rita Relief Operations, with assistance provided to over 7,000 military and family evacuees.\",\n                \"Expand exposure of organization within the community through interactions and relationships with the Medal of Honor Society, Colonial Golf Classic of Fort Worth and University of North Texas.\"\n              ]\n            },\n            {\n              \"title\": \"Department Supervisor\",\n              \"company\": \"United States Marine Corps\",\n              \"location\": \"San Diego, California\",\n              \"duration\": \"2001-2005\",\n              \"summary\": \"Managed team of 21 and $350,000 annual budget. Supervised and executed all training requirements in preparation for training and operational assignments worldwide, including Operation Unified Assistance in Sri Lanka, Indonesia and Thailand. Assigned teams for training and operational programs, with 35 average initiatives annually. Established and procured all team requirements as member of planning group. Served as Project Officer for the development and implementation of fitness program used for ethics training.\",\n              \"achievements\": [\n                \"Established role as central office for training and operational deployments; implemented 1st operations-wide Ethics Training Program and lead role of Critical Incident Stress Management Counselor.\",\n                \"For Operation Iraqi Freedom, coordinated delivery for 1000+ tons of relief supplies to Basra, Iraq through Kuwaiti Humanitarian Operational Center, Bishop of Kuwait and British Armed Forces. Provided for psychological and spiritual welfare of logistics, maintenance, and convoy personnel.\",\n                \"For Operation Unified Assistance, established humanitarian requirements in tsunami-affected region of Thailand. Provided aggressive support to all recovery teams, fostered relationships with other international relief organizations, and coordinated support initiatives region-wide.\"\n              ]\n            },\n            {\n              \"title\": \"Supervisor\",\n              \"company\": \"United States Marine Corps\",\n              \"location\": \"\",\n              \"duration\": \"1998-2001\",\n              \"summary\": \"Directly supervised cross-functional team of 28, managed $145,000 operating budget, and provided support/counseling to military and civilian personnel, including assistance in mission-critical incidents.\",\n              \"achievements\": [\n                \"Earned Commendation Medal for performance of duties as Division Leader. Recognized for providing assistance to training school during period of elevated critical incidents.\",\n                \"Demonstrated effectiveness of Regional Command and Control System in providing degree of flexibility for relocation of assets.\"\n              ]\n            }\n          ],\n          \"project_experiences\": [],\n          \"educations\": [\n            {\n              \"school\": \"University of California\",\n              \"degree\": \"Master's Degree\",\n              \"field\": \"\",\n              \"start\": \"\",\n              \"end\": \"\"\n            },\n            {\n              \"school\": \"Michigan State University\",\n              \"degree\": \"Bachelor of Science in Health Administration\",\n              \"field\": \"\",\n              \"start\": \"\",\n              \"end\": \"\"\n            },\n            {\n              \"school\": \"University of California\",\n              \"degree\": \"Doctoral Candidate\",\n              \"field\": \"\",\n              \"start\": \"\",\n              \"end\": \"\"\n            }\n          ],\n          \"certifications\": [\n            {\n              \"title\": \"Lean Six Sigma Green Belt Certified\",\n              \"provider\": \"\"\n            },\n            {\n              \"title\": \"Advanced Critical Incident Stress Management\",\n              \"provider\": \"\"\n            },\n            {\n              \"title\": \"Instructor Certified in Myers-Briggs Type Indicator (MBTI)\",\n              \"provider\": \"\"\n            }\n          ],\n          \"languages\": [],\n          \"skills\": []\n        },\n        \"usage\": {\n          \"credits\": 0\n        },\n        \"message\": \"\"\n      }"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "basic": {
+                          "type": "object",
+                          "properties": {
+                            "first_name": {
+                              "type": "string",
+                              "example": "Richard"
+                            },
+                            "last_name": {
+                              "type": "string",
+                              "example": "Levinson"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "rlevinson@yahoo.com"
+                            },
+                            "phone_number": {
+                              "type": "string",
+                              "example": "817-466-0015"
+                            },
+                            "location": {
+                              "type": "string",
+                              "example": "Fort Worth, Texas"
+                            },
+                            "portfolio_website_url": {
+                              "type": "string",
+                              "example": ""
+                            },
+                            "linkedin_url": {
+                              "type": "string",
+                              "example": ""
+                            },
+                            "github_url": {
+                              "type": "string",
+                              "example": ""
+                            },
+                            "university": {
+                              "type": "string",
+                              "example": "University of California"
+                            },
+                            "graduation_year": {
+                              "type": "string",
+                              "example": ""
+                            },
+                            "majors": {
+                              "type": "string",
+                              "example": "Health Administration"
+                            }
+                          }
+                        },
+                        "summary": {
+                          "type": "string",
+                          "example": "Highly qualified, resourceful management professional with year-over-year success in improving team capabilities, meeting international deployment objectives, developing and executing strategic plans, and raising funds for key programs. Strong communicator, advocate, counselor, and relationship developer."
+                        },
+                        "work_experiences": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "example": "Department Head"
+                              },
+                              "company": {
+                                "type": "string",
+                                "example": "United States Navy"
+                              },
+                              "location": {
+                                "type": "string",
+                                "example": "Fort Worth, Texas"
+                              },
+                              "duration": {
+                                "type": "string",
+                                "example": "2005-PRESENT"
+                              },
+                              "summary": {
+                                "type": "string",
+                                "example": "Supervise team of 42, including employees and volunteers. Manage $85,000 operating budget, $145,000 in funding, and $65,000 in annual foundation gifts. Ensure fulfillment of team member’s training and personal development goals, conducting over 65 services and 225 counseling cases. Provided training for over 750 team members, creating training materials and publishing paper that addressed “hot button” issues. Serve as liaison to Fort Worth Air Power Foundation, planning and executing fundraising events for in-need military members. Planning member for various special events."
+                              },
+                              "achievements": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "example": "Expanded relief services to members 300% through interaction with Fort Worth Air Power Foundation, raising over $400,000 in relief support."
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "project_experiences": {
+                          "type": "array"
+                        },
+                        "educations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "school": {
+                                "type": "string",
+                                "example": "University of California"
+                              },
+                              "degree": {
+                                "type": "string",
+                                "example": "Master's Degree"
+                              },
+                              "field": {
+                                "type": "string",
+                                "example": ""
+                              },
+                              "start": {
+                                "type": "string",
+                                "example": ""
+                              },
+                              "end": {
+                                "type": "string",
+                                "example": ""
+                              }
+                            }
+                          }
+                        },
+                        "certifications": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "example": "Lean Six Sigma Green Belt Certified"
+                              },
+                              "provider": {
+                                "type": "string",
+                                "example": ""
+                              }
+                            }
+                          }
+                        },
+                        "languages": {
+                          "type": "array"
+                        },
+                        "skills": {
+                          "type": "array"
+                        }
+                      }
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "credits": {
+                          "type": "integer",
+                          "example": 0,
+                          "default": 0
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": ""
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"data\": {\n        \"request_id\": \"37d88fe6-caf9-47d7-858b-5b8eb6edd275\"\n    },\n    \"usage\": {\n        \"credits\": 30\n    }\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "request_id": {
+                          "type": "string",
+                          "example": "37d88fe6-caf9-47d7-858b-5b8eb6edd275"
+                        }
+                      }
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "credits": {
+                          "type": "integer",
+                          "example": 30,
+                          "default": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/resume-review/": {
+      "post": {
+        "summary": "Resume Review",
+        "description": "The API endpoint of the Resume Review service.",
+        "operationId": "resume-review",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "description": "This item is url of PDF/DOC/DOCX resume file (https://PATH/file.pdf).",
+                    "default": "https://PATH/file.pdf"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"score\": 87,\n  \"result\": {\n    \"contact\": {\n      \"pros\": [\n        \"Contact information includes a phone number for easy reachability.\",\n        \"A professional email address is properly included.\",\n        \"Location information is clearly mentioned.\"\n      ],\n      \"cons\": [\n        \"No LinkedIn profile linked.\\n<b>Tip:</b> Provide a LinkedIn URL to showcase a broader professional network and background.\\n\"\n      ]\n    },\n    \"experiences\": {\n      \"pros\": [\n        \"Job titles in the experience section are clearly defined.\",\n        \"Company names in experiences are mentioned, adding credibility.\",\n        \"Job durations are clearly specified, outlining stability and experience.\"\n      ],\n      \"cons\": []\n    },\n    \"educations\": {\n      \"pros\": [\n        \"Field of study is clearly indicated in the education section.\",\n        \"University names are mentioned, detailing the academic journey.\",\n        \"Type of degree is clearly stated, clarifying educational level.\",\n        \"Start and end dates in education are included, showing the timeline.\"\n      ],\n      \"cons\": []\n    },\n    \"skills\": {\n      \"pros\": [\"Skills are listed, highlighting competencies and strengths.\"],\n      \"cons\": []\n    },\n    \"summary\": {\n      \"pros\": [\n        \"A professional summary/objective is present, giving a career overview.\"\n      ],\n      \"cons\": []\n    },\n    \"format\": {\n      \"pros\": [\n        \"PDF is a good format to share your resume.\",\n        \"Resume file size is within the required limit for easy sharing.\"\n      ],\n      \"cons\": [\n        \"Resume is too lengthy.\\n<b>Tip:</b> Condense your resume to one page, focusing on the most relevant and recent experiences.\\n\"\n      ]\n    }\n  },\n  \"details\": {\n    \"basic\": {\n      \"first_name\": \"Michael\",\n      \"last_name\": \"Pittsfield\",\n      \"email\": \"mpittsfield@rrmail.com\",\n      \"phone_number\": \"(111) 222- 3333\",\n      \"location\": \"Orlando, FL\",\n      \"portfolio_website_url\": \"\",\n      \"linkedin_url\": \"\",\n      \"github_url\": \"\",\n      \"university\": \"AA University\",\n      \"graduation_year\": \"2012\",\n      \"majors\": \"Criminal Justice\"\n    },\n    \"summary\": \"Highly accomplished and result-oriented executive with substantial experience in directing all aspects of RCM, driving company sales, and earning customer satisfaction at high-growth organizations. Proven track record of maximizing sales opportunities, overseeing billing procedures, and delivering coaching leadership towards work excellence. Adept at maintaining a broad knowledge of products, competitors, and general markets to ensure business superiority and satisfy sales goals. Capable of conducting one-on-one consultations with clients to develop fitness plans. Demonstrated success in working well under pressure, quickly learning job functions, and effectively handling various tasks while remaining detail-oriented. Possess strong expertise in prioritizing tasks, adapting to the challenging environment, and meeting stringent deadlines.\",\n    \"work_experiences\": [\n      {\n        \"title\": \"RCM Sales Executive\",\n        \"company\": \"ABC Company\",\n        \"location\": \"Orlando, FL\",\n        \"duration\": { \"years\": 1, \"months\": 0 },\n        \"summary\": \"Conduct market research to identify selling opportunities and evaluate customer needs. Augment company revenues by formulating top-notch plans and processes for Sales operations. Prepare thorough sales performance reports by gathering data and tracking sales records. Collaborate with vendors and clients to successfully negotiate contracts in a win-win situation. Build strong rapport by collaborating and facilitating sales managers weekly on a professional basis. Maximize company customer base by delivering detailed presentations, conducting meetings, and networking with new and potential clients. Develop a high performing workforce by providing professional development guidance to employees toward work excellence and goals realization.\",\n        \"achievements\": null\n      },\n      {\n        \"title\": \"RCM Sales Executive\",\n        \"company\": \"DDD Corporation\",\n        \"location\": \"Orlando, FL\",\n        \"duration\": { \"years\": 2, \"months\": 0 },\n        \"summary\": \"Developed and strengthened positive relationships with prospective customers in assigned region by identifying and meeting client demands and resolving issues in a friendly manner. Attained optimal outcomes by planning and developing best-in-class solutions and performing detailed initial assessments of potential customers. Liaised with sales representative while rendering RCM services and educating value props and billing procedures. Spearheaded all aspects of sales procedures from prospecting to closing new business by developing and executing growth-focused strategic plans. Led and responded to impactful client communications to facilitate uncovering lucrative business opportunities. Conducted return on investment (ROD), process flow, and total cost of ownership (TCO) analysis.\",\n        \"achievements\": null\n      },\n      {\n        \"title\": \"RCM District Manager\",\n        \"company\": \"GGG Inc\",\n        \"location\": \"Orlando, FL\",\n        \"duration\": { \"years\": 1, \"months\": 0 },\n        \"summary\": \"Provided billing solutions to physicians and managed patient complaints in respect of billing and collections. Delivered hands-on assistance to physicians by identifying and presenting gaps in collection and billing procedures, monitoring customers’ requirements, and reducing and controlling billing behaviors. Ensured efficient and cost-cutting operations for physicians by determining and delivering exceptional services and solutions. Facilitated optimal financial gain by providing cost-effective roadmaps to physicians and administrators. Maintained and input accurate billing information into the billing system by executing a solid system. Oversaw revenue cycle operations, such as account management, communications with insurance providers, collections, cash posting, contract analysis, and billing.\",\n        \"achievements\": null\n      },\n      {\n        \"title\": \"District Manager\",\n        \"company\": \"BBB Company\",\n        \"location\": \"Miami, FL\",\n        \"duration\": { \"years\": 1, \"months\": 0 },\n        \"summary\": \"Boosted company sales by responding to prospects' questions regarding product features and benefits and facilitating prospects in making product selection grounded on needs. Promoted excellent product features grounded on assessments of prospects' requirements by utilizing extensive knowledge of product capabilities. Meet and exceeded prospect expectations by describing the implementation and delivering the customer assistance process to the prospect. Leveraged NetSuite (client relationship management software) while monitoring and following up on all prospects, appointments, and emails to ensure seamless workflow. Generated and maintained sales pipeline and demonstrated ABC products to buying authority online.\",\n        \"achievements\": null\n      },\n      {\n        \"title\": \"Personal Trainer\",\n        \"company\": \"XYC Diagnostics\",\n        \"location\": \"Miami, FL\",\n        \"duration\": { \"years\": 2, \"months\": 0 },\n        \"summary\": \"Assisted customers in accomplishing fitness goals by training customers in the use of equipment and food nutrition. Worked as Group Training Instructor while formulating comprehensive workout and nutrition plans for clients and motivating clients during training sessions. Ensured weight room safety and equipment maintenance by regulating, checking equipment functioning, and complying with set standards. Working with management and fellow staff to ensure the gym functions effectively. Maintained center functions through liaising with management and fellow staff. Understood customer goals and current fitness levels and received positive feedback by collaborating with customers.\",\n        \"achievements\": null\n      },\n      {\n        \"title\": \"West Coast Sales Director\",\n        \"company\": \"GEF Company\",\n        \"location\": \"Miami, FL\",\n        \"duration\": { \"years\": 2, \"months\": 0 },\n        \"summary\": \"Generated new leads and closed equipment sales by leading outside sales reps towards best working practices. Attracted clients by designing eye-capturing 2D and 3D weight room images. Leveraged strong communication skills while providing progressive training to the new clinician for remarkable outside presentations for schools and organizations. Increased company profitability by responding to incoming calls for weight room equipment sales and selling and delivering world-class company products. Facilitated company in displaying and promoting equipment for sales by orchestrating and conducting successful school, district, and state conventions. Improved staff performance by guiding floor team at conventions about product features demonstrations.\",\n        \"achievements\": null\n      }\n    ],\n    \"project_experiences\": [],\n    \"educations\": [\n      {\n        \"school\": \"AA University\",\n        \"degree\": \"Bachelor of Science\",\n        \"field\": \"Criminal Justice\",\n        \"start\": { \"year\": null },\n        \"end\": { \"year\": 2012 }\n      }\n    ],\n    \"certifications\": [\n      {\n        \"title\": \"Certified WRSC Strength and Conditioning Coach\",\n        \"provider\": \"\"\n      },\n      { \"title\": \"Certified AFAA Personal Trainer\", \"provider\": \"\" },\n      {\n        \"title\": \"Certified Electronic Health Record Practice Management Software Solutions\",\n        \"provider\": \"\"\n      }\n    ],\n    \"languages\": [],\n    \"skills\": [\n      { \"name\": \"Sales Operation Management\" },\n      { \"name\": \"Team Leadership & Guidance\" },\n      { \"name\": \"Relationship Building\" },\n      { \"name\": \"Revenue Cycle Management\" },\n      { \"name\": \"Issues Identification & Resolution\" },\n      { \"name\": \"Strategic Planning & Control\" },\n      { \"name\": \"Business Development & Growth\" },\n      { \"name\": \"Cash Flow Management\" },\n      { \"name\": \"Time Management\" },\n      { \"name\": \"Process & Performance Improvement\" },\n      { \"name\": \"Customer Satisfaction & Loyalty\" },\n      { \"name\": \"Client Health & Fitness\" },\n      { \"name\": \"Billing Procedures Management\" },\n      { \"name\": \"Strong Interpersonal Skills\" },\n      { \"name\": \"Excellent Communication Skills\" }\n    ]\n  }\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "score": {
+                      "type": "integer",
+                      "example": 87,
+                      "default": 0
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "contact": {
+                          "type": "object",
+                          "properties": {
+                            "pros": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "Contact information includes a phone number for easy reachability."
+                              }
+                            },
+                            "cons": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "No LinkedIn profile linked.\n<b>Tip:</b> Provide a LinkedIn URL to showcase a broader professional network and background.\n"
+                              }
+                            }
+                          }
+                        },
+                        "experiences": {
+                          "type": "object",
+                          "properties": {
+                            "pros": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "Job titles in the experience section are clearly defined."
+                              }
+                            },
+                            "cons": {
+                              "type": "array"
+                            }
+                          }
+                        },
+                        "educations": {
+                          "type": "object",
+                          "properties": {
+                            "pros": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "Field of study is clearly indicated in the education section."
+                              }
+                            },
+                            "cons": {
+                              "type": "array"
+                            }
+                          }
+                        },
+                        "skills": {
+                          "type": "object",
+                          "properties": {
+                            "pros": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "Skills are listed, highlighting competencies and strengths."
+                              }
+                            },
+                            "cons": {
+                              "type": "array"
+                            }
+                          }
+                        },
+                        "summary": {
+                          "type": "object",
+                          "properties": {
+                            "pros": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "A professional summary/objective is present, giving a career overview."
+                              }
+                            },
+                            "cons": {
+                              "type": "array"
+                            }
+                          }
+                        },
+                        "format": {
+                          "type": "object",
+                          "properties": {
+                            "pros": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "PDF is a good format to share your resume."
+                              }
+                            },
+                            "cons": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "Resume is too lengthy.\n<b>Tip:</b> Condense your resume to one page, focusing on the most relevant and recent experiences.\n"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "details": {
+                      "type": "object",
+                      "properties": {
+                        "basic": {
+                          "type": "object",
+                          "properties": {
+                            "first_name": {
+                              "type": "string",
+                              "example": "Michael"
+                            },
+                            "last_name": {
+                              "type": "string",
+                              "example": "Pittsfield"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "mpittsfield@rrmail.com"
+                            },
+                            "phone_number": {
+                              "type": "string",
+                              "example": "(111) 222- 3333"
+                            },
+                            "location": {
+                              "type": "string",
+                              "example": "Orlando, FL"
+                            },
+                            "portfolio_website_url": {
+                              "type": "string",
+                              "example": ""
+                            },
+                            "linkedin_url": {
+                              "type": "string",
+                              "example": ""
+                            },
+                            "github_url": {
+                              "type": "string",
+                              "example": ""
+                            },
+                            "university": {
+                              "type": "string",
+                              "example": "AA University"
+                            },
+                            "graduation_year": {
+                              "type": "string",
+                              "example": "2012"
+                            },
+                            "majors": {
+                              "type": "string",
+                              "example": "Criminal Justice"
+                            }
+                          }
+                        },
+                        "summary": {
+                          "type": "string",
+                          "example": "Highly accomplished and result-oriented executive with substantial experience in directing all aspects of RCM, driving company sales, and earning customer satisfaction at high-growth organizations. Proven track record of maximizing sales opportunities, overseeing billing procedures, and delivering coaching leadership towards work excellence. Adept at maintaining a broad knowledge of products, competitors, and general markets to ensure business superiority and satisfy sales goals. Capable of conducting one-on-one consultations with clients to develop fitness plans. Demonstrated success in working well under pressure, quickly learning job functions, and effectively handling various tasks while remaining detail-oriented. Possess strong expertise in prioritizing tasks, adapting to the challenging environment, and meeting stringent deadlines."
+                        },
+                        "work_experiences": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "example": "RCM Sales Executive"
+                              },
+                              "company": {
+                                "type": "string",
+                                "example": "ABC Company"
+                              },
+                              "location": {
+                                "type": "string",
+                                "example": "Orlando, FL"
+                              },
+                              "duration": {
+                                "type": "object",
+                                "properties": {
+                                  "years": {
+                                    "type": "integer",
+                                    "example": 1,
+                                    "default": 0
+                                  },
+                                  "months": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  }
+                                }
+                              },
+                              "summary": {
+                                "type": "string",
+                                "example": "Conduct market research to identify selling opportunities and evaluate customer needs. Augment company revenues by formulating top-notch plans and processes for Sales operations. Prepare thorough sales performance reports by gathering data and tracking sales records. Collaborate with vendors and clients to successfully negotiate contracts in a win-win situation. Build strong rapport by collaborating and facilitating sales managers weekly on a professional basis. Maximize company customer base by delivering detailed presentations, conducting meetings, and networking with new and potential clients. Develop a high performing workforce by providing professional development guidance to employees toward work excellence and goals realization."
+                              },
+                              "achievements": {}
+                            }
+                          }
+                        },
+                        "project_experiences": {
+                          "type": "array"
+                        },
+                        "educations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "school": {
+                                "type": "string",
+                                "example": "AA University"
+                              },
+                              "degree": {
+                                "type": "string",
+                                "example": "Bachelor of Science"
+                              },
+                              "field": {
+                                "type": "string",
+                                "example": "Criminal Justice"
+                              },
+                              "start": {
+                                "type": "object",
+                                "properties": {
+                                  "year": {}
+                                }
+                              },
+                              "end": {
+                                "type": "object",
+                                "properties": {
+                                  "year": {
+                                    "type": "integer",
+                                    "example": 2012,
+                                    "default": 0
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "certifications": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string",
+                                "example": "Certified WRSC Strength and Conditioning Coach"
+                              },
+                              "provider": {
+                                "type": "string",
+                                "example": ""
+                              }
+                            }
+                          }
+                        },
+                        "languages": {
+                          "type": "array"
+                        },
+                        "skills": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "example": "Sales Operation Management"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"data\": {\n        \"request_id\": \"37d88fe6-caf9-47d7-858b-5b8eb6edd275\"\n    },\n    \"usage\": {\n        \"credits\": 30\n    }\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "request_id": {
+                          "type": "string",
+                          "example": "37d88fe6-caf9-47d7-858b-5b8eb6edd275"
+                        }
+                      }
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "credits": {
+                          "type": "integer",
+                          "example": 30,
+                          "default": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/resume-score/": {
+      "post": {
+        "summary": "Resume Score",
+        "description": "The API endpoint of the Resume Score service.",
+        "operationId": "resume-score",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "description": "This item is url of PDF/DOC/DOCX resume file (https://PATH/file.pdf).",
+                    "default": "https://PATH/file.pdf"
+                  },
+                  "job_description": {
+                    "type": "string",
+                    "description": "Job description text for matching with resume file. This item should be between 5 to 500 characters.",
+                    "default": "Sales Professional"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"data\": {\n      \"score\": 7,\n      \"reason\": \"The candidate has a strong background in sales operations, revenue cycle management, and business development, which align well with the Sales Professional position. However, there is no specific mention of direct sales experience or achievements.\"\n  },\n  \"usage\": {\n      \"credits\": 0\n  },\n  \"message\": \"\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "score": {
+                          "type": "integer",
+                          "example": 7,
+                          "default": 0
+                        },
+                        "reason": {
+                          "type": "string",
+                          "example": "The candidate has a strong background in sales operations, revenue cycle management, and business development, which align well with the Sales Professional position. However, there is no specific mention of direct sales experience or achievements."
+                        }
+                      }
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "credits": {
+                          "type": "integer",
+                          "example": 0,
+                          "default": 0
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": ""
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"data\": {\n        \"request_id\": \"37d88fe6-caf9-47d7-858b-5b8eb6edd275\"\n    },\n    \"usage\": {\n        \"credits\": 30\n    }\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "request_id": {
+                          "type": "string",
+                          "example": "37d88fe6-caf9-47d7-858b-5b8eb6edd275"
+                        }
+                      }
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "credits": {
+                          "type": "integer",
+                          "example": 30,
+                          "default": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      }
+    ]
+  },
+  "x-readme-fauxas": true
+}
