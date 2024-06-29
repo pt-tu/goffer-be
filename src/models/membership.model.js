@@ -28,8 +28,6 @@ const membershipSchema = mongoose.Schema(
     },
     invitationToken: {
       type: String,
-      unique: true,
-      sparse: true,
     },
   },
   {
