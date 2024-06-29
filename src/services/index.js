@@ -19,3 +19,4 @@ module.exports.ragService = require('./rag.service');
 module.exports.invitationService = require('./invitation.service');
 module.exports.membershipService = require('./membership.service');
 module.exports.notificationService = require('./notification.service');
+module.exports.genaiService = require('./genai.service');

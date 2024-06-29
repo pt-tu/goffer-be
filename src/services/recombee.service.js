@@ -31,6 +31,7 @@ const recommendJobs = async (userId, searchQuery, limit = 10, page = 1) => {
           returnProperties: true,
           diversity: 0.0,
           rotationTime: 0.0,
+          filter: "'isDraft' == false or 'isDraft' == null",
           rotationRate: 0.2,
           page,
           ...(booster && {
@@ -41,7 +42,7 @@ const recommendJobs = async (userId, searchQuery, limit = 10, page = 1) => {
     } else {
       recommendations = await client.send(
         new rqs.RecommendItemsToUser(userId.toString(), limit, {
-          filter: `'type' == "job"`,
+          filter: `'type' == "job" and ('isDraft' == false or 'isDraft' == null)`,
           cascadeCreate: true,
           returnProperties: true,
           diversity: 0.0,
@@ -250,6 +251,7 @@ const addJobToRecombee = async (job) => {
         tools: job.tools,
         org: job.org.toString(),
         type: 'job',
+        isDraft: job.status !== 'published',
       },
       {
         cascadeCreate: true,
@@ -329,11 +331,13 @@ const addUserPropertiesToRecombee = async () => {
     const addToolsProperty = new rqs.AddUserProperty('tools', 'set');
     const addLocationProperty = new rqs.AddUserProperty('location', 'string');
     const addExperienceProperty = new rqs.AddUserProperty('experience', 'string');
+    const addIsJobIdealProperty = new rqs.AddUserProperty('isJobIdeal', 'string');
 
     await client.send(addSkillsProperty);
     await client.send(addToolsProperty);
     await client.send(addLocationProperty);
     await client.send(addExperienceProperty);
+    await client.send(addIsJobIdealProperty);
 
     logger.info('Successfully added user properties to Recombee');
   } catch (error) {
@@ -354,6 +358,7 @@ const addEntityPropertiesToRecombee = async () => {
     const addToolsProperty = new rqs.AddItemProperty('tools', 'set');
     const addOrgProperty = new rqs.AddItemProperty('org', 'string');
     const addTypeProperty = new rqs.AddItemProperty('type', 'string');
+    const addIsDraftProperty = new rqs.AddItemProperty('isDraft', 'boolean');
 
     const addNameProperty = new rqs.AddItemProperty('name', 'string');
     const addFieldProperty = new rqs.AddItemProperty('field', 'string');
@@ -369,6 +374,7 @@ const addEntityPropertiesToRecombee = async () => {
     await client.send(addToolsProperty);
     await client.send(addOrgProperty);
     await client.send(addTypeProperty);
+    await client.send(addIsDraftProperty);
 
     await client.send(addNameProperty);
     await client.send(addFieldProperty);

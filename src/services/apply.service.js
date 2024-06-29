@@ -1,6 +1,9 @@
+/* eslint-disable no-param-reassign */
+const mongoose = require('mongoose');
 const httpStatus = require('http-status');
 const Apply = require('../models/apply.model');
 const ApiError = require('../utils/ApiError');
+const { sdk } = require('../config/magicalapi');
 
 /**
  *
@@ -21,7 +24,31 @@ const createApplication = async (applyBody) => {
  * @param {number} [options.page] - Current page (default = 1)
  * @returns {Promise<Apply>}
  */
-const getApplications = async (filter, options) => {
+const getApplications = async (filter, options, advanced) => {
+  if (advanced.q) {
+    filter.$or = [
+      { email: { $regex: advanced.q, $options: 'i' } },
+      { name: { $regex: advanced.q, $options: 'i' } },
+      { lastCompany: { $regex: advanced.q, $options: 'i' } },
+      { linkedIn: { $regex: advanced.q, $options: 'i' } },
+      { location: { $regex: advanced.q, $options: 'i' } },
+      { personalWebsite: { $regex: advanced.q, $options: 'i' } },
+      { phoneNumber: { $regex: advanced.q, $options: 'i' } },
+      { role: { $regex: advanced.q, $options: 'i' } },
+    ];
+  }
+  if (advanced.match) {
+    const [start, end] = advanced.match.split('-');
+    filter.match = { $gte: start, $lte: end };
+  }
+  if (advanced.rating) {
+    const [start, end] = advanced.rating.split('-');
+    filter.rating = { $gte: start, $lte: end };
+  }
+  if (advanced.assessmentAvg) {
+    const [start, end] = advanced.assessmentAvg.split('-');
+    filter.assessmentAvg = { $gte: start, $lte: end };
+  }
   const applications = await Apply.paginate(filter, options);
   return applications;
 };
@@ -68,6 +95,16 @@ const updateApplication = async (req) => {
   return application;
 };
 
+const updateApplicationRaw = async (applicationId, updateBody) => {
+  const application = await Apply.findById(applicationId);
+  if (!application) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Application not found');
+  }
+  Object.assign(application, updateBody);
+  await application.save();
+  return application;
+};
+
 /**
  *
  * @param {string} applicationId
@@ -92,6 +129,35 @@ const submitAnswerToApplication = async (applicationId, answer) => {
   return application;
 };
 
+const countApplicationsByPhases = async (filter) => {
+  if (filter.job) {
+    filter.job = mongoose.Types.ObjectId(filter.job);
+  }
+
+  return Apply.aggregate([
+    {
+      $match: filter,
+    },
+    {
+      $group: {
+        _id: '$phase',
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+};
+
+const resumeScore = async (url, jd) => {
+  const response = await sdk.resumeScore({
+    url,
+    job_description: jd,
+  });
+  const requestId = response.data.data.request_id;
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+  const result = await sdk.resumeScore({ request_id: requestId });
+  return result.data.data;
+};
+
 module.exports = {
   createApplication,
   getApplications,
@@ -99,4 +165,7 @@ module.exports = {
   queryApplication,
   updateApplication,
   submitAnswerToApplication,
+  countApplicationsByPhases,
+  updateApplicationRaw,
+  resumeScore,
 };

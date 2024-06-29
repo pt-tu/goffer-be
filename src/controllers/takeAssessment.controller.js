@@ -4,6 +4,7 @@ const assessmentService = require('../services/assessment.service');
 const takeAssessmentService = require('../services/takeAssessment.service');
 // const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
+const { applyService } = require('../services');
 
 const startAssessment = catchAsync(async (req, res) => {
   const { user, body } = req;
@@ -49,6 +50,18 @@ const submitAll = catchAsync(async (req, res) => {
   const { user, body } = req;
 
   const taking = await takeAssessmentService.submitAll(body.takeAssessmentId, user.id);
+  const takings = await takeAssessmentService.queryTakingAssessment({ user: user.id, assessment: taking.assessment.id });
+  let totalScore = 0;
+  for (let i = 0; i < takings.length; i += 1) {
+    // eslint-disable-next-line no-await-in-loop
+    const score = await assessmentService.calculateScores(takings[i].assessment, takings[i].answers);
+    totalScore += score;
+  }
+
+  const assessmentAvg = totalScore / (takings.length || 1);
+
+  const application = await applyService.queryApplication(taking.assessment.job, user.id);
+  await applyService.updateApplicationRaw(application._id, { assessmentAvg });
   res.status(httpStatus.OK).send(taking);
 });
 

@@ -85,7 +85,7 @@ const updateUserSelf = {
         template: Joi.string().required(),
         brandName: Joi.string().required(),
         logo: Joi.string().required(),
-        status: Joi.string().valid('draft', 'published').default('draft'),
+        status: Joi.string().valid('draft', 'published').default('published'),
         portfolioDomain: Joi.string()
           .pattern(/^[a-z_-]+$/)
           .message('Brand name can only contain lowercase alphabetic characters, underscores, and hyphens.')
