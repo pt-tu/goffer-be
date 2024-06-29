@@ -68,6 +68,15 @@ const applySchema = mongoose.Schema(
       ref: 'Answer',
       default: [],
     },
+    match: {
+      type: Number,
+    },
+    rating: {
+      type: Number,
+    },
+    assessmentAvg: {
+      type: Number,
+    },
   },
   {
     timestamps: true,
