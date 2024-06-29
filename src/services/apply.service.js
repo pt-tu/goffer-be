@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const httpStatus = require('http-status');
 const Apply = require('../models/apply.model');
 const ApiError = require('../utils/ApiError');
+const { sdk } = require('../config/magicalapi');
 
 /**
  *
@@ -10,8 +11,6 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<Apply>}
  */
 const createApplication = async (applyBody) => {
-  const match = Math.floor(Math.random() * 100);
-  applyBody.match = match;
   const application = await Apply.create(applyBody);
   return application;
 };
@@ -148,6 +147,17 @@ const countApplicationsByPhases = async (filter) => {
   ]);
 };
 
+const resumeScore = async (url, jd) => {
+  const response = await sdk.resumeScore({
+    url,
+    job_description: jd,
+  });
+  const requestId = response.data.data.request_id;
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+  const result = await sdk.resumeScore({ request_id: requestId });
+  return result.data.data;
+};
+
 module.exports = {
   createApplication,
   getApplications,
@@ -157,4 +167,5 @@ module.exports = {
   submitAnswerToApplication,
   countApplicationsByPhases,
   updateApplicationRaw,
+  resumeScore,
 };

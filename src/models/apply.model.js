@@ -25,7 +25,6 @@ const applySchema = mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
       lowercase: true,
       validate(value) {
@@ -71,6 +70,9 @@ const applySchema = mongoose.Schema(
     match: {
       type: Number,
     },
+    reason: {
+      type: String,
+    },
     rating: {
       type: Number,
     },
@@ -80,6 +82,16 @@ const applySchema = mongoose.Schema(
   },
   {
     timestamps: true,
+  }
+);
+
+applySchema.index(
+  {
+    job: 1,
+    owner: 1,
+  },
+  {
+    unique: true,
   }
 );
 
