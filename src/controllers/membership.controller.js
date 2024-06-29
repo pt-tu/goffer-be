@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const catchAsync = require('../utils/catchAsync');
-const { membershipService, invitationService } = require('../services');
+const { membershipService, invitationService, notificationService, organizationService } = require('../services');
 const ApiError = require('../utils/ApiError');
 const { Membership } = require('../models');
 
@@ -9,13 +9,21 @@ const createMembership = catchAsync(async (req, res) => {
   const { user, body } = req;
 
   const isOwner = await membershipService.isUserOwner(user.id, body.org);
-  if (isOwner) {
+  if (!isOwner) {
     throw new ApiError(httpStatus.FORBIDDEN, 'Only owner can add new members');
   }
 
   const { membership, expires } = await membershipService.createMembership(body);
-
-  // ... gửi thông báo với invitation link
+  const org = await organizationService.getOrganizationById(membership.org);
+  await notificationService.createNotification(`notifications-${membership.user.id}`, {
+    title: 'New invitation',
+    description: `You have a new invitation from ${org.name}`,
+    type: 'membership',
+    user: membership.user,
+    owner: isOwner,
+    link: `/invitation/${membership.id}`,
+    createAt: new Date(),
+  });
 
   membership.toJSON();
   membership.expires = expires;

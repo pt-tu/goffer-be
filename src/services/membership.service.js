@@ -7,7 +7,7 @@ const { userService, organizationService, invitationService } = require('.');
  *
  * @param {ObjectId} userId
  * @param {ObjectId} orgId
- * @returns {Promise<boolean>}
+ * @returns {Promise<User>}
  */
 const isUserOwner = async (userId, orgId) => {
   const membership = await Membership.findOne({
@@ -15,8 +15,11 @@ const isUserOwner = async (userId, orgId) => {
     org: orgId,
     role: 'owner',
   });
-  const org = await Organization.findOne({ org: orgId, owner: userId });
-  return !!membership || !!org;
+  const org = await Organization.findOne({ _id: orgId, owner: userId });
+  if (!!membership || !!org) {
+    const user = await userService.getUserById(userId);
+    return user;
+  }
 };
 
 /**
@@ -80,7 +83,7 @@ const queryMembership = async (body) => {
  * @returns {Promise<Membership>}
  */
 const getMembershipById = async (id) => {
-  const membership = await Membership.findById(id);
+  const membership = await Membership.findById(id).populate('user').populate('org');
   if (!membership) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Membership not found');
   }
@@ -98,7 +101,7 @@ const updateMembershipById = async (userId, membershipId, updateBody) => {
   const membership = await Membership.findById(membershipId);
 
   const isOwner = await isUserOwner(userId, membership.org);
-  if (isOwner) {
+  if (!isOwner) {
     throw new ApiError(httpStatus.FORBIDDEN, 'Only owner can update');
   }
 
@@ -117,7 +120,7 @@ const deleteMembershipById = async (userId, membershipId) => {
   const membership = await Membership.findById(membershipId);
 
   const isOwner = await isUserOwner(userId, membership.org);
-  if (isOwner) {
+  if (!isOwner) {
     throw new ApiError(httpStatus.FORBIDDEN, 'Only owner can delete');
   }
 
