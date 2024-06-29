@@ -37,6 +37,10 @@ const getApplications = {
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
     populate: Joi.string(),
+    q: Joi.string(),
+    match: Joi.string(),
+    rating: Joi.string(),
+    assessmentAvg: Joi.string(),
   }),
 };
 

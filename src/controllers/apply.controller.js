@@ -27,7 +27,10 @@ const getApplications = catchAsync(async (req, res) => {
     'role',
   ]);
   const options = pick(req.query, ['sortBy', 'limit', 'page', 'populate']);
-  const result = await applyService.getApplications(filter, options);
+  const advanced = pick(req.query, ['q', 'match', 'rating', 'assessmentAvg']);
+
+  const result = await applyService.getApplications(filter, options, advanced);
+
   res.send(result);
 });
 
