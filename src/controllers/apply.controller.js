@@ -1,13 +1,41 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { applyService, jobService, userService } = require('../services');
+const { applyService, jobService, userService, genaiService } = require('../services');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
+const flattenPlatejsData = require('../utils/flattenPlatejsData');
+const genai = require('../config/genai');
+const { checkPdf } = require('../utils/pdf');
+const logger = require('../config/logger');
 
 const createApplication = catchAsync(async (req, res) => {
   const { user, body } = req;
   req.body.owner = user.id;
+
+  if (!checkPdf(body.resume)) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Resume must be a pdf file');
+  }
+
   const application = await applyService.createApplication(body);
+  (async () => {
+    try {
+      const job = await jobService.getJob(body.job);
+      let { description } = job;
+      try {
+        description = flattenPlatejsData(description);
+      } catch (error) {
+        // Do nothing
+      }
+      const jd = await genaiService.bedrockGenerateResponse(description, genai.KEYWORD_EXTRACT_PROMPT, 100);
+      const { score, reason } = await applyService.resumeScore(body.resume, jd);
+      await applyService.updateApplicationRaw(application._id, {
+        match: score,
+        reason,
+      });
+    } catch (error) {
+      logger.error('Error in resume scoring', error);
+    }
+  })();
   res.status(httpStatus.CREATED).send(application);
 });
 

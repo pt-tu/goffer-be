@@ -24,7 +24,7 @@ const generateResponse = async (prompt, systemMessage, maxTokens) => {
   }
 };
 
-const bedrockGenerateResponse = async (prompt, systemMessage) => {
+const bedrockGenerateResponse = async (prompt, systemMessage, maxTokens) => {
   const command = new InvokeModelCommand({
     modelId: model,
     contentType: 'application/json',
@@ -32,7 +32,7 @@ const bedrockGenerateResponse = async (prompt, systemMessage) => {
     body: JSON.stringify({
       system: systemMessage,
       messages: [{ role: 'user', content: prompt }],
-      max_tokens: 4096,
+      max_tokens: maxTokens || 4096,
       anthropic_version: 'bedrock-2023-05-31',
       temperature: 0.7,
       top_p: 0.9,

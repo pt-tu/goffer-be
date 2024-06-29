@@ -64,7 +64,6 @@ const validateAssessment = async (takeAssessmentId, userId) => {
 
   if (Date.now() > takeAssessment.endingAt || takeAssessment.status === 'closed') {
     takeAssessment.status = 'closed';
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Assessment is expired');
   } else {
     takeAssessment.status = 'pending';
   }
@@ -127,6 +126,21 @@ const submitAll = async (takeAssessmentId, userId) => {
   const takeAssessment = await validateAssessment(takeAssessmentId, userId);
   Object.assign(takeAssessment, { status: 'closed' });
   await takeAssessment.save();
+  return takeAssessment;
+};
+
+const updateTakingAssessment = async (id, updateBody) => {
+  const takeAssessment = await TakeAssessment.findById(id);
+  if (!takeAssessment) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Taking assessment not found');
+  }
+  Object.assign(takeAssessment, updateBody);
+  await takeAssessment.save();
+  return takeAssessment;
+};
+
+const queryTakingAssessment = async (filter) => {
+  return TakeAssessment.find(filter).populate('answers');
 };
 
 module.exports = {
@@ -135,4 +149,6 @@ module.exports = {
   submitAnswer,
   submitAll,
   getTakingAssessmentByAssessmentIdAndUserId,
+  updateTakingAssessment,
+  queryTakingAssessment,
 };

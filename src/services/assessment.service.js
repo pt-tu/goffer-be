@@ -75,6 +75,30 @@ const getPublicAssessmentById = async (id) => {
   return assessment;
 };
 
+const calculateScores = async (assessmentId, answers) => {
+  const assessment = await Assessment.findById(assessmentId).populate({
+    path: 'questions',
+  });
+  if (!assessment) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Assessment not found');
+  }
+  const { questions } = assessment;
+
+  let correctCount = 0;
+  const totalQuestions = questions.length;
+
+  for (let i = 0; i < answers.length; i += 1) {
+    const curr = answers[i];
+    const question = questions.find((q) => String(q._id) === String(curr.question));
+    const correctChoice = question.choices.find((c) => c.isCorrect === true).content;
+    if (curr.content === correctChoice) {
+      correctCount += 1;
+    }
+  }
+
+  return (correctCount / (totalQuestions || 1)) * 10;
+};
+
 module.exports = {
   createAssessment,
   queryAssessments,
@@ -82,4 +106,5 @@ module.exports = {
   updateAssessmentById,
   deleteAssessmentById,
   getPublicAssessmentById,
+  calculateScores,
 };
