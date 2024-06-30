@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 const { v4: uuid } = require('uuid');
 const httpStatus = require('http-status');
-const { Organization, User } = require('../models');
+const { Organization, Membership } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { userService } = require('.');
 const { rqs, client } = require('../config/recombeeClient');
@@ -124,7 +124,7 @@ const addMember = async (user, org, member) => {
  * @returns {Promise<User[]>}
  */
 const getOrganizationMembers = async (id) => {
-  return User.find({ org: id });
+  return (await Membership.find({ org: id, status: 'accepted' }).populate('user')).map((item) => item.user);
 };
 
 const addOrganizationToRecombee = async (organization) => {

@@ -11,13 +11,13 @@ router
   .post(auth(), validate(membershipValidation.createMembership), membershipController.createMembership)
   .get(validate(membershipValidation.getMemberships), membershipController.getMemberships);
 
+router.route('/self').get(auth(), membershipController.getSelfMemberships);
+
 router
   .route('/:id')
   .get(validate(membershipValidation.getMembership), membershipController.getMembership)
   .patch(auth(), validate(membershipValidation.updateMembership), membershipController.updateMembership)
   .delete(auth(), validate(membershipValidation.deleteMembership), membershipController.deleteMembership);
-
-router.route('/user/:userId').get(membershipController.getUserMemberships);
 
 router
   .route('/org/:orgId')

@@ -2,7 +2,7 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const { Membership, Organization } = require('../models');
 const ApiError = require('../utils/ApiError');
-const { userService, organizationService, invitationService } = require('.');
+const { userService, invitationService } = require('.');
 /**
  *
  * @param {ObjectId} userId
@@ -28,12 +28,12 @@ const isUserOwner = async (userId, orgId) => {
  * @returns {Promise<Membership>}
  */
 const createMembership = async (body) => {
-  const user = await userService.getUserByEmail(body.email);
+  const user = body.email ? await userService.getUserByEmail(body.email) : await userService.getUserById(body.user);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
 
-  const org = await organizationService.getOrganizationById(body.org);
+  const org = await Organization.findById(body.org);
   if (!org) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Organization not found');
   }
@@ -117,11 +117,19 @@ const updateMembershipById = async (userId, membershipId, updateBody) => {
  * @returns {Promise<Membership>}
  */
 const deleteMembershipById = async (userId, membershipId) => {
-  const membership = await Membership.findById(membershipId);
+  const membership = await Membership.findById(membershipId).populate('org');
 
-  const isOwner = await isUserOwner(userId, membership.org);
+  const isOwner = await isUserOwner(userId, membership.org._id);
   if (!isOwner) {
     throw new ApiError(httpStatus.FORBIDDEN, 'Only owner can delete');
+  }
+
+  if (userId.toString() === membership.user.toString()) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'You cannot remove yourself');
+  }
+
+  if (membership.user.toString() === membership.org.owner.toString()) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Cannot remove the organization owner');
   }
 
   await membership.remove();
@@ -133,8 +141,20 @@ const deleteMembershipById = async (userId, membershipId) => {
  * @param {ObjectId} userId
  * @returns {Promise<Membership[]>}
  */
-const getUserMemberships = async (userId) => {
-  return Membership.find({ user: userId }).populate('org');
+const getSelfMemberships = async (userId) => {
+  const selfOrgs = await Organization.find({ owner: userId });
+
+  const bulkOps = selfOrgs.map((org) => ({
+    updateOne: {
+      filter: { user: userId, org: org._id },
+      update: { $set: { role: 'owner', status: 'accepted' } },
+      upsert: true,
+    },
+  }));
+
+  await Membership.bulkWrite(bulkOps);
+
+  return Membership.find({ user: userId, status: 'accepted' }).populate('org');
 };
 
 /**
@@ -146,18 +166,6 @@ const getOrganizationMemberships = async (orgId) => {
   return Membership.find({ org: orgId }).populate('user');
 };
 
-/**
- *
- * @param {ObjectId} userId
- * @param {ObjectId} orgId
- * @param {string} role
- * @returns {Promise<boolean>}
- */
-const hasRole = async (userId, orgId, role) => {
-  const membership = await Membership.findOne({ user: userId, org: orgId, role });
-  return !!membership;
-};
-
 module.exports = {
   isUserOwner,
   createMembership,
@@ -166,7 +174,6 @@ module.exports = {
   getMembershipById,
   updateMembershipById,
   deleteMembershipById,
-  getUserMemberships,
+  getSelfMemberships,
   getOrganizationMemberships,
-  hasRole,
 };
