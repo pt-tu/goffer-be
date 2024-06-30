@@ -5,7 +5,7 @@ const createQuestion = {
   body: Joi.object().keys({
     content: Joi.string().required(),
     description: Joi.string().required().max(10000),
-    constraint: Joi.number().min(180),
+    constraint: Joi.number(),
     type: Joi.string().required(),
     sample: Joi.string(),
     answer: Joi.string(),
@@ -77,7 +77,7 @@ const updateQuestion = {
     .keys({
       content: Joi.string(),
       description: Joi.string().max(10000),
-      constraint: Joi.number().min(180),
+      constraint: Joi.number(),
       type: Joi.string(),
       job: Joi.string().custom(objectId),
       author: Joi.string().custom(objectId),

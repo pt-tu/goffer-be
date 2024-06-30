@@ -29,7 +29,17 @@ const updateEvaluation = catchAsync(async (req, res) => {
 });
 
 const deleteEvaluation = catchAsync(async (req, res) => {
+  const evaluation = await evaluationService.getEvaluationById(req.params.evaluationId);
+  if (!evaluation) {
+    res.status(httpStatus.NOT_FOUND).send();
+  }
+  const { job, user } = evaluation;
   await evaluationService.deleteEvaluationById(req.params.evaluationId);
+  const average = await evaluationService.getAverage(job, user);
+  const application = await applyService.queryApplication(job, user);
+  await applyService.updateApplicationRaw(application._id, {
+    rating: average,
+  });
   res.status(httpStatus.NO_CONTENT).send();
 });
 

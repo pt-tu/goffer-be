@@ -15,6 +15,10 @@ const getEvaluations = {
   query: Joi.object().keys({
     owner: Joi.string().custom(objectId),
     answer: Joi.string().custom(objectId),
+    score: Joi.number().valid(1, 2, 3, 4, 5),
+    timestamp: Joi.number(),
+    job: Joi.string().custom(objectId),
+    user: Joi.string().custom(objectId),
   }),
 };
 

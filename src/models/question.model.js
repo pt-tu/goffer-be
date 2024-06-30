@@ -33,8 +33,6 @@ const questionSchema = mongoose.Schema(
     },
     constraint: {
       type: Number,
-      min: 180,
-      default: 180,
     },
     type: {
       type: String,

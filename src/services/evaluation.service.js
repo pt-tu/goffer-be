@@ -18,7 +18,7 @@ const createEvaluation = async (evaluationData) => {
 };
 
 const getEvaluations = async (filter) => {
-  return Evaluation.find(filter);
+  return Evaluation.find(filter).populate('owner').sort({ updatedAt: -1 });
 };
 
 const getEvaluationById = async (evaluationId) => {
@@ -32,7 +32,7 @@ const deleteEvaluationById = async (evaluationId) => {
 const getAverage = async (job, userId) => {
   const evaluations = await Evaluation.find({ user: userId, job });
   const totalScore = evaluations.reduce((acc, evaluation) => acc + evaluation.score, 0);
-  return totalScore / evaluations.length;
+  return totalScore / (evaluations.length || 1);
 };
 
 module.exports = {
