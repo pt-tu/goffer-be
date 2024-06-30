@@ -95,9 +95,6 @@ const updateApplication = async (applicationId, userId, body) => {
   if (!application) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Application not found');
   }
-  if (userId !== application.owner.toString()) {
-    throw new ApiError(httpStatus.FORBIDDEN, 'Application Forbidden');
-  }
 
   Object.assign(application, body);
   await application.save();
@@ -162,7 +159,7 @@ const resumeScore = async (url, jd) => {
     job_description: jd,
   });
   const requestId = response.data.data.request_id;
-  await new Promise((resolve) => setTimeout(resolve, 5000));
+  await new Promise((resolve) => setTimeout(resolve, 15000));
   const result = await sdk.resumeScore({ request_id: requestId });
   return result.data.data;
 };
