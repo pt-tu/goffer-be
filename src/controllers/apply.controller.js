@@ -89,7 +89,8 @@ const queryApplication = catchAsync(async (req, res) => {
 });
 
 const updateApplication = catchAsync(async (req, res) => {
-  const updatedApplication = await applyService.updateApplication(req);
+  const { params, user, body } = req;
+  const updatedApplication = await applyService.updateApplication(params.id, user.id, body);
   res.send(updatedApplication);
 });
 

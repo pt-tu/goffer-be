@@ -9,12 +9,14 @@ const router = express.Router();
 router
   .route('/')
   .post(auth(), validate(applyValidation.createApplication), applyController.createApplication)
-  .get(auth(true), validate(applyValidation.getApplications), applyController.getApplications)
-  .patch(auth(), validate(applyValidation.updateApplication), applyController.updateApplication);
+  .get(auth(true), validate(applyValidation.getApplications), applyController.getApplications);
 
 router.route('/count').get(auth(true), validate(applyValidation.getApplications), applyController.countApplicationsByPhases);
 
-router.route('/:id').get(auth(), validate(applyValidation.getApplication), applyController.getApplication);
+router
+  .route('/:id')
+  .get(auth(), validate(applyValidation.getApplication), applyController.getApplication)
+  .patch(auth(), validate(applyValidation.updateApplication), applyController.updateApplication);
 
 router.route('/job/:id').get(auth(), validate(applyValidation.getApplication), applyController.queryApplication);
 

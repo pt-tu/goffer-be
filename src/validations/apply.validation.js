@@ -51,8 +51,10 @@ const getApplication = {
 };
 
 const updateApplication = {
-  body: Joi.object().keys({
+  params: Joi.object().keys({
     id: Joi.string().custom(objectId).required(),
+  }),
+  body: Joi.object().keys({
     job: Joi.string().custom(objectId),
     phase: Joi.string(),
     resume: Joi.string(),

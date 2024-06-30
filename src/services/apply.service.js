@@ -76,17 +76,18 @@ const queryApplication = async (job, owner) => {
 
 /**
  *
- * @param {ReqBody} req
+ * @param {string} applicationId
+ * @param {string} userId
+ * @param {ReqBody} body
  * @returns {Promise<Apply>}
  */
-const updateApplication = async (req) => {
-  const { user, body } = req;
-  const application = await Apply.findById(body.id);
+const updateApplication = async (applicationId, userId, body) => {
+  const application = await Apply.findById(applicationId);
 
   if (!application) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Application not found');
   }
-  if (user.id !== application.owner.toString()) {
+  if (userId !== application.owner.toString()) {
     throw new ApiError(httpStatus.FORBIDDEN, 'Application Forbidden');
   }
 
