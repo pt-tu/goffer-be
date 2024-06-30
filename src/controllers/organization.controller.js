@@ -1,7 +1,14 @@
 const { v4: uuid } = require('uuid');
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { organizationService, paymentService, cacheService, interactionService, recombeeService } = require('../services');
+const {
+  organizationService,
+  paymentService,
+  cacheService,
+  interactionService,
+  recombeeService,
+  membershipService,
+} = require('../services');
 const config = require('../config/config');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
@@ -32,6 +39,12 @@ const verifyCreation = catchAsync(async (req, res) => {
     res.redirect(`${config.client.domain}/organization/new?result=error`);
   }
   const organization = await organizationService.createOrganization(data);
+  await membershipService.createMembership({
+    user: organization.owner,
+    org: organization.id,
+    role: 'owner',
+    status: 'accepted',
+  });
   await recombeeService.addOrganizationToRecombee(organization);
   res.redirect(
     `${config.client.domain}/organization/new?result=success&name=${organization.name}&domain=${organization.domain}`

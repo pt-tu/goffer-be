@@ -55,8 +55,8 @@ const deleteMembership = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
-const getUserMemberships = catchAsync(async (req, res) => {
-  const memberships = await membershipService.getUserMemberships(req.params.userId);
+const getSelfMemberships = catchAsync(async (req, res) => {
+  const memberships = await membershipService.getSelfMemberships(req.user.id);
   res.send(memberships);
 });
 
@@ -117,7 +117,7 @@ module.exports = {
   getMembership,
   updateMembership,
   deleteMembership,
-  getUserMemberships,
+  getSelfMemberships,
   getOrganizationMemberships,
   acceptInvitation,
   rejectInvitation,
