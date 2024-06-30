@@ -20,3 +20,4 @@ module.exports.invitationService = require('./invitation.service');
 module.exports.membershipService = require('./membership.service');
 module.exports.notificationService = require('./notification.service');
 module.exports.genaiService = require('./genai.service');
+module.exports.evaluationService = require('./evaluation.service');
