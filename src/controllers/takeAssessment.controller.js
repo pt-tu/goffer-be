@@ -63,6 +63,7 @@ const submitAll = catchAsync(async (req, res) => {
   const assessmentAvg = totalScore / (takings.length || 1);
 
   const application = await applyService.queryApplication(taking.assessment.job, user.id);
+
   await applyService.updateApplicationRaw(application._id, { assessmentAvg });
   res.status(httpStatus.OK).send(taking);
 });

@@ -9,3 +9,4 @@ module.exports.recommendationController = require('./recommendation.controller')
 module.exports.recombeeController = require('./recombee.controller');
 module.exports.jobController = require('./job.controller');
 module.exports.ragController = require('./rag.controller');
+module.exports.evaluationController = require('./evaluation.controller');

@@ -17,6 +17,7 @@ const recommendationRoute = require('./recommendation.route');
 const recombeeRoute = require('./recombee.route');
 const ragRoute = require('./rag.route');
 const membershipRoute = require('./membership.route');
+const evaluationRoute = require('./evaluation.route');
 
 const config = require('../../config/config');
 
@@ -90,6 +91,10 @@ const defaultRoutes = [
   {
     path: '/memberships',
     route: membershipRoute,
+  },
+  {
+    path: '/evaluations',
+    route: evaluationRoute,
   },
 ];
 

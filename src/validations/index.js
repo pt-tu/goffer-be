@@ -9,3 +9,4 @@ module.exports.recommendationValidation = require('./recommendation.validation')
 module.exports.recombeeValidation = require('./recombee.validation');
 module.exports.jobValidation = require('./job.validation');
 module.exports.ragValidation = require('./rag.validation');
+module.exports.evaluationValidation = require('./evaluation.validation');

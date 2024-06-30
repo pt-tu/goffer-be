@@ -96,7 +96,7 @@ const calculateScores = async (assessmentId, answers) => {
     }
   }
 
-  return (correctCount / (totalQuestions || 1)) * 10;
+  return (correctCount / (totalQuestions || 1)) * 100;
 };
 
 module.exports = {

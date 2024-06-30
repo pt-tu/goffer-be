@@ -29,7 +29,12 @@ const startAssessment = async (body) => {
 const getTakingAssessmentByAssessmentIdAndUserId = async (assessmentId, userId) => {
   const takeAssessment = await TakeAssessment.findOne({ assessment: assessmentId, user: userId })
     .populate('user')
-    .populate('answers');
+    .populate({
+      path: 'answers',
+      populate: {
+        path: 'question',
+      },
+    });
   return takeAssessment;
 };
 
