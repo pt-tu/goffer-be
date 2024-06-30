@@ -50,7 +50,8 @@ const updateMembership = catchAsync(async (req, res) => {
 });
 
 const deleteMembership = catchAsync(async (req, res) => {
-  await membershipService.deleteMembershipById(req.params.id);
+  const { params, user } = req;
+  await membershipService.deleteMembershipById(user.id, params.id);
   res.status(httpStatus.NO_CONTENT).send();
 });
 
