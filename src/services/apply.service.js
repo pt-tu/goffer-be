@@ -59,7 +59,15 @@ const getApplications = async (filter, options, advanced) => {
  * @returns {Promise<Apply>}
  */
 const getApplication = async (id) => {
-  let application = await Apply.findById(id).populate('owner').populate('job').populate('answers');
+  let application = await Apply.findById(id)
+    .populate('owner')
+    .populate('job')
+    .populate({
+      path: 'answers',
+      populate: {
+        path: 'question',
+      },
+    });
   application = application.toJSON();
   return application;
 };

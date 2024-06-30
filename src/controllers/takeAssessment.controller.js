@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const assessmentService = require('../services/assessment.service');
@@ -5,6 +6,7 @@ const takeAssessmentService = require('../services/takeAssessment.service');
 // const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const { applyService } = require('../services');
+const pick = require('../utils/pick');
 
 const startAssessment = catchAsync(async (req, res) => {
   const { user, body } = req;
@@ -65,10 +67,30 @@ const submitAll = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(taking);
 });
 
+const getTakingAssessments = catchAsync(async (req, res) => {
+  const filter = pick(req.query, ['assessment', 'user']);
+  const options = pick(req.query, ['populate']);
+  const result = (await takeAssessmentService.queryTakingAssessment(filter, options.populate)).map((r) => r.toJSON());
+  const promise = [];
+  for (let i = 0; i < result?.length || 0; i += 1) {
+    const r = result[i];
+    promise.push(
+      // eslint-disable-next-line no-await-in-loop
+      (async () => {
+        const score = await assessmentService.calculateScores(r.assessment?.id || r.assessment, r.answers);
+        r.score = score;
+      })()
+    );
+  }
+  await Promise.all(promise);
+  res.send(result);
+});
+
 module.exports = {
   startAssessment,
   getAssessment,
   submitAnswer,
   submitAll,
   getTakingAssessmentByAssessmentIdAndUserId,
+  getTakingAssessments,
 };
