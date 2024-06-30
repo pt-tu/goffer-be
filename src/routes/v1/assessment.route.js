@@ -14,6 +14,10 @@ router
   .get(auth(), validate(assessmentValidation.getAssessments), assessmentController.getAssessments);
 
 router
+  .route('/taking')
+  .get(validate(takeAssessmentValidation.getTakingAssessments), takeAssessmentController.getTakingAssessments);
+
+router
   .route('/:assessmentId')
   .get(auth(), validate(assessmentValidation.getAssessment), assessmentController.getAssessment)
   .patch(auth(), validate(assessmentValidation.updateAssessment), assessmentController.updateAssessment)

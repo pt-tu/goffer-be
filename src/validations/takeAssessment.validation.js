@@ -39,10 +39,19 @@ const getTakingAssessmentByAssessmentIdAndUserId = {
   }),
 };
 
+const getTakingAssessments = {
+  query: Joi.object().keys({
+    assessment: Joi.string().custom(objectId),
+    user: Joi.string().custom(objectId),
+    populate: Joi.string(),
+  }),
+};
+
 module.exports = {
   startAssessment,
   getAssessment,
   submitAnswer,
   submitAll,
   getTakingAssessmentByAssessmentIdAndUserId,
+  getTakingAssessments,
 };

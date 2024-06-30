@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const httpStatus = require('http-status');
 const TakeAssessment = require('../models/takeAssessment.model');
 const Answer = require('../models/answer.model');
@@ -139,8 +140,20 @@ const updateTakingAssessment = async (id, updateBody) => {
   return takeAssessment;
 };
 
-const queryTakingAssessment = async (filter) => {
-  return TakeAssessment.find(filter).populate('answers');
+const queryTakingAssessment = async (filter, populate) => {
+  if (filter.assessment) {
+    filter.assessment = {
+      $in: filter.assessment.split(','),
+    };
+  }
+  let query = TakeAssessment.find(filter);
+  if (populate) {
+    populate.split(',').forEach((p) => {
+      query = query.populate(p);
+    });
+  }
+  query = query.populate('answers');
+  return query.sort({ createdAt: 1 });
 };
 
 module.exports = {
