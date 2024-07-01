@@ -211,6 +211,9 @@ const userSchema = mongoose.Schema(
     yoe: {
       type: Number,
     },
+    enhance: {
+      type: mongoose.SchemaTypes.Mixed,
+    },
   },
   {
     timestamps: true,
