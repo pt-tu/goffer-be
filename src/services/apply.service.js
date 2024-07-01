@@ -4,6 +4,7 @@ const httpStatus = require('http-status');
 const Apply = require('../models/apply.model');
 const ApiError = require('../utils/ApiError');
 const { sdk } = require('../config/magicalapi');
+const logger = require('../config/logger');
 
 /**
  *
@@ -154,14 +155,18 @@ const countApplicationsByPhases = async (filter) => {
 };
 
 const resumeScore = async (url, jd) => {
-  const response = await sdk.resumeScore({
-    url,
-    job_description: jd,
-  });
-  const requestId = response.data.data.request_id;
-  await new Promise((resolve) => setTimeout(resolve, 15000));
-  const result = await sdk.resumeScore({ request_id: requestId });
-  return result.data.data;
+  try {
+    const response = await sdk.resumeScore({
+      url,
+      job_description: jd,
+    });
+    const requestId = response.data.data.request_id;
+    await new Promise((resolve) => setTimeout(resolve, 15000));
+    const result = await sdk.resumeScore({ request_id: requestId });
+    return result.data.data;
+  } catch (error) {
+    logger.error(error);
+  }
 };
 
 module.exports = {
