@@ -120,6 +120,15 @@ const updateUserSelf = catchAsync(async (req, res) => {
     req.body.portfolioDomain = domain;
     req.body.portfolio.palette = JSON.stringify(req.body.portfolio.palette);
   }
+
+  if (req.body.resume) {
+    await userService.updateUserById(req.user.id, { enhance: null });
+    (async () => {
+      const enhance = await userService.reviewResume(req.body.resume);
+      await userService.updateUserById(req.user.id, { enhance });
+    })();
+  }
+
   const user = await userService.updateUserById(req.user.id, req.body);
   await recombeeService.updateUserInRecombee(user);
   res.send(user);

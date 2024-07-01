@@ -3,6 +3,8 @@ const httpStatus = require('http-status');
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { rqs, client } = require('../config/recombeeClient');
+const logger = require('../config/logger');
+const { sdk } = require('../config/magicalapi');
 
 /**
  *
@@ -164,6 +166,20 @@ const recommendCandidates = async (jobId, limit = 10, page = 1) => {
   return User.find({ _id: { $in: userIds } });
 };
 
+const reviewResume = async (url) => {
+  try {
+    const response = await sdk.resumeReview({
+      url,
+    });
+    const requestId = response.data.data.request_id;
+    await new Promise((resolve) => setTimeout(resolve, 60000));
+    const result = await sdk.resumeReview({ request_id: requestId });
+    return result.data.data;
+  } catch (error) {
+    logger.error(error);
+  }
+};
+
 module.exports = {
   createUser,
   queryUsers,
@@ -174,4 +190,5 @@ module.exports = {
   emailExists,
   addUserToRecombee,
   recommendCandidates,
+  reviewResume,
 };
