@@ -95,6 +95,11 @@ const getSourcing = catchAsync(async (req, res) => {
 });
 
 const updateJob = catchAsync(async (req, res) => {
+  if (req.body.status) {
+    if (req.body.status === 'published') {
+      req.body.isPublished = true;
+    }
+  }
   const job = await jobService.updateJob(req.params.id, req.body);
   await recombeeService.updateJobInRecombee(job);
   res.send(job);

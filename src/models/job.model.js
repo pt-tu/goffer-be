@@ -87,6 +87,10 @@ const jobSchema = mongoose.Schema(
       ref: 'Assessment',
       max: 5,
     },
+    isPublished: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
