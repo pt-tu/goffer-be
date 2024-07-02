@@ -18,6 +18,7 @@ const recombeeRoute = require('./recombee.route');
 const ragRoute = require('./rag.route');
 const membershipRoute = require('./membership.route');
 const evaluationRoute = require('./evaluation.route');
+const logRoute = require('./log.route');
 
 const config = require('../../config/config');
 
@@ -95,6 +96,10 @@ const defaultRoutes = [
   {
     path: '/evaluations',
     route: evaluationRoute,
+  },
+  {
+    path: '/logs',
+    route: logRoute,
   },
 ];
 
