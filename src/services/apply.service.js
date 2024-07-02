@@ -169,6 +169,18 @@ const resumeScore = async (url, jd) => {
   }
 };
 
+const rejectAll = async (jobId, phase) => {
+  return Apply.updateMany(
+    {
+      job: jobId,
+      phase,
+    },
+    {
+      phase: 'rejected',
+    }
+  );
+};
+
 module.exports = {
   createApplication,
   getApplications,
@@ -179,4 +191,5 @@ module.exports = {
   countApplicationsByPhases,
   updateApplicationRaw,
   resumeScore,
+  rejectAll,
 };

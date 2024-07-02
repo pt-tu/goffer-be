@@ -101,6 +101,13 @@ const countApplicationsByPhases = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const rejectAll = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const { phase } = req.body;
+  const result = await applyService.rejectAll(id, phase);
+  res.send(result);
+});
+
 module.exports = {
   createApplication,
   getApplications,
@@ -108,4 +115,5 @@ module.exports = {
   queryApplication,
   updateApplication,
   countApplicationsByPhases,
+  rejectAll,
 };

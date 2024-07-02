@@ -71,9 +71,19 @@ const updateApplication = {
   }),
 };
 
+const rejectAll = {
+  params: Joi.object().keys({
+    id: Joi.string().custom(objectId).required(),
+  }),
+  body: Joi.object().keys({
+    phase: Joi.string().required(),
+  }),
+};
+
 module.exports = {
   createApplication,
   getApplications,
   getApplication,
   updateApplication,
+  rejectAll,
 };

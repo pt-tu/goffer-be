@@ -13,6 +13,8 @@ router
 
 router.route('/count').get(auth(true), validate(applyValidation.getApplications), applyController.countApplicationsByPhases);
 
+router.route('/reject-all/:id').post(auth(), validate(applyValidation.rejectAll), applyController.rejectAll);
+
 router
   .route('/:id')
   .get(auth(), validate(applyValidation.getApplication), applyController.getApplication)
