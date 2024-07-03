@@ -36,6 +36,9 @@ const answerSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    submitSeconds: {
+      type: Number,
+    },
   },
   {
     timestamps: true,

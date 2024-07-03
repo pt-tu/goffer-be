@@ -79,6 +79,9 @@ const applySchema = mongoose.Schema(
     assessmentAvg: {
       type: Number,
     },
+    timeToSubmit: {
+      type: Date,
+    },
   },
   {
     timestamps: true,

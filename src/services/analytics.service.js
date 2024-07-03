@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const { Log, Apply } = require('../models');
+const moment = require('moment');
+const { Log, Apply, Answer, Job } = require('../models');
 
 const getConversionRateData = async (jobId, startDate, endDate, granularity) => {
   let format = '%Y-%m-%d';
@@ -62,6 +63,55 @@ const getConversionRateData = async (jobId, startDate, endDate, granularity) => 
   return conversionRateData;
 };
 
+const getSubmitTimeData = async (jobId) => {
+  const applications = await Apply.find({
+    job: jobId,
+  });
+  const average =
+    applications.reduce((acc, curr) => acc + moment(curr.timeToSubmit || moment()).diff(curr.createdAt, 'seconds'), 0) /
+    (applications.length || 1);
+
+  const job = await Job.findById(jobId);
+  const { questions } = job;
+  const answers = await Answer.aggregate([
+    {
+      $match: {
+        question: {
+          $in: questions,
+        },
+      },
+    },
+    {
+      $group: {
+        _id: '$question',
+        average: { $avg: '$submitSeconds' },
+      },
+    },
+    {
+      $lookup: {
+        from: 'questions',
+        localField: '_id',
+        foreignField: '_id',
+        as: 'question',
+      },
+    },
+    {
+      $unwind: {
+        path: '$question',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+  ]);
+
+  const data = {
+    average,
+    questions: answers,
+  };
+
+  return data;
+};
+
 module.exports = {
   getConversionRateData,
+  getSubmitTimeData,
 };
