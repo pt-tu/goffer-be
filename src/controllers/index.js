@@ -11,3 +11,4 @@ module.exports.jobController = require('./job.controller');
 module.exports.ragController = require('./rag.controller');
 module.exports.evaluationController = require('./evaluation.controller');
 module.exports.logController = require('./log.controller');
+module.exports.analyticsController = require('./analytics.controller');

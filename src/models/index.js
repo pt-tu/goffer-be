@@ -10,3 +10,4 @@ module.exports.Job = require('./job.model');
 module.exports.Membership = require('./membership.model');
 module.exports.Evaluation = require('./evaluation.model');
 module.exports.Log = require('./log.model');
+module.exports.Apply = require('./apply.model');
