@@ -9,6 +9,7 @@ const submitAudioAnswer = {
     question: Joi.string().required().custom(objectId),
     duration: Joi.number().required(),
     apply: Joi.string().custom(objectId),
+    submitSeconds: Joi.number(),
   }),
 };
 
@@ -34,6 +35,7 @@ const submitAssessmentAnswer = {
     question: Joi.string().required().custom(objectId),
     content: Joi.string().required(),
     point: Joi.number(),
+    submitSeconds: Joi.number(),
   }),
 };
 

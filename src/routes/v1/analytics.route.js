@@ -8,5 +8,6 @@ const router = express.Router();
 router
   .route('/conversion-rate')
   .get(validate(analyticsValidation.getConversionRateData), analyticsController.getConversionRateData);
+router.route('/submit-time').get(validate(analyticsValidation.getSubmitTimeData), analyticsController.getSubmitTimeData);
 
 module.exports = router;

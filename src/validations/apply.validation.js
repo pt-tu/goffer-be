@@ -16,6 +16,7 @@ const createApplication = {
     profilePicture: Joi.string().uri().required(),
     role: Joi.string().required(),
     answers: Joi.array().items(Joi.string().custom(objectId)),
+    timeToSubmit: Joi.date(),
   }),
 };
 
@@ -68,6 +69,7 @@ const updateApplication = {
     profilePicture: Joi.string().uri(),
     role: Joi.string(),
     answers: Joi.array().items(Joi.string().custom(objectId)),
+    timeToSubmit: Joi.date(),
   }),
 };
 

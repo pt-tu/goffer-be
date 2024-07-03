@@ -10,6 +10,13 @@ const getConversionRateData = {
   }),
 };
 
+const getSubmitTimeData = {
+  query: Joi.object().keys({
+    job: Joi.string().required().custom(objectId),
+  }),
+};
+
 module.exports = {
   getConversionRateData,
+  getSubmitTimeData,
 };
