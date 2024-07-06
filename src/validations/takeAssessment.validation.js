@@ -22,6 +22,7 @@ const submitAnswer = {
         content: Joi.string().required(),
         point: Joi.number(),
         ref: Joi.string().required(),
+        lang: Joi.number(),
       })
       .required(),
   }),
