@@ -1,6 +1,9 @@
+const httpStatus = require('http-status');
 const { Answer } = require('../models');
 const speechService = require('./speech.service');
 const chataiService = require('./chatai.service');
+const { applyService } = require('.');
+const ApiError = require('../utils/ApiError');
 
 /**
  *
@@ -61,12 +64,27 @@ const summarizeAudio = async (audioUrl) => {
 
 /**
  *
- * @param {string} owner
- * @param {string} question
+ * @param {string} userId
+ * @param {string} applicationId
+ * @param {string} questionId
  * @returns {Promise<string>}
  */
-const getUserAnswerFromQuestion = async (owner, question) => {
-  return Answer.findOne({ owner, question });
+const getApplyAnswer = async (userId, applicationId, questionId) => {
+  const application = await applyService.getApplication(applicationId);
+  if (!application) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Application not found');
+  }
+
+  const answer = await Answer.findOne({ owner: userId, ref: applicationId, question: questionId });
+  if (!answer) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Answer not found');
+  }
+
+  if (!application.answers?.some((item) => item.id === answer._id.toString())) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid answer');
+  }
+
+  return answer;
 };
 
 module.exports = {
@@ -75,5 +93,5 @@ module.exports = {
   getAnswer,
   submitAnswer,
   summarizeAudio,
-  getUserAnswerFromQuestion,
+  getApplyAnswer,
 };

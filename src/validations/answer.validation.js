@@ -30,6 +30,13 @@ const getAnswer = {
   }),
 };
 
+const getApplyAnswer = {
+  params: Joi.object().keys({
+    applicationId: Joi.string().custom(objectId),
+    questionId: Joi.string().custom(objectId),
+  }),
+};
+
 const submitAssessmentAnswer = {
   body: Joi.object().keys({
     question: Joi.string().required().custom(objectId),
@@ -49,6 +56,7 @@ module.exports = {
   submitAudioAnswer,
   getAnswers,
   getAnswer,
+  getApplyAnswer,
   submitAssessmentAnswer,
   summarizeAudio,
 };
