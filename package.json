@@ -83,6 +83,7 @@
     "joi": "^17.3.0",
     "jsonwebtoken": "^9.0.2",
     "langchain": "^0.2.6",
+    "lodash": "^4.17.21",
     "marked": "^13.0.1",
     "moment": "^2.24.0",
     "mongoose": "^5.7.7",
@@ -106,6 +107,7 @@
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.6",
     "coveralls": "^3.0.7",
     "eslint": "^7.5",
     "eslint-config-airbnb-base": "^14.0.0",

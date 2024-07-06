@@ -26,6 +26,9 @@ const takeAssessmentSchema = mongoose.Schema(
     endingAt: {
       type: Date,
     },
+    point: {
+      type: Number,
+    },
   },
   {
     timestamps: true,

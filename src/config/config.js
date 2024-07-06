@@ -60,6 +60,8 @@ const envVarsSchema = Joi.object()
     QDRANT_URL: Joi.string().required().description('Qdrant url'),
     // Magical API key,
     MAGICAL_API_KEY: Joi.string().required().description('Magical API key'),
+    // Judge0
+    RAPID_API_KEY: Joi.string().required().description('Rapid API key'),
   })
   .unknown();
 
@@ -156,5 +158,8 @@ module.exports = {
   },
   magical: {
     apiKey: envVars.MAGICAL_API_KEY,
+  },
+  judge0: {
+    apiKey: envVars.RAPID_API_KEY,
   },
 };
