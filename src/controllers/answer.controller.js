@@ -66,9 +66,9 @@ const summarizeAudio = catchAsync(async (req, res) => {
 
 const getApplyAnswer = catchAsync(async (req, res) => {
   const { user, params } = req;
-  const { applicationId, questionId } = params;
+  const { ref, questionId } = params;
 
-  const answer = await answerService.getApplyAnswer(user.id, applicationId, questionId);
+  const answer = await answerService.getApplyAnswer(user.id, ref, questionId);
 
   res.send(answer);
 });

@@ -26,7 +26,7 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const getUsers = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['name', 'role', 'portfolioDomain']);
+  const filter = pick(req.query, ['name', 'role', 'portfolioDomain', 'isBanned']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   options.user = req.user?._id;
   const result = await userService.queryUsers(filter, options);
@@ -160,6 +160,27 @@ const subscribePro = catchAsync(async (req, res) => {
   res.send(session);
 });
 
+const blockUser = catchAsync(async (req, res) => {
+  const { userId } = req.params;
+  const { reason } = req.body;
+  const user = await userService.updateUserById(userId, {
+    isBanned: true,
+    reason,
+    blockedAt: new Date(),
+  });
+  res.send(user);
+});
+
+const unblockUser = catchAsync(async (req, res) => {
+  const { userId } = req.params;
+  const user = await userService.updateUserById(userId, {
+    isBanned: false,
+    reason: null,
+    blockedAt: null,
+  });
+  res.send(user);
+});
+
 module.exports = {
   checkEmailExists,
   createUser,
@@ -172,4 +193,6 @@ module.exports = {
   subscribePro,
   recommendUsers,
   recommendCandidates,
+  blockUser,
+  unblockUser,
 };

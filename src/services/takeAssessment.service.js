@@ -83,7 +83,9 @@ const handleAnswer = async (takeAssessment, answerBody) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Question not found in the assessment');
   }
 
-  let existingAnswer = takeAssessment.answers.find((a) => a.question.toString() === answerBody.question);
+  let existingAnswer = takeAssessment.answers.find(
+    (a) => a.question.toString() === answerBody.question && a.ref === answerBody.ref
+  );
 
   if (existingAnswer) {
     existingAnswer = Object.assign(existingAnswer, answerBody);
