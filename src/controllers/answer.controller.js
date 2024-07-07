@@ -10,8 +10,8 @@ const submitAudioAnswer = catchAsync(async (req, res) => {
   const { apply, ...answerData } = body;
 
   const answer = await Answer.findOneAndUpdate(
-    { owner: user.id, question: body.question },
-    { ...answerData, owner: user.id },
+    { owner: user.id, question: body.question, ref: body.apply },
+    { ...answerData, owner: user.id, ref: body.apply },
     { upsert: true, new: true }
   );
 
