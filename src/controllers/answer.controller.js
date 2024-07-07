@@ -52,14 +52,11 @@ const summarizeAudio = catchAsync(async (req, res) => {
   });
 });
 
-const getUserAnswerFromQuestion = catchAsync(async (req, res) => {
+const getApplyAnswer = catchAsync(async (req, res) => {
   const { user, params } = req;
+  const { applicationId, questionId } = params;
 
-  const answer = await answerService.getUserAnswerFromQuestion(user.id, params.id);
-
-  if (!answer) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Answer not found');
-  }
+  const answer = await answerService.getApplyAnswer(user.id, applicationId, questionId);
 
   res.send(answer);
 });
@@ -70,5 +67,5 @@ module.exports = {
   getAnswer,
   submitAssessmentAnswer,
   summarizeAudio,
-  getUserAnswerFromQuestion,
+  getApplyAnswer,
 };
