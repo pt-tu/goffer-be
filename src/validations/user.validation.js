@@ -28,6 +28,7 @@ const getUsers = {
     skills: Joi.string(),
     tools: Joi.string(),
     searchQuery: Joi.string(),
+    isBanned: Joi.boolean(),
   }),
 };
 
@@ -112,11 +113,27 @@ const updateUser = {
       avatar: Joi.string(),
       skills: Joi.array().items(Joi.string()),
       refDoc: Joi.string(),
+      role: Joi.string().valid('user', 'admin'),
     })
     .min(1),
 };
 
 const deleteUser = {
+  params: Joi.object().keys({
+    userId: Joi.string().custom(objectId),
+  }),
+};
+
+const blockUser = {
+  params: Joi.object().keys({
+    userId: Joi.string().custom(objectId),
+  }),
+  body: Joi.object().keys({
+    reason: Joi.string().required(),
+  }),
+};
+
+const unblockUser = {
   params: Joi.object().keys({
     userId: Joi.string().custom(objectId),
   }),
@@ -130,4 +147,6 @@ module.exports = {
   getUser,
   updateUser,
   deleteUser,
+  blockUser,
+  unblockUser,
 };

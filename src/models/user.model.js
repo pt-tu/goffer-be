@@ -214,6 +214,12 @@ const userSchema = mongoose.Schema(
     enhance: {
       type: mongoose.SchemaTypes.Mixed,
     },
+    reason: {
+      type: String,
+    },
+    blockedAt: {
+      type: Date,
+    },
   },
   {
     timestamps: true,

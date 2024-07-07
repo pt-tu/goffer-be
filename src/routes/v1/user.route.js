@@ -38,6 +38,11 @@ router
     interactionController.toggleInteraction
   );
 
+router
+  .route('/:userId/block')
+  .post(auth('manageUsers'), validate(userValidation.blockUser), userController.blockUser)
+  .delete(auth('manageUsers'), validate(userValidation.unblockUser), userController.unblockUser);
+
 module.exports = router;
 
 /**
