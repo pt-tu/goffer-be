@@ -10,7 +10,7 @@ const submitAudioAnswer = catchAsync(async (req, res) => {
   const { apply, ...answerData } = body;
 
   const answer = await Answer.findOneAndUpdate(
-    { owner: user.id, question: body.question },
+    { owner: user.id, question: body.question, ref: body.ref },
     { ...answerData, owner: user.id },
     { upsert: true, new: true }
   );
@@ -54,9 +54,9 @@ const summarizeAudio = catchAsync(async (req, res) => {
 
 const getApplyAnswer = catchAsync(async (req, res) => {
   const { user, params } = req;
-  const { applicationId, questionId } = params;
+  const { ref, questionId } = params;
 
-  const answer = await answerService.getApplyAnswer(user.id, applicationId, questionId);
+  const answer = await answerService.getApplyAnswer(user.id, ref, questionId);
 
   res.send(answer);
 });

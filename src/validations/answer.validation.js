@@ -10,6 +10,7 @@ const submitAudioAnswer = {
     duration: Joi.number().required(),
     apply: Joi.string().custom(objectId),
     submitSeconds: Joi.number(),
+    ref: Joi.string().required(),
   }),
 };
 
@@ -32,7 +33,7 @@ const getAnswer = {
 
 const getApplyAnswer = {
   params: Joi.object().keys({
-    applicationId: Joi.string().custom(objectId),
+    ref: Joi.string().required(),
     questionId: Joi.string().custom(objectId),
   }),
 };
