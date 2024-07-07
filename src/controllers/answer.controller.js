@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { answerService, applyService } = require('../services');
+const { answerService, applyService, questionService } = require('../services');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const { Answer } = require('../models');
@@ -8,10 +8,22 @@ const { Answer } = require('../models');
 const submitAudioAnswer = catchAsync(async (req, res) => {
   const { user, body } = req;
   const { apply, ...answerData } = body;
+  const { transcript, summary } = await answerService.summarizeAudio(body.url);
 
+  const question = await questionService.getQuestionById(answerData.question);
+  if (!question) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Question not found');
+  }
+
+  const application = await applyService.getApplication(apply);
+  if (!application) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Application not found');
+  }
+
+  const assessment = await answerService.analyzeSentiment(transcript, question.content, application.job);
   const answer = await Answer.findOneAndUpdate(
-    { owner: user.id, question: body.question, ref: body.apply },
-    { ...answerData, owner: user.id, ref: body.apply },
+    { owner: user.id, question: body.question, ref: apply },
+    { ...answerData, owner: user.id, ref: apply, content: transcript.text, summary, assessment },
     { upsert: true, new: true }
   );
 
@@ -46,7 +58,7 @@ const submitAssessmentAnswer = catchAsync(async (req, res) => {
 
 const summarizeAudio = catchAsync(async (req, res) => {
   const { audioUrl } = req.body;
-  const summary = await answerService.summarizeAudio(audioUrl);
+  const { summary } = await answerService.summarizeAudio(audioUrl);
   res.send({
     result: summary,
   });
