@@ -9,6 +9,16 @@ const { applyService } = require('../services');
 const pick = require('../utils/pick');
 const logger = require('../config/logger');
 
+const getAllTakings = catchAsync(async (req, res) => {
+  const takings = await takeAssessmentService.queryTakingAssessment(
+    {
+      assessment: req.params.assessmentId,
+    },
+    'user,assessment'
+  );
+  res.send(takings);
+});
+
 const startAssessment = catchAsync(async (req, res) => {
   const { user, body } = req;
 
@@ -102,4 +112,5 @@ module.exports = {
   submitAll,
   getTakingAssessmentByAssessmentIdAndUserId,
   getTakingAssessments,
+  getAllTakings,
 };
