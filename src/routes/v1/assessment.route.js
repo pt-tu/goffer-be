@@ -41,6 +41,8 @@ router
   .route('/taking/finish')
   .post(auth(), validate(takeAssessmentValidation.submitAll), takeAssessmentController.submitAll);
 
+router.route('/taking/by-assessment/:assessmentId').get(auth(), takeAssessmentController.getAllTakings);
+
 router
   .route('/taking/:id')
   .get(auth(), validate(takeAssessmentValidation.getAssessment), takeAssessmentController.getAssessment);
