@@ -119,7 +119,7 @@ async function loadMarkdown(filePath) {
   return marked(data);
 }
 
-async function splitDocs(text, chunkSize = 1024, chunkOverlap = 20) {
+async function splitDocs(text, chunkSize = 2048, chunkOverlap = 20) {
   const chunks = [];
   for (let i = 0; i < text.length; i += chunkSize - chunkOverlap) {
     chunks.push(text.substring(i, i + chunkSize));
