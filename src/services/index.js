@@ -23,3 +23,4 @@ module.exports.genaiService = require('./genai.service');
 module.exports.evaluationService = require('./evaluation.service');
 module.exports.logService = require('./log.service');
 module.exports.analyticsService = require('./analytics.service');
+module.exports.reportService = require('./report.service');

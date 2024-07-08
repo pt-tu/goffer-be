@@ -1,14 +1,6 @@
 const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
 
-const contextSchema = mongoose.Schema(
-  {
-    relatedPath: String,
-    relatedComponent: String,
-  },
-  { _id: false }
-);
-
 const environmentSchema = mongoose.Schema(
   {
     os: String,
@@ -41,7 +33,7 @@ const reportSchema = mongoose.Schema(
       enum: ['pending', 'in_progress', 'resolved'],
       default: 'pending',
     },
-    context: contextSchema,
+    relatedPath: String,
     environment: environmentSchema,
     owner: {
       type: mongoose.SchemaTypes.ObjectId,
