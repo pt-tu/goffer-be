@@ -125,7 +125,7 @@ const analyzeSentiment = async (transcript, question, job) => {
     const response = await openai.chat.completions.create({
       messages: [{ role: 'user', content: prompt }],
       model: 'gpt-4o',
-      max_tokens: 256,
+      max_tokens: 300,
     });
 
     return response.choices[0].message.content.trim();

@@ -7,11 +7,11 @@ const answerSchema = mongoose.Schema(
       type: String,
     },
     summary: {
-      type: String,
+      type: String, // AI summarize answer
       trim: true,
     },
     assessment: {
-      type: String, // assessment for answer
+      type: String, // AI assessment for answer
     },
     question: {
       type: mongoose.SchemaTypes.ObjectId,
@@ -30,10 +30,10 @@ const answerSchema = mongoose.Schema(
       type: Number,
     },
     content: {
-      type: String,
+      type: String, // user answer or transcript of audio
     },
     ref: {
-      type: String,
+      type: String, // jobId for audio or takeAssessmentId for others
       required: true,
     },
     submitSeconds: {
