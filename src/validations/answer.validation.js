@@ -6,11 +6,10 @@ const submitAudioAnswer = {
     url: Joi.string().required().uri(),
     summary: Joi.string().trim(),
     assessment: Joi.string(),
-    question: Joi.string().required().custom(objectId),
+    question: Joi.string().custom(objectId).required(),
     duration: Joi.number().required(),
-    apply: Joi.string().custom(objectId),
     submitSeconds: Joi.number(),
-    ref: Joi.string().required(),
+    ref: Joi.string().custom(objectId).required(),
   }),
 };
 
