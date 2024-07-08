@@ -12,3 +12,4 @@ module.exports.ragController = require('./rag.controller');
 module.exports.evaluationController = require('./evaluation.controller');
 module.exports.logController = require('./log.controller');
 module.exports.analyticsController = require('./analytics.controller');
+module.exports.reportController = require('./report.controller');

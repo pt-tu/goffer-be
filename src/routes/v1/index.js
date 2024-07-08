@@ -20,7 +20,7 @@ const membershipRoute = require('./membership.route');
 const evaluationRoute = require('./evaluation.route');
 const logRoute = require('./log.route');
 const analyticsRoute = require('./analytics.route');
-
+const reportRoute = require('./report.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -105,6 +105,10 @@ const defaultRoutes = [
   {
     path: '/analytics',
     route: analyticsRoute,
+  },
+  {
+    path: '/reports',
+    route: reportRoute,
   },
 ];
 
