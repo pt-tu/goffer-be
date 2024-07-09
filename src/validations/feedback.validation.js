@@ -5,8 +5,8 @@ const createFeedback = {
   body: Joi.object().keys({
     job: Joi.string().required().custom(objectId),
     feedback: Joi.string().trim(),
-    sentiment: Joi.string().valid('negative', 'neutral', 'positive', 'satisfied', 'very satisfied').lowercase(),
-    NPS: Joi.string().valid('promoters', 'passives', 'detractors').lowercase(),
+    sentiment: Joi.string().required().valid('negative', 'neutral', 'positive', 'satisfied', 'very satisfied').lowercase(),
+    NPS: Joi.string().required().valid('promoters', 'passives', 'detractors').lowercase(),
     resolved: Joi.boolean(),
   }),
 };

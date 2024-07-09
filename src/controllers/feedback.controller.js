@@ -5,6 +5,8 @@ const Feedback = require('../models/feedback.model');
 const Apply = require('../models/apply.model');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
+const { membershipService } = require('../services');
+const { Job } = require('../models');
 
 const createFeedback = catchAsync(async (req, res) => {
   const { user, body } = req;
@@ -103,7 +105,13 @@ const updateFeedback = catchAsync(async (req, res) => {
   if (!check) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Feedback not found');
   }
-  if (check.owner.toString() !== user.id) {
+
+  const isOnlyResolvedUpdate = Object.keys(body).length === 1 && 'resolved' in body;
+  const job = await Job.findById(check.job);
+  const canUpdate =
+    (isOnlyResolvedUpdate && (await membershipService.isUserOwner(user.id, job.org))) || check.owner.toString() === user.id;
+
+  if (!canUpdate) {
     throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
   }
 
