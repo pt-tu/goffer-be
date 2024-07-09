@@ -11,5 +11,6 @@ router.post('/process-pdf', validate(ragValidation.processPDFSchema), ragControl
 router.post('/process-markdown', validate(ragValidation.processMarkdownSchema), ragController.processMarkdown);
 router.post('/conduct-query', validate(ragValidation.chatSchema), ragController.conductQuery);
 router.post('/chat', validate(ragValidation.chatSchema), ragController.chatQuery);
+router.post('/parse-pdf', validate(ragValidation.parsePDF), ragController.parsePDF);
 
 module.exports = router;
