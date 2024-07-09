@@ -21,6 +21,7 @@ const evaluationRoute = require('./evaluation.route');
 const logRoute = require('./log.route');
 const analyticsRoute = require('./analytics.route');
 const reportRoute = require('./report.route');
+const speechRoute = require('./speech.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -109,6 +110,10 @@ const defaultRoutes = [
   {
     path: '/reports',
     route: reportRoute,
+  },
+  {
+    path: '/speech',
+    route: speechRoute,
   },
 ];
 
