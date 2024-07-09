@@ -13,7 +13,7 @@ router
 
 router
   .route('/:id')
-  .post(auth(), validate(feedbackValidation.updateFeedback), feedbackController.updateFeedback)
+  .patch(auth(), validate(feedbackValidation.updateFeedback), feedbackController.updateFeedback)
   .get(validate(feedbackValidation.getFeedback), feedbackController.getFeedback);
 
 module.exports = router;
