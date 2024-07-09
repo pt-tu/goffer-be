@@ -46,9 +46,16 @@ const chatQuery = catchAsync(async (req, res) => {
   res.status(200).json(answer);
 });
 
+const parsePDF = catchAsync(async (req, res) => {
+  const { fileUrl } = req.body;
+  const pdfText = await ragService.loadPDF(fileUrl);
+  res.status(200).json(pdfText);
+});
+
 module.exports = {
   processPDF,
   processMarkdown,
   conductQuery,
   chatQuery,
+  parsePDF,
 };

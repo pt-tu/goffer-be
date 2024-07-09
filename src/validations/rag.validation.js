@@ -26,9 +26,16 @@ const chatSchema = {
   }),
 };
 
+const parsePDF = {
+  body: Joi.object({
+    fileUrl: Joi.string().required(),
+  }),
+};
+
 module.exports = {
   processPDFSchema,
   processMarkdownSchema,
   chatSchema,
   conductQuerySchema,
+  parsePDF,
 };
