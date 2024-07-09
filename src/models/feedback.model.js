@@ -13,12 +13,7 @@ const feedbackSchema = mongoose.Schema(
       required: true,
       ref: 'User',
     },
-    title: {
-      type: String,
-      require: true,
-      trim: true,
-    },
-    content: {
+    feedback: {
       type: String,
       trim: true,
     },

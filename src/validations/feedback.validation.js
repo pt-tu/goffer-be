@@ -4,8 +4,7 @@ const { objectId } = require('./custom.validation');
 const createFeedback = {
   body: Joi.object().keys({
     job: Joi.string().required().custom(objectId),
-    title: Joi.string().required().trim(),
-    content: Joi.string().trim(),
+    feedback: Joi.string().trim(),
     sentiment: Joi.string().valid('negative', 'neutral', 'positive', 'satisfied', 'very satisfied').lowercase(),
     NPS: Joi.string().valid('promoters', 'passives', 'detractors').lowercase(),
     resolved: Joi.boolean(),
@@ -43,8 +42,7 @@ const updateFeedback = {
     id: Joi.string().required().custom(objectId),
   }),
   body: Joi.object().keys({
-    title: Joi.string().trim(),
-    content: Joi.string().trim(),
+    feedback: Joi.string().trim(),
     sentiment: Joi.string().valid('negative', 'neutral', 'positive', 'satisfied', 'very satisfied'),
     NPS: Joi.string().valid('promoters', 'passives', 'detractors'),
     resolved: Joi.boolean(),
