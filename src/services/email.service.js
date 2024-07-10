@@ -33,7 +33,7 @@ const sendEmail = async (to, subject, text) => {
 const sendResetPasswordEmail = async (to, token) => {
   const subject = 'Reset password | From Goffer';
   // replace this url with the link to the reset password page of your front-end app
-  const resetPasswordUrl = `http://localhost:5173/auth/reset-password?token=${token}`;
+  const resetPasswordUrl = `https://goffer.world/auth/reset-password?token=${token}`;
   const text = template.resetPasswordEmailTemplate(resetPasswordUrl);
   await sendEmail(to, subject, text);
 };
