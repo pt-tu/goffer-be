@@ -48,7 +48,7 @@ app.use(compression());
 // enable cors
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'https://goffer.world'],
+    origin: ['http://localhost:5173', 'https://goffer.world', 'https://www.goffer.world'],
     credentials: true,
   })
 );
