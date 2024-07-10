@@ -1,4 +1,6 @@
+const httpStatus = require('http-status');
 const Feedback = require('../models/feedback.model');
+const ApiError = require('../utils/ApiError');
 
 /**
  *
@@ -46,9 +48,24 @@ const updateFeedback = async (id, body) => {
   return feedback;
 };
 
+/**
+ *
+ * @param {ObjectId} feedbackId
+ * @returns {Promise<Question>}
+ */
+const deleteFeedback = async (feedbackId) => {
+  const feedback = await Feedback.findById(feedbackId);
+  if (!feedback) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Feedback not found');
+  }
+  await feedback.delete();
+  return feedback;
+};
+
 module.exports = {
   createFeedback,
   getFeedbacks,
   getFeedback,
   updateFeedback,
+  deleteFeedback,
 };

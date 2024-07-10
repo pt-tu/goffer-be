@@ -14,6 +14,7 @@ router
 router
   .route('/:id')
   .patch(auth(), validate(feedbackValidation.updateFeedback), feedbackController.updateFeedback)
-  .get(validate(feedbackValidation.getFeedback), feedbackController.getFeedback);
+  .get(validate(feedbackValidation.getFeedback), feedbackController.getFeedback)
+  .delete(auth(), validate(feedbackValidation.deleteFeedback), feedbackController.deleteFeedback);
 
 module.exports = router;
