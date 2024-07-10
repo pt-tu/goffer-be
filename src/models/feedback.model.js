@@ -19,7 +19,7 @@ const feedbackSchema = mongoose.Schema(
     },
     sentiment: {
       type: String,
-      enum: ['negative', 'neutral', 'positive', 'satisfied', 'very satisfied'],
+      enum: ['negative', 'disappointed', 'neutral', 'satisfied', 'very satisfied'],
       trim: true,
     },
     NPS: {
@@ -37,7 +37,7 @@ const feedbackSchema = mongoose.Schema(
   }
 );
 
-// feedbackSchema.index({ owner: 1, job: 1 }, { unique: true });
+feedbackSchema.index({ owner: 1, job: 1 }, { unique: true });
 
 // add plugin that converts mongoose to json
 feedbackSchema.plugin(toJSON);

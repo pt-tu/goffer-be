@@ -34,9 +34,9 @@ const getAggregateInfo = (feedbacks, key) => {
     switch (type) {
       case 'negative':
         return 1;
-      case 'neutral':
+      case 'disappointed':
         return 2;
-      case 'positive':
+      case 'neutral':
         return 3;
       case 'satisfied':
         return 4;
@@ -58,7 +58,7 @@ const getAggregateInfo = (feedbacks, key) => {
 
   switch (key) {
     case 'sentiment':
-      res.average = parseFloat(totalScore / total).toFixed(1);
+      res.average = parseFloat((totalScore / total).toFixed(1));
       break;
     case 'NPS':
       res.NPS = (summary.promoters?.rate ?? 0) - (summary.detractors?.rate ?? 0);
@@ -119,9 +119,29 @@ const updateFeedback = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(feedback);
 });
 
+const deleteFeedback = catchAsync(async (req, res) => {
+  const { user, params } = req;
+
+  const check = await Feedback.findById(params.id);
+  if (!check) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Feedback not found');
+  }
+
+  const job = await Job.findById(check.job);
+  const canDelete = (await membershipService.isUserOwner(user.id, job.org)) || check.owner.toString() === user.id;
+
+  if (!canDelete) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
+  }
+
+  const feedback = await feedbackService.deleteFeedback(req.params.id);
+  res.status(httpStatus.OK).send(feedback);
+});
+
 module.exports = {
   createFeedback,
   getFeedbacks,
   getFeedback,
   updateFeedback,
+  deleteFeedback,
 };
