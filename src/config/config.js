@@ -75,7 +75,7 @@ module.exports = {
   env: envVars.NODE_ENV,
   serverHostname: envVars.SERVER_HOSTNAME,
   port: envVars.PORT,
-  domain: `${envVars.SERVER_HOSTNAME}:${envVars.PORT}`,
+  domain: `${envVars.SERVER_HOSTNAME}`,
   mongoose: {
     url: envVars.MONGODB_URL + (envVars.NODE_ENV === 'test' ? '-test' : ''),
     options: {
