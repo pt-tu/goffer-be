@@ -24,51 +24,52 @@ const recommendJobs = async (userId, searchQuery, limit = 10, page = 1) => {
 
     let recommendations = null;
     if (searchQuery) {
-      recommendations = await client.send(
-        new rqs.SearchItems(userId.toString(), searchQuery, limit, {
-          scenario: 'job_recommendation',
-          cascadeCreate: true,
-          returnProperties: true,
-          diversity: 0.0,
-          rotationTime: 0.0,
-          // filter: "'isDraft' == false or 'isDraft' == null",
-          rotationRate: 0.2,
-          page,
-          ...(booster && {
-            booster,
-          }),
-        })
-      );
+      const req = new rqs.SearchItems(userId.toString(), searchQuery, limit, {
+        scenario: 'job_recommendation',
+        cascadeCreate: true,
+        returnProperties: true,
+        diversity: 0.0,
+        rotationTime: 0.0,
+        // filter: "'isDraft' == false or 'isDraft' == null",
+        rotationRate: 0.2,
+        page,
+        ...(booster && {
+          booster,
+        }),
+      });
+      req.timeout = 10000;
+
+      recommendations = await client.send(req);
     } else {
-      recommendations = await client.send(
-        new rqs.RecommendItemsToUser(userId.toString(), limit, {
-          scenario: 'job_recommendation_items_to_user',
-          // filter: `not 'isDraft'`,
-          cascadeCreate: true,
-          returnProperties: true,
-          diversity: 0.0,
-          rotationTime: 0.0,
-          rotationRate: 0.2,
-          page,
-          ...(booster && {
-            booster,
-          }),
-        })
-      );
+      const req = new rqs.RecommendItemsToUser(userId.toString(), limit, {
+        scenario: 'job_recommendation_items_to_user',
+        // filter: `not 'isDraft'`,
+        cascadeCreate: true,
+        returnProperties: true,
+        diversity: 0.0,
+        rotationTime: 0.0,
+        rotationRate: 0.2,
+        page,
+        ...(booster && {
+          booster,
+        }),
+      });
+      req.timeout = 10000;
+      recommendations = await client.send(req);
     }
 
     let jobIds = recommendations.recomms.map((r) => r.id);
 
     // Fallback to ListItems if there are no recommendations
     if (jobIds.length === 0) {
-      const allItems = await client.send(
-        new rqs.ListItems({
-          returnProperties: true,
-          filter: '`type` == "job"',
-          page,
-          limit,
-        })
-      );
+      const req = new rqs.ListItems({
+        returnProperties: true,
+        filter: '`type` == "job"',
+        page,
+        limit,
+      });
+      req.timeout = 10000;
+      const allItems = await client.send(req);
 
       jobIds = allItems.items.map((item) => item.itemId);
     }
@@ -82,31 +83,31 @@ const recommendJobs = async (userId, searchQuery, limit = 10, page = 1) => {
 
 const recommendOrganizations = async (userId, limit = 10, page = 1) => {
   try {
-    const recommendations = await client.send(
-      new rqs.RecommendItemsToUser(userId.toString(), limit, {
-        scenario: 'organization_recommendation',
-        filter: `'type' == "organization"`,
-        cascadeCreate: true,
-        returnProperties: true,
-        diversity: 0,
-        rotationTime: 0.0,
-        rotationRate: 0.2,
-        page,
-      })
-    );
+    const req = new rqs.RecommendItemsToUser(userId.toString(), limit, {
+      scenario: 'organization_recommendation',
+      filter: `'type' == "organization"`,
+      cascadeCreate: true,
+      returnProperties: true,
+      diversity: 0,
+      rotationTime: 0.0,
+      rotationRate: 0.2,
+      page,
+    });
+    req.timeout = 10000;
+    const recommendations = await client.send(req);
 
     let orgIds = recommendations?.recomms.map((r) => r.id);
 
     // Fallback to ListItems if there are no recommendations
     if (orgIds.length === 0) {
-      const allItems = await client.send(
-        new rqs.ListItems({
-          returnProperties: true,
-          filter: `'type' == "organization"`, // Adjust this filter to match your use case
-          page,
-          limit,
-        })
-      );
+      const req2 = new rqs.ListItems({
+        returnProperties: true,
+        filter: `'type' == "organization"`, // Adjust this filter to match your use case
+        page,
+        limit,
+      });
+      req2.timeout = 10000;
+      const allItems = await client.send(req2);
 
       orgIds = allItems.map((item) => item.itemId);
     }
@@ -157,13 +158,13 @@ const recommendCandidates = async (jobId, limit = 10, page = 1) => {
 
     // Fallback to ListUsers if there are no recommendations
     if (userIds.length === 0) {
-      const allUsers = await client.send(
-        new rqs.ListUsers({
-          returnProperties: true,
-          page,
-          limit,
-        })
-      );
+      const req2 = new rqs.ListUsers({
+        returnProperties: true,
+        page,
+        limit,
+      });
+      req2.timeout = 10000;
+      const allUsers = await client.send(req2);
 
       userIds = allUsers.items.map((item) => item.userId);
     }
@@ -177,29 +178,29 @@ const recommendCandidates = async (jobId, limit = 10, page = 1) => {
 
 const recommendUsers = async (userId, limit = 10) => {
   try {
-    const recommendations = await client.send(
-      new rqs.RecommendUsersToUser(userId.toString(), limit, {
-        returnProperties: true,
-        scenario: 'users_recommendation',
-        filter: `'isJobIdeal' == null`,
-        diversity: 0,
-        rotationTime: 0.0,
-        rotationRate: 0.2,
-        minRelevance: 'low',
-        // booster: `if "skills" in item then 2 else 1 + if "tools" in item then 2 else 1`,
-      })
-    );
+    const req = new rqs.RecommendUsersToUser(userId.toString(), limit, {
+      returnProperties: true,
+      scenario: 'users_recommendation',
+      filter: `'isJobIdeal' == null`,
+      diversity: 0,
+      rotationTime: 0.0,
+      rotationRate: 0.2,
+      minRelevance: 'low',
+      // booster: `if "skills" in item then 2 else 1 + if "tools" in item then 2 else 1`,
+    });
+    req.timeout = 10000;
+    const recommendations = await client.send(req);
 
     let userIds = recommendations.recomms.map((r) => r.id);
 
     // Fallback to ListUsers if there are no recommendations
     if (userIds.length === 0) {
-      const allUsers = await client.send(
-        new rqs.ListUsers({
-          returnProperties: true,
-          limit,
-        })
-      );
+      const req2 = new rqs.ListUsers({
+        returnProperties: true,
+        limit,
+      });
+      req2.timeout = 10000;
+      const allUsers = await client.send(req2);
 
       userIds = allUsers.items.map((item) => item.userId);
     }
