@@ -31,7 +31,7 @@ const recommendJobs = async (userId, searchQuery, limit = 10, page = 1) => {
           returnProperties: true,
           diversity: 0.0,
           rotationTime: 0.0,
-          filter: "'isDraft' == false or 'isDraft' == null",
+          // filter: "'isDraft' == false or 'isDraft' == null",
           rotationRate: 0.2,
           page,
           ...(booster && {
@@ -42,7 +42,8 @@ const recommendJobs = async (userId, searchQuery, limit = 10, page = 1) => {
     } else {
       recommendations = await client.send(
         new rqs.RecommendItemsToUser(userId.toString(), limit, {
-          filter: `'type' == "job" and ('isDraft' == false or 'isDraft' == null)`,
+          scenario: 'job_recommendation_items_to_user',
+          // filter: `not 'isDraft'`,
           cascadeCreate: true,
           returnProperties: true,
           diversity: 0.0,
@@ -84,6 +85,7 @@ const recommendOrganizations = async (userId, limit = 10, page = 1) => {
     const recommendations = await client.send(
       new rqs.RecommendItemsToUser(userId.toString(), limit, {
         scenario: 'organization_recommendation',
+        filter: `'type' == "organization"`,
         cascadeCreate: true,
         returnProperties: true,
         diversity: 0,
