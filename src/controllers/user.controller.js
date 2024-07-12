@@ -154,6 +154,7 @@ const subscribePro = catchAsync(async (req, res) => {
       successUrl: `${config.client.domain}/subscribe?result=success`,
       cancelUrl: `${config.client.domain}/subscribe?result=cancel`,
       customer: customer.customerId,
+      description: 'Pro Subscription',
     },
     PRICE_ENUM.INDIVIDUAL_STAR_PLAN
   );

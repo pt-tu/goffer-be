@@ -22,6 +22,7 @@ const createOrganization = catchAsync(async (req, res) => {
     successUrl: `${config.domain}/v1/organizations/verify-creation?session_ref=${sessionRef}`,
     cancelUrl: `${config.client.domain}/organization/new?result=cancel`,
     customer: user.customerId,
+    description: `Create organization ${req.body.name}`,
   });
   req.body.owner = req.user.id;
   req.body.sessionId = session.id;
