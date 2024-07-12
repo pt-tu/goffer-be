@@ -3,6 +3,7 @@ const { Recommendation } = require('../models');
 const ApiError = require('../utils/ApiError');
 const notificationService = require('./notification.service');
 const userService = require('./user.service');
+const logger = require('../config/logger');
 
 /**
  * Create a new recommendation
@@ -10,19 +11,26 @@ const userService = require('./user.service');
  * @returns {Promise<Recommendation>}
  */
 const createRecommendation = async (recommendationBody) => {
-  const response = await Recommendation.create(recommendationBody);
-  const owner = await userService.getUserById(recommendationBody.owner);
-  const user = await userService.getUserById(recommendationBody.user);
-  await notificationService.createNotification(`notifications-${recommendationBody.user}`, {
-    title: 'New recommendation',
-    description: `You have a new recommendation from ${user?.name}`,
-    type: 'recommendation',
-    user,
-    owner,
-    link: `/app/profile?tab=recommendations`,
-    createdAt: new Date(),
-  });
-  return response;
+  try {
+    const response = await Recommendation.create(recommendationBody);
+    const owner = await userService.getUserById(recommendationBody.owner);
+    const user = await userService.getUserById(recommendationBody.user);
+
+    await notificationService.createNotification(`notifications-${recommendationBody.user}`, {
+      title: 'New recommendation',
+      description: `You have a new recommendation from ${user?.name}`,
+      type: 'recommendation',
+      user,
+      owner,
+      link: `/app/profile?tab=recommendations`,
+      createdAt: new Date(),
+    });
+    return response;
+  } catch (error) {
+    logger.error('Error create recommendation');
+    logger.error(error);
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Recommendation not created');
+  }
 };
 
 /**

@@ -140,18 +140,18 @@ const getJobIdealCandidate = async (jobId) => {
 const recommendCandidates = async (jobId, limit = 10, page = 1) => {
   try {
     await getJobIdealCandidate(jobId);
-    const recommendations = await client.send(
-      new rqs.RecommendUsersToUser(jobId.toString(), limit, {
-        cascadeCreate: true,
-        returnProperties: true,
-        diversity: 0.5,
-        rotationTime: 0.0,
-        rotationRate: 0.0,
-        filter: `'isJobIdeal' == false or 'isJobIdeal' == null`,
-        minRelevance: 'low',
-        page,
-      })
-    );
+    const req = new rqs.RecommendUsersToUser(jobId.toString(), limit, {
+      cascadeCreate: true,
+      returnProperties: true,
+      diversity: 0.5,
+      rotationTime: 0.0,
+      rotationRate: 0.0,
+      filter: `'isJobIdeal' == false or 'isJobIdeal' == null`,
+      minRelevance: 'low',
+      page,
+    });
+    req.timeout = 10000;
+    const recommendations = await client.send(req);
 
     let userIds = recommendations.recomms.map((r) => r.id);
 
