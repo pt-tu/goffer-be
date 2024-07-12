@@ -30,7 +30,9 @@ const createCheckoutSession = async (requestData, price = PRICE_ENUM.ORG_LORD_PL
         trial_period_days: 7,
       },
       customer: requestData.customer,
-      description: requestData.description,
+      payment_intent_data: {
+        description: requestData.description,
+      },
     };
   }
 
