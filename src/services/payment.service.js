@@ -28,11 +28,9 @@ const createCheckoutSession = async (requestData, price = PRICE_ENUM.ORG_LORD_PL
       payment_method_types: ['card'],
       subscription_data: {
         trial_period_days: 7,
-      },
-      customer: requestData.customer,
-      payment_intent_data: {
         description: requestData.description,
       },
+      customer: requestData.customer,
     };
   }
 
