@@ -16,10 +16,12 @@ const logger = require('../config/logger');
 
 const createOrganization = catchAsync(async (req, res) => {
   const sessionRef = uuid();
+  const user = await paymentService.getCustomerData(req.user.id);
   const session = await paymentService.createCheckoutSession({
     mode: 'subscription',
     successUrl: `${config.domain}/v1/organizations/verify-creation?session_ref=${sessionRef}`,
     cancelUrl: `${config.client.domain}/organization/new?result=cancel`,
+    customer: user.customerId,
   });
   req.body.owner = req.user.id;
   req.body.sessionId = session.id;
