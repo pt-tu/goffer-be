@@ -30,7 +30,7 @@ const createOrganization = {
     logo: Joi.string().required(),
     field: Joi.string().required(),
     email: Joi.string().required().email(),
-    visibility: Joi.string().required().valid('public', 'private'),
+    visibility: Joi.string().default('public').allow(''),
     location: Joi.string().allow(''),
     website: Joi.string().required(),
   }),
