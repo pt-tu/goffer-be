@@ -92,6 +92,7 @@ const recommendOrganizations = async (userId, limit = 10, page = 1) => {
       rotationTime: 0.0,
       rotationRate: 0.2,
       page,
+      minRelevance: 'low',
     });
     req.timeout = 10000;
     const recommendations = await client.send(req);
