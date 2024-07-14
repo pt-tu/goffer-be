@@ -60,24 +60,26 @@ const updateUserSelf = {
         })
       ),
       education: Joi.array().items(
-        Joi.object().keys({
-          school: Joi.string().required(),
-          degree: Joi.string(),
-          startDate: Joi.date(),
-          endDate: Joi.date(),
-          description: Joi.string(),
-          major: Joi.string(),
-        })
+        Joi.any()
+        // Joi.object().keys({
+        //   school: Joi.string().required(),
+        //   degree: Joi.string(),
+        //   startDate: Joi.date(),
+        //   endDate: Joi.date(),
+        //   description: Joi.string(),
+        //   major: Joi.string(),
+        // })
       ),
       experiences: Joi.array().items(
-        Joi.object().keys({
-          title: Joi.string().required(),
-          company: Joi.string().required(),
-          startDate: Joi.date().required(),
-          endDate: Joi.date(),
-          description: Joi.string(),
-          logo: Joi.string(),
-        })
+        Joi.any()
+        // Joi.object().keys({
+        //   title: Joi.string().required(),
+        //   company: Joi.string().required(),
+        //   startDate: Joi.date().required(),
+        //   endDate: Joi.date(),
+        //   description: Joi.string(),
+        //   logo: Joi.string(),
+        // })
       ),
       oneLiner: Joi.string(),
       status: Joi.string().valid('unavailable', 'open-to-job'),
