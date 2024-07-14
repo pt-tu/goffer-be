@@ -105,8 +105,8 @@ const getTakingAssessments = catchAsync(async (req, res) => {
     promise.push(
       // eslint-disable-next-line no-await-in-loop
       (async () => {
-        const score = await assessmentService.calculateScores(r.assessment?.id || r.assessment, r.answers);
-        r.score = score;
+        // const score = await assessmentService.calculateScores(r.assessment?.id || r.assessment, r.answers);
+        r.score = r?.point || 0;
       })()
     );
   }
