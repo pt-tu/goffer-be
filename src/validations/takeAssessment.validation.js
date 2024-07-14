@@ -42,7 +42,7 @@ const getTakingAssessmentByAssessmentIdAndUserId = {
 
 const getTakingAssessments = {
   query: Joi.object().keys({
-    assessment: Joi.string().custom(objectId),
+    assessment: Joi.string(),
     user: Joi.string().custom(objectId),
     populate: Joi.string(),
   }),
