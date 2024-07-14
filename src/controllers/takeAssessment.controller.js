@@ -65,9 +65,9 @@ const submitAll = catchAsync(async (req, res) => {
 
   const taking = await takeAssessmentService.submitAll(body.takeAssessmentId, user.id);
   // console.log(taking);
-  console.log('id', taking?.assessment?.id || taking?.assessment?._id);
-  const job = await Job.findById(taking?.assessment?.id || taking?.assessment?._id);
-  console.log(job);
+  // console.log('id', taking?.assessment?.job || taking?.assessment?._id);
+  const job = await Job.findById(taking?.assessment?.job);
+  // console.log(job);
   const assessmentIds = job.assessments;
   (async () => {
     try {
