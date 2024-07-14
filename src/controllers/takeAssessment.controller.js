@@ -68,14 +68,12 @@ const submitAll = catchAsync(async (req, res) => {
   // console.log('id', taking?.assessment?.job || taking?.assessment?._id);
   const job = await Job.findById(taking?.assessment?.job);
   // console.log(job);
-  const assessmentIds = job.assessments;
+  const assessmentIds = job.assessments || [];
   (async () => {
     try {
       const takings = await takeAssessmentService.queryTakingAssessment({
         user: user.id,
-        assessment: {
-          $in: assessmentIds,
-        },
+        assessment: assessmentIds.join(','),
       });
       let totalScore = 0;
       for (let i = 0; i < takings.length; i += 1) {
