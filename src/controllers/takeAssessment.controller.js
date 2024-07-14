@@ -8,6 +8,7 @@ const ApiError = require('../utils/ApiError');
 const { applyService } = require('../services');
 const pick = require('../utils/pick');
 const logger = require('../config/logger');
+const { Job } = require('../models');
 
 const getAllTakings = catchAsync(async (req, res) => {
   const takings = await takeAssessmentService.queryTakingAssessment(
@@ -63,9 +64,16 @@ const submitAll = catchAsync(async (req, res) => {
   const { user, body } = req;
 
   const taking = await takeAssessmentService.submitAll(body.takeAssessmentId, user.id);
+  const job = await Job.findById(taking?.assessment?.id || taking?.assessment?._id);
+  const assessmentIds = job.assessments;
   (async () => {
     try {
-      const takings = await takeAssessmentService.queryTakingAssessment({ user: user.id, assessment: taking.assessment.id });
+      const takings = await takeAssessmentService.queryTakingAssessment({
+        user: user.id,
+        assessment: {
+          $in: assessmentIds,
+        },
+      });
       let totalScore = 0;
       for (let i = 0; i < takings.length; i += 1) {
         // eslint-disable-next-line no-await-in-loop
