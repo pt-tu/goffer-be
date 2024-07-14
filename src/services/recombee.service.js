@@ -187,7 +187,7 @@ const recommendUsers = async (userId, limit = 10) => {
       rotationTime: 0.0,
       rotationRate: 0.2,
       minRelevance: 'low',
-      logic: 'recombee:similar',
+      logic: 'recombee:default',
       // booster: `if "skills" in item then 2 else 1 + if "tools" in item then 2 else 1`,
     });
     req.timeout = 10000;
