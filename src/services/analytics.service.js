@@ -107,7 +107,7 @@ const getConversionRateData = async (jobId, startDate, endDate, granularity) => 
       const result = {
         time: date,
         views: date in hc ? hc[date].views : 0,
-        applications: date in hc ? hc[date].applications : application?.count,
+        applications: date in hc ? hc[date].applications : application?.count || 0,
       };
       result.conversionRate = result.views ? Math.round((result.applications / result.views) * 10000) / 100 : 0;
       return result;
