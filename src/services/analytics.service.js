@@ -50,15 +50,19 @@ const getConversionRateData = async (jobId, startDate, endDate, granularity) => 
     },
   ]);
 
-  const conversionRateData = views.map((view) => {
-    const application = applications.find((app) => app._id === view._id);
-    return {
-      time: view._id,
-      views: view.count,
-      applications: application?.count ?? 0,
-      conversionRate: ((application?.count ?? 0) / (view.count || 1)) * 100,
-    };
-  });
+  const conversionRateData = Array(views)
+    .sort((a, b) => {
+      return moment(a.time).diff(b.time);
+    })
+    .map((view) => {
+      const application = applications.find((app) => app._id === view._id);
+      return {
+        time: view._id,
+        views: view.count,
+        applications: application?.count ?? 0,
+        conversionRate: ((application?.count ?? 0) / (view.count || 1)) * 100,
+      };
+    });
 
   return conversionRateData;
 };
