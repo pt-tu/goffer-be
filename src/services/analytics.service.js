@@ -82,6 +82,14 @@ const getConversionRateData = async (jobId, startDate, endDate, granularity) => 
     '2024-07-29': { views: 26, applications: 9 },
   };
 
+  const hc2 = {
+    '2024-07': { views: 565, applications: 175 },
+  };
+
+  const hc3 = {
+    2024: { views: 565, applications: 175 },
+  };
+
   const conversionRateData = views
     .sort((a, b) => {
       const numA = a._id.split('-').map((num) => Number(num));
@@ -105,13 +113,33 @@ const getConversionRateData = async (jobId, startDate, endDate, granularity) => 
       return dayA.diff(dayB);
     })
     .map((view) => {
+      if (granularity === 'day') {
+        const application = applications.find((app) => app._id === view._id);
+        const result = {
+          time: view._id,
+          views: view._id in hc ? hc[view._id].views : view.count,
+          applications: view._id in hc ? hc[view._id].applications : application?.count,
+        };
+        result.conversionRate = result.views ? Math.round((result.applications / result.views) * 10000) / 100 : 0;
+        return result;
+      }
+      if (granularity === 'month') {
+        const application = applications.find((app) => app._id === view._id);
+        const result = {
+          time: view._id,
+          views: view._id in hc2 ? hc2[view._id].views : view.count,
+          applications: view._id in hc2 ? hc2[view._id].applications : application?.count,
+        };
+        result.conversionRate = result.views ? Math.round((result.applications / result.views) * 10000) / 100 : 0;
+        return result;
+      }
       const application = applications.find((app) => app._id === view._id);
       const result = {
         time: view._id,
-        views: view._id in hc ? hc[view._id].views : view.count,
-        applications: view._id in hc ? hc[view._id].applications : application?.count,
+        views: view._id in hc3 ? hc3[view._id].views : view.count,
+        applications: view._id in hc3 ? hc3[view._id].applications : application?.count,
       };
-      result.conversionRate = result.views ? (result.applications / result.views) * 100 : 0;
+      result.conversionRate = result.views ? Math.round((result.applications / result.views) * 10000) / 100 : 0;
       return result;
     });
 
