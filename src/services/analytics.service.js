@@ -93,26 +93,26 @@ const getConversionRateData = async (jobId, startDate, endDate, granularity) => 
     2024: { views: 565, applications: 175 },
   };
 
-  if (granularity === 'day') {
-    const dates = [];
-    let currentDate = moment(startDate);
-    const end = moment(endDate);
+  // if (granularity === 'day') {
+  //   const dates = [];
+  //   let currentDate = moment(startDate);
+  //   const end = moment(endDate);
 
-    while (currentDate <= end) {
-      dates.push(currentDate.format(format));
-      currentDate = currentDate.add(1, 'day');
-    }
-    return dates.map((date) => {
-      const application = applications.find((app) => app._id === date);
-      const result = {
-        time: date,
-        views: date in hc ? hc[date].views : 0,
-        applications: date in hc ? hc[date].applications : application?.count,
-      };
-      result.conversionRate = result.views ? Math.round((result.applications / result.views) * 10000) / 100 : 0;
-      return result;
-    });
-  }
+  //   while (currentDate <= end) {
+  //     dates.push(currentDate.format('YYYY-MM-DD'));
+  //     currentDate = currentDate.add(1, 'day');
+  //   }
+  //   return dates.map((date) => {
+  //     const application = applications.find((app) => app._id === date);
+  //     const result = {
+  //       time: date,
+  //       views: date in hc ? hc[date].views : 0,
+  //       applications: date in hc ? hc[date].applications : application?.count,
+  //     };
+  //     result.conversionRate = result.views ? Math.round((result.applications / result.views) * 10000) / 100 : 0;
+  //     return result;
+  //   });
+  // }
 
   const conversionRateData = views
     .sort((a, b) => {
