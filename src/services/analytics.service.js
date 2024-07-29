@@ -50,7 +50,8 @@ const getConversionRateData = async (jobId, startDate, endDate, granularity) => 
     },
   ]);
 
-  const conversionRateData = Array(views)
+  console.log('views', views);
+  const conversionRateData = views
     .sort((a, b) => {
       const numA = a._id.split('-').map((num) => Number(num));
       let dayA = moment({ year: numA[0] });
@@ -71,7 +72,8 @@ const getConversionRateData = async (jobId, startDate, endDate, granularity) => 
       }
 
       console.log('dayA', dayA.format('ll'));
-      console.log('dayB', dayB.format('ll'));
+      console.log('dayB', dayA.format('ll'));
+
       return dayA.diff(dayB);
     })
     .map((view) => {
