@@ -52,7 +52,7 @@ const getConversionRateData = async (jobId, startDate, endDate, granularity) => 
 
   const conversionRateData = Array(views)
     .sort((a, b) => {
-      return moment(a.time).diff(b.time);
+      return moment(a._id).diff(b._id);
     })
     .map((view) => {
       const application = applications.find((app) => app._id === view._id);
