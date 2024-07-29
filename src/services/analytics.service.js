@@ -86,11 +86,11 @@ const getConversionRateData = async (jobId, startDate, endDate, granularity) => 
   };
 
   const hc2 = {
-    '2024-07': { views: 604, applications: 45 },
+    '2024-07': { views: 604, applications: 47 },
   };
 
   const hc3 = {
-    2024: { views: 604, applications: 45 },
+    2024: { views: 604, applications: 47 },
   };
 
   if (granularity === 'day') {
