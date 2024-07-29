@@ -70,6 +70,8 @@ const getConversionRateData = async (jobId, startDate, endDate, granularity) => 
         dayB = dayB.date(numB[2]);
       }
 
+      console.log('dayA', dayA.format('ll'));
+      console.log('dayB', dayB.format('ll'));
       return dayA.diff(dayB);
     })
     .map((view) => {
