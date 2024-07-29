@@ -52,7 +52,25 @@ const getConversionRateData = async (jobId, startDate, endDate, granularity) => 
 
   const conversionRateData = Array(views)
     .sort((a, b) => {
-      return moment(a._id).diff(b._id);
+      const numA = a._id.split('-').map((num) => Number(num));
+      let dayA = moment({ year: numA[0] });
+      if (numA.length > 1) {
+        dayA = dayA.month(numA[1] - 1);
+      }
+      if (numA.length > 2) {
+        dayA = dayA.date(numA[2]);
+      }
+
+      const numB = b._id.split('-').map((num) => Number(num));
+      let dayB = moment({ year: numB[0] });
+      if (numB.length > 1) {
+        dayB = dayB.month(numB[1] - 1);
+      }
+      if (numB.length > 2) {
+        dayB = dayB.date(numB[2]);
+      }
+
+      return dayA.diff(dayB);
     })
     .map((view) => {
       const application = applications.find((app) => app._id === view._id);
